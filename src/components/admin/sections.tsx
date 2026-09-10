@@ -67,7 +67,7 @@ function ImageInput({ value, onChange, label = "Ảnh" }: { value: string; onCha
       </div>
       {value && (
         <div className="relative mt-2 h-24 w-24 overflow-hidden rounded-md border border-line bg-ink-50">
-          <Image src={value} alt="" fill sizes="96px" className="object-contain p-1" />
+          <img src={value} alt="" className="h-full w-full object-contain p-1" />
         </div>
       )}
     </div>
