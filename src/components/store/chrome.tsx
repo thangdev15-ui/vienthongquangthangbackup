@@ -273,7 +273,6 @@ export function MegaNav({ categories }: { categories: NavCategory[] }) {
           <MegaLink href="/thuong-hieu" label="Thương hiệu" />
           <MegaLink href="/khuyen-mai" label="Khuyến mãi" hot />
           <MegaLink href="/tin-tuc" label="Tin tức" />
-          <MegaLink href="/gioi-thieu" label="Giới thiệu" />
           <MegaLink href="/lien-he" label="Liên hệ" />
         </div>
         <span className="ml-auto hidden items-center gap-2 text-[13px] font-medium text-ink-500 xl:flex">
@@ -330,7 +329,6 @@ export function MegaNav({ categories }: { categories: NavCategory[] }) {
           { href: "/thuong-hieu", label: "Thương hiệu" },
           { href: "/khuyen-mai", label: "Khuyến mãi" },
           { href: "/tin-tuc", label: "Tin tức" },
-          { href: "/gioi-thieu", label: "Giới thiệu" },
           { href: "/lien-he", label: "Liên hệ" },
         ].map((l) => (
           <Link
@@ -423,7 +421,6 @@ export function MobileMenu({ open, onClose, categories }: { open: boolean; onClo
             { href: "/thuong-hieu", label: "Thương hiệu" },
             { href: "/khuyen-mai", label: "Khuyến mãi" },
             { href: "/tin-tuc", label: "Tin tức công nghệ" },
-            { href: "/gioi-thieu", label: "Giới thiệu" },
             { href: "/lien-he", label: "Liên hệ" },
             { href: "/tai-khoan", label: "Tài khoản" },
             { href: "/tai-khoan?tab=wishlist", label: "Yêu thích" },

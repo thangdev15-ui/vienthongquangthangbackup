@@ -9,7 +9,7 @@ const NEW_ROUTES = new Set([
   "san-pham", "danh-muc", "thuong-hieu", "tin-tuc", "khuyen-mai", "gioi-thieu",
   "lien-he", "tai-khoan", "dang-nhap", "dang-ky", "quen-mat-khau", "gio-hang",
   "thanh-toan", "dat-hang-thanh-cong", "so-sanh", "tim-kiem", "admin", "api",
-  "uploads", "_next", "static", "favicon.ico", "robots.txt", "sitemap.xml",
+  "uploads", "_next", "static", "favicon.ico", "logoqt.png", "robots.txt", "sitemap.xml",
   "wishlist", "cua-hang", "page", "author",
 ]);
 
