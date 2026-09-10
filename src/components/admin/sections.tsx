@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Icon, Price, Spinner, StatusBadge, type IconName } from "@/components/ui";
 import {
   deleteBrandAction, deleteArticleAction, deleteBannerAction, deleteCategoryAction, deletePageAction,
@@ -70,6 +70,42 @@ function ImageInput({ value, onChange, label = "Ảnh" }: { value: string; onCha
           <img src={value} alt="" className="h-full w-full object-contain p-1" />
         </div>
       )}
+    </div>
+  );
+}
+
+function RichTextEditor({ value, onChange, minHeight = 220 }: { value: string; onChange: (v: string) => void; minHeight?: number }) {
+  const editorRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (editorRef.current && editorRef.current.innerHTML !== value) editorRef.current.innerHTML = value || "";
+  }, [value]);
+
+  function command(name: string, arg?: string) {
+    editorRef.current?.focus();
+    document.execCommand(name, false, arg);
+    if (editorRef.current) onChange(editorRef.current.innerHTML);
+  }
+
+  return (
+    <div className="overflow-hidden rounded-md border border-line bg-white">
+      <div className="flex flex-wrap items-center gap-1 border-b border-line bg-ink-50 p-1.5">
+        <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => command("bold")} className="btn-outline h-8 w-8 px-0 text-sm font-bold" title="In đậm">B</button>
+        <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => command("italic")} className="btn-outline h-8 w-8 px-0 text-sm italic" title="In nghiêng">I</button>
+        <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => command("formatBlock", "<h2>")} className="btn-outline h-8 px-2 text-xs font-bold" title="Tiêu đề lớn">H2</button>
+        <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => command("formatBlock", "<h3>")} className="btn-outline h-8 px-2 text-xs font-bold" title="Tiêu đề nhỏ">H3</button>
+        <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => command("insertUnorderedList")} className="btn-outline h-8 px-2 text-xs" title="Danh sách">Danh sách</button>
+        <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => command("formatBlock", "<blockquote>")} className="btn-outline h-8 px-2 text-xs" title="Trích dẫn">Trích dẫn</button>
+        <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => command("removeFormat")} className="btn-outline h-8 px-2 text-xs" title="Xoá định dạng">Bỏ định dạng</button>
+      </div>
+      <div
+        ref={editorRef}
+        contentEditable
+        suppressContentEditableWarning
+        onInput={(e) => onChange(e.currentTarget.innerHTML)}
+        className="rich-editor p-3 text-sm leading-6 text-ink-800 outline-none"
+        style={{ minHeight }}
+      />
     </div>
   );
 }
@@ -263,8 +299,8 @@ export function ProductForm({
             </Field>
           </div>
           <div className="sm:col-span-2">
-            <Field label="Mô tả chi tiết (HTML)">
-              <textarea value={f.description} onChange={(e) => set("description", e.target.value)} rows={6} className="textarea font-mono text-[13px]" />
+            <Field label="Mô tả chi tiết">
+              <RichTextEditor value={f.description} onChange={(v) => set("description", v)} />
             </Field>
           </div>
         </div>
@@ -754,8 +790,8 @@ export function ArticleForm({ initial }: { initial: ArticleForm & { id?: string 
         <div className="sm:col-span-3"><Field label="Ảnh bìa"><ImageInput value={f.coverImage} onChange={(v) => set("coverImage", v)} /></Field></div>
         <div className="sm:col-span-3"><Field label="Tóm tắt"><textarea value={f.excerpt} onChange={(e) => set("excerpt", e.target.value)} rows={2} className="textarea" /></Field></div>
         <div className="sm:col-span-3">
-          <Field label="Nội dung (HTML — dùng <h2> cho mục lục)">
-            <textarea value={f.content} onChange={(e) => set("content", e.target.value)} rows={14} className="textarea font-mono text-[13px]" />
+          <Field label="Nội dung bài viết">
+            <RichTextEditor value={f.content} onChange={(v) => set("content", v)} minHeight={420} />
           </Field>
         </div>
         <Field label="SEO Title"><input value={f.seoTitle} onChange={(e) => set("seoTitle", e.target.value)} className="input" /></Field>
@@ -868,8 +904,8 @@ export function PageForm({ initial }: { initial: PageForm & { id?: string } }) {
         <Field label="Tiêu đề" required><input value={f.title} onChange={(e) => set("title", e.target.value)} className="input" /></Field>
         <Field label="Slug"><input value={f.slug} onChange={(e) => set("slug", e.target.value)} className="input" /></Field>
         <div className="sm:col-span-2">
-          <Field label="Nội dung (HTML)">
-            <textarea value={f.content} onChange={(e) => set("content", e.target.value)} rows={16} className="textarea font-mono text-[13px]" />
+          <Field label="Nội dung trang">
+            <RichTextEditor value={f.content} onChange={(v) => set("content", v)} minHeight={420} />
           </Field>
         </div>
         <Field label="SEO Title"><input value={f.seoTitle} onChange={(e) => set("seoTitle", e.target.value)} className="input" /></Field>

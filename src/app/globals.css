@@ -179,6 +179,29 @@
   @apply font-semibold text-ink-900;
 }
 
+.rich-editor h2 {
+  @apply mb-3 mt-5 text-xl font-bold text-ink-950;
+}
+.rich-editor h3 {
+  @apply mb-2 mt-4 text-lg font-bold text-ink-900;
+}
+.rich-editor p {
+  @apply my-2;
+}
+.rich-editor ul,
+.rich-editor ol {
+  @apply my-2 pl-6;
+}
+.rich-editor ul {
+  @apply list-disc;
+}
+.rich-editor ol {
+  @apply list-decimal;
+}
+.rich-editor blockquote {
+  @apply my-3 border-l-4 border-brand-500 bg-brand-50 px-3 py-2 text-ink-700;
+}
+
 @keyframes qt-fade-up {
   from {
     opacity: 0;

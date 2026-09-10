@@ -418,22 +418,32 @@ export async function saveProductAction(form: ProductForm): Promise<ActionResult
 
   // images
   await db.delete(productImages).where(eq(productImages.productId, id));
-  form.images
-    .filter((i) => i.url.trim())
-    .forEach((img, idx) => {
-      void db.insert(productImages).values({ productId: id, url: img.url.trim(), sortOrder: idx, isMain: img.isMain || idx === 0 && !form.images.some((x) => x.url.trim() && x.isMain) });
-    });
+  const hasMainImage = form.images.some((x) => x.url.trim() && x.isMain);
+  await Promise.all(
+    form.images
+      .filter((i) => i.url.trim())
+      .map((img, idx) =>
+        db.insert(productImages).values({
+          productId: id,
+          url: img.url.trim(),
+          sortOrder: idx,
+          isMain: img.isMain || (idx === 0 && !hasMainImage),
+        }),
+      ),
+  );
   // extra categories
   await db.delete(productCategories).where(eq(productCategories.productId, id));
   const extraCats = Array.from(new Set(form.categoryIds.filter((c) => c && c !== form.categoryId)));
-  for (const c of extraCats) void db.insert(productCategories).values({ productId: id, categoryId: c });
+  await Promise.all(extraCats.map((c) => db.insert(productCategories).values({ productId: id, categoryId: c })));
   // specs
   await db.delete(productSpecifications).where(eq(productSpecifications.productId, id));
-  form.specs
-    .filter((s) => s.name.trim() && s.value.trim())
-    .forEach((s, idx) => {
-      void db.insert(productSpecifications).values({ productId: id, name: s.name.trim(), value: s.value.trim(), sortOrder: idx });
-    });
+  await Promise.all(
+    form.specs
+      .filter((s) => s.name.trim() && s.value.trim())
+      .map((s, idx) =>
+        db.insert(productSpecifications).values({ productId: id, name: s.name.trim(), value: s.value.trim(), sortOrder: idx }),
+      ),
+  );
 
   revalidateStore();
   revalidatePath("/admin/products");
