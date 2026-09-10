@@ -75,10 +75,6 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
 
   const addToCart = useCallback(
     (item: Omit<CartItem, "qty">, qty = 1, silent = false) => {
-      if (item.priceType !== "fixed" || item.price == null) {
-        toast("Sản phẩm có giá \"Liên hệ\" — vui lòng gọi 0941.74.6161 để được báo giá.", "info");
-        return;
-      }
       setCart((prev) => {
         const found = prev.find((c) => c.productId === item.productId);
         if (found) {

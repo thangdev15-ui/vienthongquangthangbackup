@@ -18,7 +18,7 @@ export function ArticleCard({
   date: Date;
 }) {
   return (
-    <Link href={`/tin-tuc/${slug}`} className="card group flex flex-col overflow-hidden transition-all hover:border-brand-400 hover:shadow-md">
+    <Link href={`/tin-tuc/${slug}`} className="card group flex h-full flex-col overflow-hidden transition-all hover:border-brand-400 hover:shadow-md">
       <div className="relative aspect-[16/9] overflow-hidden bg-ink-950">
         {cover ? (
           <Image src={cover} alt={title} fill sizes="(min-width:1280px) 25vw, (min-width:768px) 33vw, 90vw" className="object-cover transition-transform duration-500 group-hover:scale-105" />

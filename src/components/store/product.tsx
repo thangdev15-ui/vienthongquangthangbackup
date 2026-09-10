@@ -29,9 +29,8 @@ const ZALO_BASE = "https://zalo.me/0941746161?text=";
 export function ProductCard({ p }: { p: ProductRow }) {
   const { addToCart, toggleWishlist, isWishlisted } = useShop();
   const off = discountPercent(p.price, p.salePrice);
-  const canCart = p.priceType === "fixed";
   return (
-    <article className="card group relative flex flex-col overflow-hidden transition-all hover:border-brand-300 hover:shadow-md">
+    <article className="card group relative flex h-full flex-col overflow-hidden transition-all hover:border-brand-300 hover:shadow-md">
       <div className="relative aspect-square overflow-hidden bg-white">
         <Link href={`/san-pham/${p.slug}`} aria-label={p.name}>
           {p.image ? (
@@ -64,7 +63,7 @@ export function ProductCard({ p }: { p: ProductRow }) {
           </button>
         </div>
       </div>
-      <div className="flex flex-1 flex-col gap-1 p-3">
+      <div className="flex min-h-[168px] flex-1 flex-col gap-1 p-3">
         {p.brandName && (
           <span className="text-[11px] font-bold uppercase tracking-wide text-brand-700">{p.brandName}</span>
         )}
@@ -81,17 +80,10 @@ export function ProductCard({ p }: { p: ProductRow }) {
         <div className="mt-auto pt-1.5">
           <Price price={p.price} salePrice={p.salePrice} priceType={p.priceType} size="sm" />
         </div>
-        {canCart ? (
-          <button onClick={() => addToCart(toCart(p), 1)} className="btn-outline mt-2 h-9 w-full text-[13px]">
-            <Icon name="cart" className="h-4 w-4" />
-            Thêm vào giỏ
-          </button>
-        ) : (
-          <a href={ZALO_BASE + encodeURIComponent(`Xin chào, em muốn nhận báo giá cho: ${p.name}`)} target="_blank" rel="noopener" className="btn-zalo mt-2 h-9 w-full text-[13px]">
-            <Icon name="message" className="h-4 w-4" />
-            Nhận báo giá
-          </a>
-        )}
+        <button onClick={() => addToCart(toCart(p), 1)} className="btn-outline mt-2 h-9 w-full text-[13px]">
+          <Icon name="cart" className="h-4 w-4" />
+          Thêm vào giỏ
+        </button>
       </div>
     </article>
   );
@@ -157,9 +149,9 @@ export function ProductGrid({ products, columns = 4 }: { products: ProductRow[];
         : "grid-cols-2 sm:grid-cols-3 lg:grid-cols-4";
   return (
     <>
-      <div className={`grid gap-3 sm:gap-4 ${cols}`}>
+      <div className={`grid items-stretch gap-3 sm:gap-4 ${cols}`}>
         {products.map((p) => (
-          <div key={p.id} className="relative">
+          <div key={p.id} className="relative h-full">
             <ProductCard p={p} />
             <button
               onClick={() => setQuick(p)}

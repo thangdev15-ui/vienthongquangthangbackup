@@ -164,19 +164,18 @@ export async function placeOrderAction(input: PlaceOrderInput): Promise<ActionRe
     for (const item of input.items) {
       const p = byId.get(item.productId);
       if (!p || p.status !== "published") return { ok: false, error: "Một sản phẩm trong giỏ không còn khả dụng." };
-      if (p.priceType !== "fixed" || p.price == null) {
-        return { ok: false, error: `${p.name} có giá "Liên hệ" — vui lòng gọi 0941.74.6161 để được báo giá.` };
-      }
-      const unit = p.salePrice ?? p.price;
+      const unit = p.priceType === "fixed" ? (p.salePrice ?? p.price ?? 0) : 0;
       let qty = Math.min(999, Math.max(1, Math.floor(item.quantity) || 1));
-      if (trackStock && p.stock > 0 && qty > p.stock) qty = p.stock;
-      if (trackStock && p.stock <= 0) return { ok: false, error: `${p.name} hiện tạm hết hàng.` };
+      if (trackStock && p.priceType === "fixed" && p.stock > 0 && qty > p.stock) qty = p.stock;
+      if (trackStock && p.priceType === "fixed" && p.stock <= 0) return { ok: false, error: `${p.name} hiện tạm hết hàng.` };
       subtotal += unit * qty;
       lineItems.push({ p, qty, unit });
     }
 
+    const hasContactItem = lineItems.some((item) => item.p.priceType !== "fixed");
+    const appliedShippingFee = hasContactItem ? 0 : shippingFee;
     const discount = 0; // Coupon: kiến trúc hỗ trợ, sẽ bật ở phiên bản tiếp theo
-    const total = Math.max(0, subtotal + shippingFee - discount);
+    const total = Math.max(0, subtotal + appliedShippingFee - discount);
     const orderCode = await nextOrderCode();
 
     const [order] = await db.insert(orders).values({
@@ -193,7 +192,7 @@ export async function placeOrderAction(input: PlaceOrderInput): Promise<ActionRe
       paymentMethod: input.paymentMethod,
       status: "pending",
       subtotal,
-      shippingFee,
+      shippingFee: appliedShippingFee,
       discount,
       total,
     }).returning();

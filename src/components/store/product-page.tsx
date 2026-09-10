@@ -54,13 +54,11 @@ export function Gallery({ images, name }: { images: { url: string }[]; name: str
 
 /* ----------------------------------- BuyBox ----------------------------------- */
 
-const ZALO_BASE = "https://zalo.me/0941746161?text=";
-
-export function BuyBox({ p, phone, zalo }: { p: ProductRow; phone: string; zalo: string }) {
+export function BuyBox({ p, phone }: { p: ProductRow; phone: string }) {
   const { addToCart, toggleWishlist, isWishlisted } = useShop();
   const router = useRouter();
   const [qty, setQty] = useState(1);
-  const canCart = p.priceType === "fixed";
+  const canCart = true;
   const off = discountPercent(p.price, p.salePrice);
 
   function buyNow() {
@@ -130,18 +128,7 @@ export function BuyBox({ p, phone, zalo }: { p: ProductRow; phone: string; zalo:
             Mua ngay
           </button>
         </div>
-      ) : (
-        <div className="flex flex-wrap gap-3">
-          <a href={ZALO_BASE + encodeURIComponent(`Xin chào, em muốn nhận báo giá cho: ${p.name}`)} target="_blank" rel="noopener" className="btn-zalo h-11 flex-1 min-w-[140px]">
-            <Icon name="message" className="h-4 w-4" />
-            Nhận báo giá qua Zalo
-          </a>
-          <a href={`tel:${phone.replace(/\D/g, "")}`} className="btn-primary h-11 flex-1 min-w-[120px]">
-            <Icon name="phone" className="h-4 w-4" />
-            Gọi tư vấn
-          </a>
-        </div>
-      )}
+      ) : null}
 
       <div className="flex gap-2">
         <button onClick={() => toggleWishlist(p.id, p.name)} className={`btn-ghost h-9 text-[13px] ${isWishlisted(p.id) ? "text-sale-600" : ""}`}>

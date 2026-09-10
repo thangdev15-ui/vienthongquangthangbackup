@@ -63,7 +63,7 @@ export function CartPageView({ shippingFee, zalo }: { shippingFee: number; zalo:
                       </div>
                     </div>
                   </td>
-                  <td className="whitespace-nowrap">{formatVND(c.salePrice ?? c.price)}</td>
+                  <td className="whitespace-nowrap">{c.priceType === "fixed" ? formatVND(c.salePrice ?? c.price) : "Liên hệ"}</td>
                   <td>
                     <div className="flex items-center rounded-md border border-line">
                       <button onClick={() => updateQty(c.productId, c.qty - 1)} className="flex h-8 w-8 items-center justify-center text-ink-600 hover:text-brand-700" aria-label="Giảm">
@@ -75,7 +75,7 @@ export function CartPageView({ shippingFee, zalo }: { shippingFee: number; zalo:
                       </button>
                     </div>
                   </td>
-                  <td className="whitespace-nowrap font-bold">{formatVND(((c.salePrice ?? c.price) ?? 0) * c.qty)}</td>
+                  <td className="whitespace-nowrap font-bold">{c.priceType === "fixed" ? formatVND(((c.salePrice ?? c.price) ?? 0) * c.qty) : "Liên hệ"}</td>
                   <td>
                     <button onClick={() => removeFromCart(c.productId)} className="text-ink-400 hover:text-sale-600" aria-label={`Xoá ${c.name}`}>
                       <Icon name="trash" className="h-4 w-4" />
@@ -102,7 +102,7 @@ export function CartPageView({ shippingFee, zalo }: { shippingFee: number; zalo:
         <dl className="space-y-2 text-sm">
           <div className="flex justify-between">
             <dt className="text-ink-500">Tạm tính ({cartCount} sp)</dt>
-            <dd className="font-semibold">{formatVND(cartSubtotal)}</dd>
+            <dd className="font-semibold">{cart.some((item) => item.priceType !== "fixed") ? "Liên hệ" : formatVND(cartSubtotal)}</dd>
           </div>
           <div className="flex justify-between">
             <dt className="text-ink-500">Vận chuyển</dt>
@@ -110,7 +110,7 @@ export function CartPageView({ shippingFee, zalo }: { shippingFee: number; zalo:
           </div>
           <div className="flex justify-between border-t border-line pt-3 text-base">
             <dt className="font-bold">Tổng cộng</dt>
-            <dd className="font-extrabold text-brand-700">{formatVND(total)}</dd>
+            <dd className="font-extrabold text-brand-700">{cart.some((item) => item.priceType !== "fixed") ? "Liên hệ" : formatVND(total)}</dd>
           </div>
         </dl>
         <button onClick={() => router.push("/thanh-toan")} className="btn-primary mt-4 h-12 w-full text-base">
@@ -121,7 +121,7 @@ export function CartPageView({ shippingFee, zalo }: { shippingFee: number; zalo:
           Thanh toán qua Zalo
         </a>
         <p className="mt-4 text-[12px] leading-5 text-ink-400">
-          Sản phẩm giá &quot;Liên hệ&quot; không tính vào giỏ hàng — vui lòng gọi 0941.74.6161 để được báo giá kèm đơn.
+          Sản phẩm chưa niêm yết giá vẫn có thể thêm vào giỏ. Nhân viên sẽ gọi xác nhận và báo giá trước khi giao hàng.
         </p>
       </aside>
     </div>

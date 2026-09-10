@@ -185,7 +185,7 @@ export default async function HomePage() {
           {saleItems.items.length > 0 && (
             <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
               {saleItems.items.map((p) => (
-                <Link key={p.id} href={`/san-pham/${p.slug}`} className="card flex items-center gap-3 p-3 transition-all hover:border-brand-400 hover:shadow-md">
+                <Link key={p.id} href={`/san-pham/${p.slug}`} className="card flex h-full items-center gap-3 p-3 transition-all hover:border-brand-400 hover:shadow-md">
                   <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-md bg-ink-50">
                     {p.image && <Image src={p.image} alt="" fill sizes="56px" className="object-cover" />}
                   </div>

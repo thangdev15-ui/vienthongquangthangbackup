@@ -206,14 +206,8 @@ export function Header({ settings, onOpenMobile }: { settings: Settings; onOpenM
         >
           <Icon name="menu" className="h-6 w-6" />
         </button>
-        <Link href="/" className="flex shrink-0 items-center gap-2.5" aria-label="Trang chủ Viễn Thông Quang Thắng">
-          <Image src="/logoqt.png" alt="Viễn Thông Quang Thắng" width={180} height={64} priority className="h-10 w-auto object-contain" />
-          <span className="leading-tight">
-            <span className="block text-[15px] font-extrabold tracking-tight text-ink-950 sm:text-base">
-              Viễn Thông <span className="text-brand-700">Quang Thắng</span>
-            </span>
-            <span className="hidden text-[11px] font-medium text-ink-500 sm:block">Thiết bị mạng • Cáp • Camera</span>
-          </span>
+        <Link href="/" className="flex h-12 w-[125px] shrink-0 items-center sm:w-[180px]" aria-label="Trang chủ Viễn Thông Quang Thắng">
+          <Image src="/logoqt.png" alt="Viễn Thông Quang Thắng" width={300} height={106} priority unoptimized className="h-auto w-full object-contain" />
         </Link>
         <div className="hidden flex-1 lg:block lg:max-w-2xl">
           <SearchBar />

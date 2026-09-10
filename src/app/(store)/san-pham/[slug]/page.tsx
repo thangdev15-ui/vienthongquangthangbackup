@@ -81,7 +81,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
       <div className="mt-5 grid gap-8 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]">
         <Gallery images={data.images.map((i) => ({ url: i.url }))} name={p.name} />
-        <BuyBox p={row} phone={settings.phone} zalo={settings.zalo} />
+        <BuyBox p={row} phone={settings.phone} />
       </div>
 
       <ProductDetailTabs product={p} specs={data.specs} reviews={reviews} related={related} phone={settings.phone} zalo={settings.zalo} />

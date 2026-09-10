@@ -30,6 +30,7 @@ export function CheckoutForm({
   const router = useRouter();
   const [state, setState] = useState<"idle" | "loading" | "err">("idle");
   const [error, setError] = useState("");
+  const hasContactItems = items.some((item) => item.priceType !== "fixed");
   const [form, setForm] = useState({
     customerName: defaultName,
     phone: defaultPhone,
@@ -39,7 +40,7 @@ export function CheckoutForm({
     district: "",
     ward: "",
     note: "",
-    paymentMethod: "cod",
+    paymentMethod: items.some((item) => item.priceType !== "fixed") ? "contact" : "cod",
   });
   const subtotal = items.reduce((s, c) => s + ((c.salePrice ?? c.price) ?? 0) * c.qty, 0);
   const total = Math.max(0, subtotal + shippingFee);
@@ -126,7 +127,7 @@ export function CheckoutForm({
             Hình thức thanh toán
           </h2>
           <div className="space-y-2">
-            {Object.entries(PAYMENT_METHODS).map(([value, label]) => (
+            {Object.entries(PAYMENT_METHODS).filter(([value]) => !hasContactItems || value === "contact").map(([value, label]) => (
               <label
                 key={value}
                 className={`flex cursor-pointer items-start gap-3 rounded-md border p-3.5 transition-colors ${
@@ -171,7 +172,7 @@ export function CheckoutForm({
 
         <button type="submit" disabled={state === "loading"} className="btn-primary h-12 w-full text-base">
           {state === "loading" ? <Spinner /> : <Icon name="check-circle" className="h-5 w-5" />}
-          Đặt hàng ({formatVND(total)})
+          {hasContactItems ? "Gửi yêu cầu đặt hàng" : `Đặt hàng (${formatVND(total)})`}
         </button>
       </form>
 
@@ -187,14 +188,14 @@ export function CheckoutForm({
                 <p className="truncate text-[13px] font-medium text-ink-900">{c.name}</p>
                 <p className="text-[12px] text-ink-400">x{c.qty}</p>
               </div>
-              <span className="text-[13px] font-semibold text-ink-900">{formatVND(((c.salePrice ?? c.price) ?? 0) * c.qty)}</span>
+              <span className="text-[13px] font-semibold text-ink-900">{c.priceType === "fixed" ? formatVND(((c.salePrice ?? c.price) ?? 0) * c.qty) : "Liên hệ"}</span>
             </li>
           ))}
         </ul>
         <dl className="mt-4 space-y-2 border-t border-line pt-4 text-sm">
           <div className="flex justify-between">
             <dt className="text-ink-500">Tạm tính</dt>
-            <dd className="font-semibold text-ink-900">{formatVND(subtotal)}</dd>
+            <dd className="font-semibold text-ink-900">{hasContactItems ? "Liên hệ" : formatVND(subtotal)}</dd>
           </div>
           <div className="flex justify-between">
             <dt className="text-ink-500">Phí vận chuyển</dt>
@@ -202,7 +203,7 @@ export function CheckoutForm({
           </div>
           <div className="flex justify-between border-t border-line pt-3 text-base">
             <dt className="font-bold text-ink-950">Tổng cộng</dt>
-            <dd className="font-extrabold text-brand-700">{formatVND(total)}</dd>
+            <dd className="font-extrabold text-brand-700">{hasContactItems ? "Liên hệ" : formatVND(total)}</dd>
           </div>
         </dl>
         <p className="mt-4 flex items-start gap-2 text-[12px] leading-5 text-ink-500">
