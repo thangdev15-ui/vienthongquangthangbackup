@@ -470,5 +470,13 @@ export async function getContactMessages() {
 }
 
 export function stripHtml(html: string): string {
-  return html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+  return html
+    .replace(/\[(?:\/?caption|gallery|\/gallery)[^\]]*\]/gi, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&amp;/gi, "&")
+    .replace(/&quot;/gi, '"')
+    .replace(/&#039;|&apos;/gi, "'")
+    .replace(/\s+/g, " ")
+    .trim();
 }

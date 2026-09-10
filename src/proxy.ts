@@ -87,6 +87,10 @@ export default function proxy(request: NextRequest) {
   const seg = pathname.split("/").filter(Boolean);
   if (seg.length === 0) return NextResponse.next();
 
+  // Static assets must bypass the legacy slug redirect. This also protects
+  // uploaded images and files whose names are not known ahead of time.
+  if (/\.[^/]+$/.test(pathname)) return NextResponse.next();
+
   if (pathname === "/cua-hang" || pathname === "/cua-hang/") return redirect(request, "/san-pham");
   if (pathname === "/wishlist" || pathname === "/wishlist/") return redirect(request, "/tai-khoan?tab=wishlist");
   if (pathname === "/tai-khoan/lost-password" || pathname === "/tai-khoan/lost-password/") {

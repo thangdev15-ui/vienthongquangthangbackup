@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getBrandBySlug, queryProducts } from "@/lib/data";
+import { getBrandBySlug, queryProducts, stripHtml } from "@/lib/data";
 import { Breadcrumbs, EmptyState, Pagination } from "@/components/ui";
 import { ProductGrid, Toolbar } from "@/components/store/product";
 
@@ -42,7 +42,7 @@ export default async function BrandPage({
     <div className="wrap py-6">
       <Breadcrumbs items={[{ label: "Thương hiệu", href: "/thuong-hieu" }, { label: b.name }]} />
       <div className="mt-3 mb-5 flex items-center gap-4">
-        <span className="flex h-14 w-14 items-center justify-center overflow-hidden rounded-md border border-line bg-ink-50">
+        <span className="relative flex h-14 w-14 items-center justify-center overflow-hidden rounded-md border border-line bg-ink-50">
           {b.logo ? (
             <Image src={b.logo} alt={b.name} fill sizes="56px" className="object-contain p-1.5" />
           ) : (
@@ -51,7 +51,7 @@ export default async function BrandPage({
         </span>
         <div>
           <h1 className="text-2xl font-extrabold text-ink-950">{b.name}</h1>
-          {b.description && <p className="mt-0.5 max-w-2xl text-sm text-ink-500">{b.description}</p>}
+          {b.description && <p className="mt-0.5 max-w-2xl text-sm text-ink-500">{stripHtml(b.description).slice(0, 360)}</p>}
           {b.website && (
             <a href={b.website} target="_blank" rel="noopener" className="mt-1 inline-block text-[13px] font-semibold text-brand-700 hover:underline">
               Website chính thức →

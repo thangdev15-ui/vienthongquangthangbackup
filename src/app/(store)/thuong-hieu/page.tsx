@@ -32,7 +32,7 @@ export default async function BrandsPage() {
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         {brands.map((b) => (
           <Link key={b.id} href={`/thuong-hieu/${b.slug}`} className="card group flex flex-col items-center gap-3 p-6 text-center transition-all hover:border-brand-400 hover:shadow-md">
-            <span className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-md bg-ink-50">
+            <span className="relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-md bg-ink-50">
               {b.logo ? (
                 <Image src={b.logo} alt={b.name} fill sizes="64px" className="object-contain p-2" />
               ) : (
