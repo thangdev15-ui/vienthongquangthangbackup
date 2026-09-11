@@ -206,7 +206,7 @@ export function Header({ settings, onOpenMobile }: { settings: Settings; onOpenM
         >
           <Icon name="menu" className="h-6 w-6" />
         </button>
-        <Link href="/" className="flex h-16 w-[155px] shrink-0 items-center sm:w-[220px]" aria-label="Trang chủ Viễn Thông Quang Thắng">
+        <Link href="/" className="flex h-14 w-[145px] shrink-0 items-center px-2 sm:w-[190px]" aria-label="Trang chủ Viễn Thông Quang Thắng">
           <img src="/logoqt.png?v=2" alt="Viễn Thông Quang Thắng" width={300} height={106} className="h-auto w-full object-contain" />
         </Link>
         <div className="hidden flex-1 lg:block lg:max-w-2xl">
@@ -618,9 +618,8 @@ export function Footer({ categories, settings }: { categories: NavCategory[]; se
       <div className="wrap grid gap-10 py-12 md:grid-cols-2 lg:grid-cols-4">
         <div>
           <div className="mb-4 flex items-center gap-2.5">
-            <span className="flex h-10 w-10 items-center justify-center rounded-md bg-brand-600 text-lg font-extrabold text-white">QT</span>
-            <span className="text-base font-extrabold text-white">
-              Viễn Thông <span className="text-brand-300">Quang Thắng</span>
+            <span className="flex h-12 w-[150px] items-center justify-center rounded-md bg-white px-2">
+              <img src="/logoqt.png?v=3" alt="Quang Thang Telecom" className="h-auto w-full object-contain" />
             </span>
           </div>
           <p className="text-[13px] leading-6 text-ink-300">

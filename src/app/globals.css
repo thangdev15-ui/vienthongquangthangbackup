@@ -1,40 +1,40 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Be Vietnam Pro", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-sans: "Segoe UI", ui-sans-serif, system-ui, -apple-system, Roboto, Arial, sans-serif;
 
-  --color-brand-50: #eef4ff;
-  --color-brand-100: #d9e5fd;
-  --color-brand-200: #bccffe;
-  --color-brand-300: #8eaeff;
-  --color-brand-400: #5985fb;
-  --color-brand-500: #3260f2;
-  --color-brand-600: #1f43e0;
-  --color-brand-700: #1a34bd;
-  --color-brand-800: #1b2d98;
-  --color-brand-900: #1b2b79;
-  --color-brand-950: #131c4b;
+  --color-brand-50: #eaf4ff;
+  --color-brand-100: #d7eaff;
+  --color-brand-200: #b9d9f7;
+  --color-brand-300: #8fc1ec;
+  --color-brand-400: #4d9add;
+  --color-brand-500: #1e73be;
+  --color-brand-600: #1767ad;
+  --color-brand-700: #1e73be;
+  --color-brand-800: #175b99;
+  --color-brand-900: #164d80;
+  --color-brand-950: #123f69;
 
-  --color-ink-950: #0a1120;
-  --color-ink-900: #101a2e;
-  --color-ink-800: #1c2a45;
-  --color-ink-700: #2c3d5f;
-  --color-ink-600: #40527a;
-  --color-ink-500: #5a6b8f;
-  --color-ink-400: #7d8cab;
-  --color-ink-300: #a9b5cc;
-  --color-ink-200: #cdd6e6;
-  --color-ink-100: #e7ecf4;
-  --color-ink-50: #f2f5fa;
+  --color-ink-950: #1f2937;
+  --color-ink-900: #263445;
+  --color-ink-800: #344154;
+  --color-ink-700: #4b596b;
+  --color-ink-600: #5f6c7d;
+  --color-ink-500: #6b7280;
+  --color-ink-400: #8993a1;
+  --color-ink-300: #aeb7c2;
+  --color-ink-200: #d1d8e0;
+  --color-ink-100: #e7edf3;
+  --color-ink-50: #f1f5f9;
 
-  --color-paper: #f6f8fb;
-  --color-line: #e3e8f0;
+  --color-paper: #eaf4ff;
+  --color-line: #dce6f0;
 
-  --color-accent-50: #fff4ec;
-  --color-accent-100: #ffe6d4;
-  --color-accent-500: #f26b1d;
-  --color-accent-600: #e0530c;
-  --color-accent-700: #bc420a;
+  --color-accent-50: #fff3e8;
+  --color-accent-100: #ffe2c8;
+  --color-accent-500: #f58220;
+  --color-accent-600: #ed7110;
+  --color-accent-700: #d26008;
 
   --color-sale-50: #fef2f2;
   --color-sale-500: #ef4444;
@@ -100,7 +100,11 @@
     @apply inline-flex items-center gap-1 rounded-full border border-line bg-white px-3 py-1 text-[13px] font-medium text-ink-700 transition-colors hover:border-brand-600 hover:text-brand-700;
   }
   .side-rail {
-    @apply absolute top-0 bottom-0 z-20 hidden w-[122px] flex-col items-center gap-4 rounded-lg border border-brand-200 bg-brand-50 px-3 py-5 text-center text-brand-900 shadow-sm transition-transform hover:-translate-y-1 2xl:flex;
+    @apply absolute top-0 bottom-0 z-20 hidden w-[122px] flex-col items-center gap-4 overflow-hidden rounded-lg border border-brand-200 px-3 py-5 text-center text-brand-900 shadow-sm transition-transform hover:-translate-y-1 2xl:flex;
+    background-color: #eaf4ff;
+    background-image: url("/backgroundne.png");
+    background-position: center top;
+    background-size: cover;
     min-height: 590px;
   }
   .side-rail-left {
