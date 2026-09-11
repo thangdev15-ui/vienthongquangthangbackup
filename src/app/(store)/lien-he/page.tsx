@@ -50,6 +50,15 @@ export default async function LienHePage() {
               Gọi ngay
             </a>
           </div>
+          <a
+            href="https://www.google.com/maps/dir/?api=1&destination=435%2F26%20Th%E1%BB%91ng%20Nh%E1%BA%A5t%2C%20Ph%C6%B0%E1%BB%9Dng%20Th%C3%B4ng%20T%C3%A2y%20H%E1%BB%99i%2C%20TP.%20H%E1%BB%93%20Ch%C3%AD%20Minh"
+            target="_blank"
+            rel="noopener"
+            className="btn-outline h-10 w-full"
+          >
+            <Icon name="external" className="h-4 w-4" />
+            Xem chỉ đường đến cửa hàng
+          </a>
         </div>
 
         <div className="space-y-6">

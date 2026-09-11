@@ -206,6 +206,11 @@
 .rich-content strong {
   @apply font-semibold text-ink-900;
 }
+.rich-content .wp-block-ultimate-post-news-ticker,
+.rich-content .ultp-block-wrapper,
+.rich-content > style {
+  display: none !important;
+}
 
 .rich-editor h2 {
   @apply mb-3 mt-5 text-xl font-bold text-ink-950;
