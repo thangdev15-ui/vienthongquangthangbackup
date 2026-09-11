@@ -541,6 +541,18 @@ export function FloatingContacts({ settings }: { settings: Settings }) {
 }
 
 export function SideRails() {
+  const [footerVisible, setFooterVisible] = useState(false);
+
+  useEffect(() => {
+    const footer = document.querySelector("footer");
+    if (!footer) return;
+    const observer = new IntersectionObserver(([entry]) => setFooterVisible(entry.isIntersecting), { threshold: 0 });
+    observer.observe(footer);
+    return () => observer.disconnect();
+  }, []);
+
+  if (footerVisible) return null;
+
   return (
     <div className="side-rails" aria-label="Quảng bá thương hiệu">
       <div className="side-rail-slot">

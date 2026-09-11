@@ -100,13 +100,13 @@
     @apply inline-flex items-center gap-1 rounded-full border border-line bg-white px-3 py-1 text-[13px] font-medium text-ink-700 transition-colors hover:border-brand-600 hover:text-brand-700;
   }
   .side-rails {
-    @apply pointer-events-none absolute inset-0 z-20 hidden;
+    @apply pointer-events-none fixed inset-0 z-20 hidden;
   }
   .side-rail-slot {
     @apply h-full min-w-0;
   }
   .side-rail {
-    @apply pointer-events-auto sticky top-5 z-20 flex h-[calc(100vh-40px)] max-h-full w-[220px] flex-col items-center gap-5 overflow-hidden rounded-t-lg border border-brand-200 px-5 py-8 text-center text-brand-900 shadow-sm transition-transform hover:-translate-y-1;
+    @apply pointer-events-auto fixed bottom-5 top-[128px] z-20 flex w-[220px] flex-col items-center gap-5 overflow-hidden rounded-t-lg border border-brand-200 px-5 py-8 text-center text-brand-900 shadow-sm transition-transform hover:-translate-y-1;
     background-color: #eaf4ff;
     background-image: url("/backgroundne.png");
     background-position: center top;
