@@ -128,12 +128,12 @@ export function SearchBar({ autoFocus = false }: { autoFocus?: boolean }) {
           onFocus={() => setOpen(true)}
           placeholder="Tìm sản phẩm, mã SKU, thương hiệu… ví dụ: cáp Cat6, switch PoE, camera Hikvision"
           aria-label="Tìm kiếm sản phẩm"
-          className="input h-11 rounded-l-md rounded-r-none pr-11"
+          className="input h-12 rounded-l-md rounded-r-none pr-12"
         />
         <button
           type="submit"
           aria-label="Tìm kiếm"
-          className="absolute inset-y-0 right-0 flex w-11 items-center justify-center rounded-r-md bg-brand-700 text-white transition-colors hover:bg-brand-800"
+          className="absolute inset-y-0 right-0 flex w-12 items-center justify-center rounded-r-md bg-brand-700 text-white transition-colors hover:bg-brand-800"
         >
           <Icon name="search" className="h-5 w-5" />
         </button>
@@ -198,7 +198,7 @@ export function Header({ settings, onOpenMobile }: { settings: Settings; onOpenM
   const { cartCount, wishlist, setCartOpen } = useShop();
   return (
     <div className="sticky top-0 z-40 border-b border-line bg-white/95 backdrop-blur">
-      <div className="wrap flex h-16 items-center gap-3 sm:gap-5">
+      <div className="wrap flex h-20 items-center gap-3 sm:gap-5">
         <button
           onClick={onOpenMobile}
           className="flex h-10 w-10 items-center justify-center rounded-md text-ink-700 hover:bg-ink-50 lg:hidden"
@@ -206,7 +206,7 @@ export function Header({ settings, onOpenMobile }: { settings: Settings; onOpenM
         >
           <Icon name="menu" className="h-6 w-6" />
         </button>
-        <Link href="/" className="flex h-12 w-[125px] shrink-0 items-center sm:w-[180px]" aria-label="Trang chủ Viễn Thông Quang Thắng">
+        <Link href="/" className="flex h-16 w-[155px] shrink-0 items-center sm:w-[220px]" aria-label="Trang chủ Viễn Thông Quang Thắng">
           <img src="/logoqt.png?v=2" alt="Viễn Thông Quang Thắng" width={300} height={106} className="h-auto w-full object-contain" />
         </Link>
         <div className="hidden flex-1 lg:block lg:max-w-2xl">
@@ -255,7 +255,7 @@ export function MegaNav({ categories }: { categories: NavCategory[] }) {
   const pathname = usePathname();
   return (
     <nav aria-label="Điều hướng chính" className="relative z-30 border-b border-line bg-white">
-      <div className="wrap hidden items-stretch gap-1 overflow-hidden py-1 lg:flex">
+      <div className="wrap hidden items-stretch gap-1 overflow-hidden py-1.5 lg:flex">
         <div className="flex min-w-0 flex-1 items-stretch gap-1">
           {categories.slice(0, 10).map((cat) => {
             const active = pathname === `/danh-muc/${cat.slug}` || pathname.startsWith(`/danh-muc/${cat.slug}/`);
@@ -263,7 +263,7 @@ export function MegaNav({ categories }: { categories: NavCategory[] }) {
               <Link
                 key={cat.id}
                 href={`/danh-muc/${cat.slug}`}
-                className={`flex min-h-11 min-w-0 flex-1 items-center justify-center px-2 text-center text-[12px] font-semibold leading-tight transition-colors ${
+                className={`flex min-h-12 min-w-0 flex-1 items-center justify-center px-2.5 text-center text-[12px] font-semibold leading-tight transition-colors ${
                   active ? "bg-brand-700 text-white" : "bg-brand-500 text-white hover:bg-brand-600"
                 }`}
               >
@@ -272,7 +272,7 @@ export function MegaNav({ categories }: { categories: NavCategory[] }) {
             );
           })}
         </div>
-        <Link href="/khuyen-mai" className="flex min-h-11 w-28 shrink-0 items-center justify-center gap-1 bg-sale-600 px-2 text-center text-[12px] font-bold text-white hover:bg-sale-700">
+        <Link href="/khuyen-mai" className="flex min-h-12 w-28 shrink-0 items-center justify-center gap-1 bg-sale-600 px-2 text-center text-[12px] font-bold text-white hover:bg-sale-700">
           <Icon name="zap" className="h-4 w-4" />
           Khuyến mãi
         </Link>
@@ -510,6 +510,25 @@ export function FloatingContacts({ settings }: { settings: Settings }) {
           <Icon name="facebook" className="h-6 w-6" />
         </a>
     </div>
+  );
+}
+
+export function SideRails() {
+  return (
+    <>
+      <Link href="/thuong-hieu" className="side-rail side-rail-left" aria-label="Xem thương hiệu phân phối">
+        <img src="/logoqt.png" alt="" className="w-full object-contain" />
+        <span className="side-rail-kicker">Nhà phân phối</span>
+        <strong>THIẾT BỊ<br />CHÍNH HÃNG</strong>
+        <span className="side-rail-button">Xem thương hiệu</span>
+      </Link>
+      <Link href="/thuong-hieu" className="side-rail side-rail-right" aria-label="Xem thương hiệu phân phối">
+        <img src="/logoqt.png" alt="" className="w-full object-contain" />
+        <span className="side-rail-kicker">Nhà phân phối</span>
+        <strong>THIẾT BỊ<br />CHÍNH HÃNG</strong>
+        <span className="side-rail-button">Xem thương hiệu</span>
+      </Link>
+    </>
   );
 }
 

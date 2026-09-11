@@ -3,7 +3,7 @@ import Link from "next/link";
 import { getActiveBanners, getActiveBrands, getActiveCategories, getActivePromotions, getArticles, getSettings, queryProducts } from "@/lib/data";
 import { ProductGrid } from "@/components/store/product";
 import { Icon, SectionHeader, type IconName } from "@/components/ui";
-import { NewsletterForm } from "@/components/store/chrome";
+import { NewsletterForm, SideRails } from "@/components/store/chrome";
 import { formatVND } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
@@ -151,6 +151,8 @@ export default async function HomePage() {
         </div>
       </section>
 
+      <div className="home-rail-zone">
+        <SideRails />
       {/* ============ FEATURED ============ */}
       {featured.items.length > 0 && (
         <section className="wrap py-6">
@@ -207,11 +209,11 @@ export default async function HomePage() {
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
             {popularCats.map((c) => (
               <Link key={c.id} href={`/danh-muc/${c.slug}`} className="card group flex min-h-[112px] items-center gap-3 p-3 transition-all hover:border-brand-400 hover:shadow-md">
-                <div className="relative flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-md bg-ink-950">
+                <div className="relative flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-md bg-brand-50">
                   {c.image ? (
                     <Image src={c.image} alt={c.name} fill sizes="64px" className="object-cover opacity-90 transition-transform duration-500 group-hover:scale-105" />
                   ) : (
-                    <Icon name={CAT_ICONS[c.slug] ?? "box"} className="h-8 w-8 text-brand-400" />
+                    <Icon name={CAT_ICONS[c.slug] ?? "box"} className="h-8 w-8 text-brand-600" />
                   )}
                 </div>
                 <div className="min-w-0 flex-1">
@@ -230,9 +232,9 @@ export default async function HomePage() {
       {brands.length > 0 && (
         <section className="wrap py-10">
           <SectionHeader title="Thương hiệu đại lý & phân phối" subtitle="Các hãng thiết bị đang có trong kho sản phẩm" href="/thuong-hieu" />
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-5">
+          <div className="flex snap-x gap-3 overflow-x-auto pb-2 no-scrollbar">
             {brands.slice(0, 12).map((b) => (
-              <Link key={b.id} href={`/thuong-hieu/${b.slug}`} className="card group flex h-20 items-center gap-3 p-3 transition-all hover:border-brand-400 hover:shadow-md">
+              <Link key={b.id} href={`/thuong-hieu/${b.slug}`} className="card group flex h-20 w-[220px] shrink-0 snap-start items-center gap-3 p-3 transition-all hover:border-brand-400 hover:shadow-md">
                 <span className="relative flex h-12 w-20 shrink-0 items-center justify-center overflow-hidden rounded-md bg-white ring-1 ring-line">
                   {b.logo ? (
                     <Image src={b.logo} alt={b.name} fill sizes="80px" className="object-contain p-2" />
@@ -332,6 +334,7 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+      </div>
     </div>
   );
 }
