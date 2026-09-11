@@ -100,26 +100,29 @@
     @apply inline-flex items-center gap-1 rounded-full border border-line bg-white px-3 py-1 text-[13px] font-medium text-ink-700 transition-colors hover:border-brand-600 hover:text-brand-700;
   }
   .side-rails {
-    @apply pointer-events-none absolute inset-0 z-20 mx-auto hidden 2xl:grid;
-    width: min(1590px, 100%);
-    grid-template-columns: 106px minmax(0, 1fr) 106px;
-    column-gap: 22px;
+    @apply pointer-events-none fixed inset-0 z-20 hidden 2xl:block;
   }
   .side-rail-slot {
     min-width: 0;
   }
   .side-rail {
-    @apply pointer-events-auto sticky top-36 z-20 flex h-[420px] w-[106px] flex-col items-center gap-3 overflow-hidden rounded-lg border border-brand-200 px-2.5 py-4 text-center text-brand-900 shadow-sm transition-transform hover:-translate-y-1;
+    @apply pointer-events-auto fixed bottom-0 top-[215px] z-20 flex w-[150px] flex-col items-center gap-5 overflow-hidden rounded-t-lg border border-brand-200 px-3 py-6 text-center text-brand-900 shadow-sm transition-transform hover:-translate-y-1;
     background-color: #eaf4ff;
     background-image: url("/backgroundne.png");
     background-position: center top;
     background-size: cover;
   }
+  .side-rail-left {
+    left: max(12px, calc(50% - 900px));
+  }
+  .side-rail-right {
+    right: max(12px, calc(50% - 900px));
+  }
   .side-rail-kicker {
     @apply text-[10px] font-semibold uppercase tracking-wider text-brand-700;
   }
   .side-rail strong {
-    @apply text-sm font-extrabold leading-6;
+    @apply text-lg font-extrabold leading-8;
   }
   .side-rail-button {
     @apply mt-auto rounded-full bg-brand-700 px-3 py-2 text-[11px] font-bold text-white;

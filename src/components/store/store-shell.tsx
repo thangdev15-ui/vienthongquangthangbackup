@@ -11,6 +11,7 @@ import {
   MobileTabBar,
   FloatingContacts,
   CartDrawer,
+  SideRails,
   type NavCategory,
 } from "@/components/store/chrome";
 
@@ -31,6 +32,7 @@ export function StoreShell({
       <Header settings={settings} onOpenMobile={() => setMenuOpen(true)} />
       <MegaNav categories={categories} />
       <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} categories={categories} />
+      <SideRails />
       <main className="min-h-[50vh] pb-16 lg:pb-0">{children}</main>
       <Footer categories={categories} settings={settings} />
       <MobileTabBar onOpenCategories={() => setMenuOpen(true)} />

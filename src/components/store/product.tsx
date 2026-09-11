@@ -80,7 +80,7 @@ export function ProductCard({ p }: { p: ProductRow }) {
         <div className="mt-auto pt-1.5">
           <Price price={p.price} salePrice={p.salePrice} priceType={p.priceType} size="sm" />
         </div>
-        <button onClick={() => addToCart(toCart(p), 1)} className="btn-outline mt-2 h-9 w-full text-[13px]">
+        <button onClick={() => addToCart(toCart(p), 1)} className="btn-accent mt-2 h-9 w-full text-[13px]">
           <Icon name="cart" className="h-4 w-4" />
           Thêm vào giỏ
         </button>
@@ -117,7 +117,7 @@ function QuickView({ p, onClose }: { p: ProductRow; onClose: () => void }) {
           <Price price={p.price} salePrice={p.salePrice} priceType={p.priceType} size="md" />
           <div className="mt-auto flex flex-col gap-2 pt-3">
             {canCart ? (
-              <button onClick={() => addToCart(toCart(p), 1)} className="btn-primary h-10 w-full">
+              <button onClick={() => addToCart(toCart(p), 1)} className="btn-accent h-10 w-full">
                 <Icon name="cart" className="h-4 w-4" />
                 Thêm vào giỏ
               </button>

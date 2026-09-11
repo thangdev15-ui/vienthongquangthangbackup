@@ -17,6 +17,12 @@ export type NavCategory = {
   children: NavCategory[];
 };
 
+const NAV_ICONS: Record<string, IconName> = {
+  "camera-quan-sat": "eye", "day-cap-mang": "cable", "phu-kien-mang": "grid", "thiet-bi-mang": "server",
+  "tu-mang": "box", "phu-kien-quang": "cable", "thiet-bi-quang": "zap", "day-cap-quang": "zap",
+  "thang-mang-cap": "layers", "den-nang-luong-mat-troi": "sun",
+};
+
 type Settings = Record<string, string>;
 
 /* ------------------------------ Announcement bar ----------------------------- */
@@ -263,10 +269,11 @@ export function MegaNav({ categories }: { categories: NavCategory[] }) {
               <Link
                 key={cat.id}
                 href={`/danh-muc/${cat.slug}`}
-                className={`flex min-h-12 min-w-0 flex-1 items-center justify-center px-2.5 text-center text-[12px] font-semibold leading-tight transition-colors ${
+                className={`flex min-h-12 min-w-0 flex-1 items-center justify-center gap-1.5 px-2.5 text-center text-[12px] font-semibold leading-tight transition-colors ${
                   active ? "bg-brand-700 text-white" : "bg-brand-500 text-white hover:bg-brand-600"
                 }`}
               >
+                <Icon name={NAV_ICONS[cat.slug] ?? "box"} className="h-4 w-4 shrink-0" />
                 {cat.name}
               </Link>
             );
@@ -517,7 +524,7 @@ export function SideRails() {
   return (
     <div className="side-rails" aria-label="Quảng bá thương hiệu">
       <div className="side-rail-slot">
-        <Link href="/thuong-hieu" className="side-rail" aria-label="Xem thương hiệu phân phối">
+        <Link href="/thuong-hieu" className="side-rail side-rail-left" aria-label="Xem thương hiệu phân phối">
           <img src="/logoqt.png?v=3" alt="" className="w-full object-contain" />
           <span className="side-rail-kicker">Nhà phân phối</span>
           <strong>THIẾT BỊ<br />CHÍNH HÃNG</strong>
@@ -526,7 +533,7 @@ export function SideRails() {
       </div>
       <div />
       <div className="side-rail-slot">
-        <Link href="/thuong-hieu" className="side-rail" aria-label="Xem thương hiệu phân phối">
+        <Link href="/thuong-hieu" className="side-rail side-rail-right" aria-label="Xem thương hiệu phân phối">
           <img src="/logoqt.png?v=3" alt="" className="w-full object-contain" />
           <span className="side-rail-kicker">Nhà phân phối</span>
           <strong>THIẾT BỊ<br />CHÍNH HÃNG</strong>

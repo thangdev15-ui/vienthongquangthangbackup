@@ -3,7 +3,8 @@ import Link from "next/link";
 import { getActiveBanners, getActiveBrands, getActiveCategories, getActivePromotions, getArticles, getSettings, queryProducts } from "@/lib/data";
 import { ProductGrid } from "@/components/store/product";
 import { Icon, SectionHeader, type IconName } from "@/components/ui";
-import { NewsletterForm, SideRails } from "@/components/store/chrome";
+import { NewsletterForm } from "@/components/store/chrome";
+import { HeroCarousel } from "@/components/store/hero-carousel";
 import { formatVND } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
@@ -46,7 +47,6 @@ export default async function HomePage() {
     getActivePromotions(),
     getArticles({ limit: 4 }),
   ]);
-  const topCats = POPULAR_CATEGORY_SLUGS.map((slug) => categories.find((c) => c.slug === slug)).filter((c): c is (typeof categories)[number] => Boolean(c)).slice(0, 8);
   const popularCats = POPULAR_CATEGORY_SLUGS.map((slug) => categories.find((c) => c.slug === slug)).filter((c): c is (typeof categories)[number] => Boolean(c));
   const hero = banners.find((b) => b.image) ?? null;
   const promo = promotions[0] ?? null;
@@ -55,104 +55,12 @@ export default async function HomePage() {
   return (
     <div>
       {/* ============ HERO ============ */}
-      <section className="relative overflow-hidden bg-ink-950">
-        <div
-          className="absolute inset-0 opacity-[0.15]"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px)",
-            backgroundSize: "44px 44px",
-          }}
-          aria-hidden="true"
-        />
-        <div className="wrap relative grid items-center gap-8 py-12 lg:grid-cols-[1.05fr_0.95fr] lg:py-16">
-          <div>
-            <p className="mb-3 inline-flex items-center gap-2 rounded-full border border-brand-400/40 bg-brand-500/10 px-3 py-1 text-[12px] font-semibold text-brand-200">
-              <Icon name="shield" className="h-3.5 w-3.5" />
-              Tổng kho thiết bị viễn thông — TP. Hồ Chí Minh
-            </p>
-            <h1 className="text-3xl font-extrabold leading-tight text-white sm:text-4xl lg:text-[42px]">
-              Thiết Bị Viễn Thông <span className="text-brand-300">Chính Hãng</span>
-              <span className="mt-2 block text-xl font-bold text-ink-200 sm:text-2xl">
-                Giải pháp mạng, camera &amp; hạ tầng kết nối
-              </span>
-            </h1>
-            <p className="mt-4 max-w-xl text-[15px] leading-7 text-ink-300">
-              Cáp mạng, cáp quang, switch PoE, camera, thiết bị quang, tủ rack… Giá cạnh tranh cho công trình và dự án.
-              Đội ngũ kỹ thuật tư vấn trực tiếp —{" "}
-              <a href={`tel:${settings.phone.replace(/\D/g, "")}`} className="font-bold text-white underline decoration-brand-400 underline-offset-4">
-                {settings.phone}
-              </a>
-            </p>
-            <div className="mt-6 flex flex-wrap gap-3">
-              <Link href="/san-pham" className="btn-accent h-11 px-6">
-                Khám phá sản phẩm
-                <Icon name="arrow-right" className="h-4 w-4" />
-              </Link>
-              <a href={settings.zalo} target="_blank" rel="noopener" className="btn-zalo h-11 px-6">
-                <Icon name="message" className="h-4 w-4" />
-                Nhận tư vấn
-              </a>
-            </div>
-            <dl className="mt-8 grid max-w-xl grid-cols-2 gap-x-6 gap-y-3 sm:grid-cols-4">
-              {[
-                ["Chính hãng", "Sản phẩm chính hãng 100%"],
-                ["Giao 24h", "Đóng gói & vận chuyển nhanh"],
-                ["Giá công trình", "Ưu đãi số lượng lớn"],
-                ["Tư vấn 24/7", "Kỹ thuật hỗ trợ trực tiếp"],
-              ].map(([t, d]) => (
-                <div key={t} className="border-l-2 border-brand-500 pl-3">
-                  <dt className="text-[13px] font-bold text-white">{t}</dt>
-                  <dd className="text-[11px] leading-4 text-ink-400">{d}</dd>
-                </div>
-              ))}
-            </dl>
-          </div>
-          <div className="relative hidden lg:block">
-            <div className="relative aspect-[4/3] overflow-hidden rounded-lg border border-white/10 shadow-2xl">
-              <Image
-                src="https://images.pexels.com/photos/5073493/pexels-photo-5073493.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=1200"
-                alt="Hạ tầng mạng — patch panel và cáp mạng trong tủ kỹ thuật"
-                fill
-                priority
-                sizes="(min-width:1024px) 50vw, 90vw"
-                className="object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-ink-950/60 via-transparent" />
-            </div>
-            <div className="absolute -bottom-5 -left-5 flex items-center gap-3 rounded-lg border border-line bg-white p-3.5 shadow-xl">
-              <span className="flex h-10 w-10 items-center justify-center rounded-md bg-success-50 text-success-600">
-                <Icon name="truck" className="h-5 w-5" />
-              </span>
-              <div>
-                <p className="text-[13px] font-bold text-ink-950">Giao hàng toàn quốc</p>
-                <p className="text-[11px] text-ink-500">Đóng gói &amp; vận chuyển trong 24h</p>
-              </div>
-            </div>
-          </div>
+      <section className="bg-ink-50 py-3">
+        <div className="wrap">
+          <HeroCarousel firstImage={banner?.image} />
         </div>
       </section>
 
-      {/* ============ QUICK CATEGORIES ============ */}
-      <section className="wrap -mt-0 py-8">
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-8">
-          {topCats.map((c) => (
-            <Link
-              key={c.id}
-              href={`/danh-muc/${c.slug}`}
-              className="card group flex flex-col items-center gap-2.5 p-4 text-center transition-all hover:border-brand-400 hover:shadow-md"
-            >
-              <span className="flex h-11 w-11 items-center justify-center rounded-md bg-brand-50 text-brand-700 transition-colors group-hover:bg-brand-700 group-hover:text-white">
-                <Icon name={CAT_ICONS[c.slug] ?? "box"} className="h-5 w-5" />
-              </span>
-              <span className="text-[12.5px] font-semibold leading-tight text-ink-800 group-hover:text-brand-700">{c.name}</span>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      <div className="home-rail-zone">
-        <SideRails />
       {/* ============ FEATURED ============ */}
       {featured.items.length > 0 && (
         <section className="wrap py-6">
@@ -334,7 +242,6 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
-      </div>
     </div>
   );
 }
