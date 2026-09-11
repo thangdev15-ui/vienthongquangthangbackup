@@ -252,75 +252,30 @@ export function Header({ settings, onOpenMobile }: { settings: Settings; onOpenM
 /* ---------------------------------- Mega nav --------------------------------- */
 
 export function MegaNav({ categories }: { categories: NavCategory[] }) {
-  const [open, setOpen] = useState(false);
   const pathname = usePathname();
   return (
-    <nav aria-label="Điều hướng chính" className="relative z-30 border-b border-line bg-white" onMouseLeave={() => setOpen(false)}>
-      <div className="wrap flex items-center gap-1">
-        <button
-          onMouseEnter={() => setOpen(true)}
-          onFocus={() => setOpen(true)}
-          onClick={() => setOpen((v) => !v)}
-          className="mr-1 flex h-11 items-center gap-2 rounded-md bg-ink-950 px-4 text-sm font-bold text-white"
-          aria-expanded={open}
-        >
-          <Icon name="menu" className="h-4 w-4" />
-          Tất cả danh mục
-          <Icon name="chevron-down" className={`h-4 w-4 transition-transform ${open ? "rotate-180" : ""}`} />
-        </button>
-        <div className="hidden h-11 items-center gap-0.5 lg:flex">
-          <MegaLink href="/san-pham" label="Sản phẩm" />
-          <MegaLink href="/thuong-hieu" label="Thương hiệu" />
-          <MegaLink href="/khuyen-mai" label="Khuyến mãi" hot />
-          <MegaLink href="/tin-tuc" label="Tin tức" />
-          <MegaLink href="/lien-he" label="Liên hệ" />
-        </div>
-        <span className="ml-auto hidden items-center gap-2 text-[13px] font-medium text-ink-500 xl:flex">
-          <Icon name="shield" className="h-4 w-4 text-success-600" />
-          Sản phẩm chính hãng — Tư vấn kỹ thuật tận tâm
-        </span>
-      </div>
-      {/* Desktop mega panel */}
-      <div
-        onMouseEnter={() => setOpen(true)}
-        onMouseLeave={() => setOpen(false)}
-        className={`absolute inset-x-0 top-full z-40 hidden border-b border-line bg-white shadow-xl transition-opacity lg:block ${
-          open ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
-        }`}
-      >
-        <div className="wrap grid grid-cols-4 gap-x-8 gap-y-6 py-7">
-          {categories.slice(0, 8).map((cat) => (
-            <div key={cat.id}>
+    <nav aria-label="Điều hướng chính" className="relative z-30 border-b border-line bg-white">
+      <div className="wrap hidden items-stretch gap-1 overflow-hidden py-1 lg:flex">
+        <div className="flex min-w-0 flex-1 items-stretch gap-1">
+          {categories.slice(0, 10).map((cat) => {
+            const active = pathname === `/danh-muc/${cat.slug}` || pathname.startsWith(`/danh-muc/${cat.slug}/`);
+            return (
               <Link
+                key={cat.id}
                 href={`/danh-muc/${cat.slug}`}
-                className="mb-2.5 flex items-center gap-1.5 text-[13px] font-bold uppercase tracking-wide text-ink-950 hover:text-brand-700"
+                className={`flex min-h-11 min-w-0 flex-1 items-center justify-center px-2 text-center text-[12px] font-semibold leading-tight transition-colors ${
+                  active ? "bg-brand-700 text-white" : "bg-brand-500 text-white hover:bg-brand-600"
+                }`}
               >
                 {cat.name}
-                <Icon name="chevron-right" className="h-3.5 w-3.5" />
               </Link>
-              <ul className="space-y-1.5">
-                {(cat.children.length ? cat.children : [{ name: "Xem tất cả", slug: cat.slug, id: `${cat.id}-all`, image: null, children: [] } as NavCategory]).slice(0, 6).map((sub) => (
-                  <li key={sub.id}>
-                    <Link href={`/danh-muc/${sub.slug}`} className="block text-[13px] text-ink-600 hover:text-brand-700">
-                      {sub.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+            );
+          })}
         </div>
-        <div className="border-t border-line bg-ink-50/60">
-          <div className="wrap flex flex-wrap items-center gap-x-6 gap-y-2 py-3 text-[13px]">
-            <Link href="/san-pham" className="font-bold text-brand-700 hover:underline">
-              → Xem tất cả sản phẩm
-            </Link>
-            <Link href="/thuong-hieu" className="text-ink-600 hover:text-brand-700">Thương hiệu</Link>
-            <Link href="/khuyen-mai" className="font-semibold text-accent-600 hover:underline">Khuyến mãi Hot</Link>
-            <Link href="/tin-tuc" className="text-ink-600 hover:text-brand-700">Tin tức công nghệ</Link>
-            <Link href="/lien-he" className="text-ink-600 hover:text-brand-700">Liên hệ</Link>
-          </div>
-        </div>
+        <Link href="/khuyen-mai" className="flex min-h-11 w-28 shrink-0 items-center justify-center gap-1 bg-sale-600 px-2 text-center text-[12px] font-bold text-white hover:bg-sale-700">
+          <Icon name="zap" className="h-4 w-4" />
+          Khuyến mãi
+        </Link>
       </div>
       {/* Mobile quick links */}
       <div className="flex gap-1 overflow-x-auto border-t border-line px-4 py-2 no-scrollbar lg:hidden">
@@ -535,26 +490,26 @@ export function CartDrawer({ settings }: { settings: Settings }) {
 
 export function FloatingContacts({ settings }: { settings: Settings }) {
   return (
-    <>
-      <div className="fixed right-4 top-1/2 z-40 hidden -translate-y-1/2 flex-col gap-2 lg:flex">
+    <div className="fixed bottom-20 right-4 z-40 flex flex-col gap-2 lg:top-1/2 lg:bottom-auto lg:-translate-y-1/2">
         <a
           href={settings.zalo}
           target="_blank"
           rel="noopener"
-          className="flex h-12 w-12 items-center justify-center rounded-full bg-[#0068ff] text-white shadow-lg transition-transform hover:scale-105"
-          aria-label="Chat Zalo"
+          className="flex h-12 w-12 items-center justify-center rounded-full bg-[#0068ff] text-[11px] font-extrabold text-white shadow-lg transition-transform hover:scale-105"
+          aria-label="Mở Zalo"
         >
-          <Icon name="message" className="h-6 w-6" />
+          Zalo
         </a>
         <a
-          href={`tel:${settings.phone.replace(/\D/g, "")}`}
-          className="flex h-12 w-12 items-center justify-center rounded-full bg-accent-600 text-white shadow-lg transition-transform hover:scale-105"
-          aria-label="Gọi tư vấn"
+          href={settings.facebook}
+          target="_blank"
+          rel="noopener"
+          className="flex h-12 w-12 items-center justify-center rounded-full bg-[#1877f2] text-white shadow-lg transition-transform hover:scale-105"
+          aria-label="Mở Facebook"
         >
-          <Icon name="phone" className="h-6 w-6" />
+          <Icon name="facebook" className="h-6 w-6" />
         </a>
-      </div>
-    </>
+    </div>
   );
 }
 

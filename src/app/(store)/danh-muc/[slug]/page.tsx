@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getActiveBrands, getActiveCategories, getCategoryBySlug, queryProducts, stripHtml } from "@/lib/data";
+import { getActiveBrands, getActiveCategories, getCategoryBySlug, queryProducts } from "@/lib/data";
 import { Breadcrumbs, EmptyState, Icon, Pagination } from "@/components/ui";
 import { FilterSidebar, ProductGrid, Toolbar } from "@/components/store/product";
 
@@ -79,7 +79,6 @@ export default async function CategoryPage({
       <Breadcrumbs items={chain} />
       <div className="mt-3 mb-5">
         <h1 className="text-2xl font-extrabold text-ink-950">{cat.name}</h1>
-        {cat.description && <p className="mt-1.5 line-clamp-3 max-w-2xl text-sm leading-6 text-ink-500">{stripHtml(cat.description).slice(0, 320)}</p>}
       </div>
 
       {(children.length > 0 || grandChildren.length > 0) && (

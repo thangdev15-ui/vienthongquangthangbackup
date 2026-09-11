@@ -51,7 +51,7 @@
     scroll-behavior: smooth;
   }
   body {
-    @apply bg-paper text-ink-900 antialiased;
+    @apply bg-[#fbfdff] text-ink-900 antialiased;
     font-feature-settings: "ss01";
   }
   ::selection {
@@ -98,6 +98,25 @@
   }
   .chip {
     @apply inline-flex items-center gap-1 rounded-full border border-line bg-white px-3 py-1 text-[13px] font-medium text-ink-700 transition-colors hover:border-brand-600 hover:text-brand-700;
+  }
+  .side-rail {
+    @apply fixed top-40 z-20 hidden w-[122px] flex-col items-center gap-4 rounded-lg border border-brand-200 bg-brand-50 px-3 py-5 text-center text-brand-900 shadow-sm transition-transform hover:-translate-y-1 2xl:flex;
+    height: min(590px, calc(100vh - 190px));
+  }
+  .side-rail-left {
+    left: max(16px, calc(50% - 790px));
+  }
+  .side-rail-right {
+    right: max(16px, calc(50% - 790px));
+  }
+  .side-rail-kicker {
+    @apply text-[10px] font-semibold uppercase tracking-wider text-brand-700;
+  }
+  .side-rail strong {
+    @apply text-base font-extrabold leading-7;
+  }
+  .side-rail-button {
+    @apply mt-auto rounded-full bg-brand-700 px-3 py-2 text-[11px] font-bold text-white;
   }
   .badge-dot {
     @apply relative;
