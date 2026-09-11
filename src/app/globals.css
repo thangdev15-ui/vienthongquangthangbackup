@@ -99,25 +99,27 @@
   .chip {
     @apply inline-flex items-center gap-1 rounded-full border border-line bg-white px-3 py-1 text-[13px] font-medium text-ink-700 transition-colors hover:border-brand-600 hover:text-brand-700;
   }
+  .side-rails {
+    @apply pointer-events-none absolute inset-0 z-20 mx-auto hidden 2xl:grid;
+    width: min(1590px, 100%);
+    grid-template-columns: 106px minmax(0, 1fr) 106px;
+    column-gap: 22px;
+  }
+  .side-rail-slot {
+    min-width: 0;
+  }
   .side-rail {
-    @apply absolute top-0 bottom-0 z-20 hidden w-[122px] flex-col items-center gap-4 overflow-hidden rounded-lg border border-brand-200 px-3 py-5 text-center text-brand-900 shadow-sm transition-transform hover:-translate-y-1 2xl:flex;
+    @apply pointer-events-auto sticky top-36 z-20 flex h-[420px] w-[106px] flex-col items-center gap-3 overflow-hidden rounded-lg border border-brand-200 px-2.5 py-4 text-center text-brand-900 shadow-sm transition-transform hover:-translate-y-1;
     background-color: #eaf4ff;
     background-image: url("/backgroundne.png");
     background-position: center top;
     background-size: cover;
-    min-height: 590px;
-  }
-  .side-rail-left {
-    left: max(16px, calc(50% - 790px));
-  }
-  .side-rail-right {
-    right: max(16px, calc(50% - 790px));
   }
   .side-rail-kicker {
     @apply text-[10px] font-semibold uppercase tracking-wider text-brand-700;
   }
   .side-rail strong {
-    @apply text-base font-extrabold leading-7;
+    @apply text-sm font-extrabold leading-6;
   }
   .side-rail-button {
     @apply mt-auto rounded-full bg-brand-700 px-3 py-2 text-[11px] font-bold text-white;

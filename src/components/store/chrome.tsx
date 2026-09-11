@@ -515,20 +515,25 @@ export function FloatingContacts({ settings }: { settings: Settings }) {
 
 export function SideRails() {
   return (
-    <>
-      <Link href="/thuong-hieu" className="side-rail side-rail-left" aria-label="Xem thương hiệu phân phối">
-        <img src="/logoqt.png" alt="" className="w-full object-contain" />
-        <span className="side-rail-kicker">Nhà phân phối</span>
-        <strong>THIẾT BỊ<br />CHÍNH HÃNG</strong>
-        <span className="side-rail-button">Xem thương hiệu</span>
-      </Link>
-      <Link href="/thuong-hieu" className="side-rail side-rail-right" aria-label="Xem thương hiệu phân phối">
-        <img src="/logoqt.png" alt="" className="w-full object-contain" />
-        <span className="side-rail-kicker">Nhà phân phối</span>
-        <strong>THIẾT BỊ<br />CHÍNH HÃNG</strong>
-        <span className="side-rail-button">Xem thương hiệu</span>
-      </Link>
-    </>
+    <div className="side-rails" aria-label="Quảng bá thương hiệu">
+      <div className="side-rail-slot">
+        <Link href="/thuong-hieu" className="side-rail" aria-label="Xem thương hiệu phân phối">
+          <img src="/logoqt.png?v=3" alt="" className="w-full object-contain" />
+          <span className="side-rail-kicker">Nhà phân phối</span>
+          <strong>THIẾT BỊ<br />CHÍNH HÃNG</strong>
+          <span className="side-rail-button">Xem thương hiệu</span>
+        </Link>
+      </div>
+      <div />
+      <div className="side-rail-slot">
+        <Link href="/thuong-hieu" className="side-rail" aria-label="Xem thương hiệu phân phối">
+          <img src="/logoqt.png?v=3" alt="" className="w-full object-contain" />
+          <span className="side-rail-kicker">Nhà phân phối</span>
+          <strong>THIẾT BỊ<br />CHÍNH HÃNG</strong>
+          <span className="side-rail-button">Xem thương hiệu</span>
+        </Link>
+      </div>
+    </div>
   );
 }
 
