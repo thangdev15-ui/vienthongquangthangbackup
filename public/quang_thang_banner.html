@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Quang Thắng Telecom Banner</title>
+<style>
+  :root{
+    --navy-deep:#0a2a5e;
+    --blue-mid:#0f5fc7;
+    --blue-bright:#2f8bf0;
+    --sky:#7fc4ff;
+    --orange:#ff6a1a;
+    --orange-light:#ffb066;
+    --ink:#0a2a5e;
+    --white:#ffffff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:transparent;
+    font-family:'Segoe UI',Arial,sans-serif;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width:100vw;
+    height:100vh;
+    min-height:100vh;
+    overflow:hidden;
+  }
+  .banner{
+    position:relative;
+    width:100vw;
+    height:100vh;
+    border-radius:min(48vw,150px) min(48vw,150px) min(20vw,60px) min(20vw,60px);
+    overflow:hidden;
+    background:
+      radial-gradient(140% 90% at 15% -5%, var(--blue-bright) 0%, transparent 55%),
+      linear-gradient(165deg, var(--navy-deep) 0%, var(--blue-mid) 55%, #0d4aa0 100%);
+    box-shadow:0 30px 60px rgba(10,42,94,0.35);
+  }
+
+  /* decorative rings, echoing the reference's overlapping-circle motif */
+  .ring{
+    position:absolute;
+    border-radius:50%;
+    border:2px solid rgba(255,255,255,0.18);
+  }
+  .ring--top{ position:absolute; width:220px; height:220px; top:-90px; left:-70px; border-color:rgba(255,255,255,0.28); }
+  .ring--top-fill{
+    position:absolute; width:150px; height:150px; top:-55px; left:-45px; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, var(--sky), var(--blue-bright) 70%);
+    opacity:0.85;
+  }
+  .ring--bottom{ position:absolute; width:260px; height:260px; bottom:-110px; right:-90px; }
+  .ring--bottom-fill{
+    position:absolute; width:170px; height:170px; bottom:-70px; right:-60px; border-radius:50%;
+    background:radial-gradient(circle at 65% 65%, var(--orange-light), var(--orange) 75%);
+    opacity:0.9;
+  }
+  .dot{ position:absolute; border-radius:50%; background:rgba(255,255,255,0.5); }
+  .dot1{ width:8px; height:8px; top:120px; right:34px; }
+  .dot2{ width:5px; height:5px; top:150px; right:56px; background:rgba(255,255,255,0.3);}
+
+  .content{
+    position:relative;
+    z-index:2;
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    padding:clamp(28px, 7vh, 46px) clamp(10px, 8vw, 26px) clamp(18px, 5vh, 30px);
+  }
+
+  .logo-mark{
+    width:clamp(34px, 15vw, 46px); height:clamp(34px, 15vw, 46px);
+    border-radius:50%;
+    background:conic-gradient(from 200deg, var(--orange) 0deg, var(--orange-light) 120deg, #fff 240deg, var(--orange) 360deg);
+    display:flex; align-items:center; justify-content:center;
+    margin-bottom:10px;
+    box-shadow:0 4px 14px rgba(0,0,0,0.25);
+  }
+  .logo-mark::after{
+    content:"";
+    width:clamp(16px, 7vw, 22px); height:clamp(16px, 7vw, 22px);
+    border-radius:50%;
+    background:var(--navy-deep);
+  }
+  .wordmark{
+    color:#fff;
+    font-size:clamp(13px, 7vw, 19px);
+    font-weight:800;
+    letter-spacing:0.5px;
+    line-height:1.1;
+  }
+  .wordmark span{ color:var(--orange-light); }
+  .sub-wordmark{
+    color:rgba(255,255,255,0.75);
+    font-size:9px;
+    letter-spacing:clamp(1px, 1vw, 3px);
+    margin-top:2px;
+  }
+
+  .divider{
+    display:flex; align-items:center; gap:clamp(4px, 2vw, 8px);
+    color:rgba(255,255,255,0.65);
+    font-size:10px;
+    letter-spacing:clamp(0.5px, 1vw, 2px);
+    margin:18px 0 10px;
+  }
+  .divider .line{ width:clamp(10px, 9vw, 26px); height:1px; background:rgba(255,255,255,0.4); }
+
+  .headline{
+    color:#fff;
+    font-size:clamp(17px, 8vw, 23px);
+    font-weight:800;
+    line-height:1.28;
+    max-width:230px;
+  }
+  .headline em{
+    font-style:normal;
+    color:var(--orange-light);
+  }
+
+  .tagline{
+    color:rgba(255,255,255,0.78);
+    font-size:clamp(10.5px, 4vw, 12.5px);
+    line-height:1.5;
+    max-width:220px;
+    margin-top:12px;
+  }
+
+  .features{
+    width:100%;
+    margin-top:22px;
+    display:flex;
+    flex-direction:column;
+    gap:11px;
+    text-align:left;
+    max-width:230px;
+  }
+  .feature{
+    display:flex;
+    align-items:center;
+    gap:clamp(6px, 3vw, 10px);
+  }
+  .feature .icon{
+    flex:0 0 auto;
+    width:clamp(22px, 10vw, 26px); height:clamp(22px, 10vw, 26px);
+    border-radius:50%;
+    background:rgba(255,255,255,0.12);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--orange-light);
+    border:1px solid rgba(255,255,255,0.2);
+  }
+  .feature .icon svg{
+    width:14px;
+    height:14px;
+    stroke:currentColor;
+    stroke-width:2.5;
+    fill:none;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+  }
+  .feature .txt{
+    color:#fff;
+    font-size:clamp(10.5px, 4vw, 12.5px);
+    font-weight:600;
+  }
+
+  .cta{
+    margin-top:auto;
+    padding-top:24px;
+  }
+  .cta a{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:linear-gradient(135deg, var(--orange), #ff8c42);
+    color:#fff;
+    font-weight:700;
+    font-size:clamp(11px, 4.5vw, 13.5px);
+    padding:10px clamp(14px, 8vw, 26px);
+    border-radius:999px;
+    text-decoration:none;
+    box-shadow:0 10px 22px rgba(255,106,26,0.4);
+  }
+
+  .services{
+    display:flex;
+    justify-content:center;
+    gap:clamp(8px, 7vw, 22px);
+    margin-top:20px;
+    padding-top:16px;
+    border-top:1px solid rgba(255,255,255,0.15);
+    width:100%;
+  }
+  .service{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:5px;
+    color:rgba(255,255,255,0.85);
+  }
+  .service .s-icon{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:18px;
+    height:18px;
+    color:var(--orange-light);
+  }
+  .service .s-icon svg{
+    width:18px;
+    height:18px;
+    stroke:currentColor;
+    stroke-width:2;
+    fill:none;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+  }
+  .service .s-label{
+    font-size:clamp(7px, 3vw, 8.5px);
+    letter-spacing:0.3px;
+    text-align:center;
+    line-height:1.2;
+  }
+</style>
+</head>
+<body>
+
+  <div class="banner">
+    <div class="ring--top"></div>
+    <div class="ring--top-fill"></div>
+    <div class="ring--bottom"></div>
+    <div class="ring--bottom-fill"></div>
+    <div class="dot dot1"></div>
+    <div class="dot dot2"></div>
+
+    <div class="content">
+      <div class="logo-mark"></div>
+      <div class="wordmark">QUANG THẮNG <span>TELECOM</span></div>
+      <div class="sub-wordmark">KẾT NỐI TIN CẬY</div>
+
+      <div class="divider"><span class="line"></span>NHÀ PHÂN PHỐI<span class="line"></span></div>
+
+      <div class="headline">THIẾT BỊ <em>CHÍNH HÃNG</em></div>
+      <div class="tagline">Giải pháp kết nối thông minh cho mọi nhà, mọi doanh nghiệp</div>
+
+      <div class="features">
+        <div class="feature"><div class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></div><div class="txt">Sản phẩm chính hãng</div></div>
+        <div class="feature"><div class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 18V6h3l3 4v8h-2"/><path d="M14 18H9"/><path d="M5 18H3V8h11"/><circle cx="7" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg></div><div class="txt">Giao hàng nhanh, toàn quốc</div></div>
+        <div class="feature"><div class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13a8 8 0 0 1 16 0"/><path d="M18 19c0 1.1-.9 2-2 2h-3"/><path d="M4 13v3a2 2 0 0 0 2 2h1v-7H6a2 2 0 0 0-2 2Z"/><path d="M20 13v3a2 2 0 0 1-2 2h-1v-7h1a2 2 0 0 1 2 2Z"/></svg></div><div class="txt">Tư vấn chuyên nghiệp</div></div>
+        <div class="feature"><div class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3l-5.6 2.9 1.1-6.2L3 9.6l6.2-.9L12 3Z"/></svg></div><div class="txt">Giá tốt nhất thị trường</div></div>
+      </div>
+
+      <div class="cta"><a href="#">Xem thêm →</a></div>
+
+      <div class="services">
+        <div class="service"><div class="s-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 13a10 10 0 0 1 14 0"/><path d="M8.5 16.5a5 5 0 0 1 7 0"/><path d="M12 20h.01"/></svg></div><div class="s-label">Internet<br>cáp quang</div></div>
+        <div class="service"><div class="s-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="12" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg></div><div class="s-label">Truyền hình<br>IPTV</div></div>
+        <div class="service"><div class="s-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 10 20 7v10l-5-3"/><rect x="3" y="6" width="12" height="12" rx="2"/></svg></div><div class="s-label">Camera<br>giám sát</div></div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

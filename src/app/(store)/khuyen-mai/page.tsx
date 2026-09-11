@@ -17,10 +17,24 @@ export default async function KhuyenMaiPage() {
   return (
     <div className="wrap py-6">
       <Breadcrumbs items={[{ label: "Khuyến mãi" }]} />
-      <h1 className="mt-3 text-2xl font-extrabold text-ink-950">Khuyến mãi &amp; sản phẩm giảm giá</h1>
+      <h1 className="mt-3 text-2xl font-extrabold text-ink-950">Chương trình khuyến mãi</h1>
       <p className="mt-1.5 mb-6 max-w-3xl text-sm text-ink-500">
-        Theo dõi khu vực này để cập nhật chương trình khuyến mãi theo tháng và ưu đãi cho công trình, dự án.
+        Khu vực cập nhật ưu đãi thiết bị viễn thông, cáp mạng, camera, tủ rack và vật tư thi công. Với đơn hàng công trình hoặc số lượng lớn,
+        đội ngũ kinh doanh sẽ báo giá riêng theo tồn kho và thời điểm đặt hàng.
       </p>
+
+      <section className="mb-8 grid gap-3 md:grid-cols-3">
+        {[
+          ["Ưu đãi theo số lượng", "Giá tốt hơn cho đơn hàng cáp cuộn, switch, camera và vật tư triển khai nhiều điểm."],
+          ["Báo giá công trình", "Hỗ trợ gom model, kiểm tra tồn kho và đề xuất phương án thay thế khi cần giao nhanh."],
+          ["Cập nhật liên tục", "Các chương trình giảm giá được thay đổi theo tháng, theo hãng và theo lượng hàng thực tế."],
+        ].map(([title, desc]) => (
+          <div key={title} className="rounded-md border border-line bg-white p-4">
+            <h2 className="text-sm font-extrabold text-ink-950">{title}</h2>
+            <p className="mt-1.5 text-[13px] leading-6 text-ink-500">{desc}</p>
+          </div>
+        ))}
+      </section>
 
       {promotions.length > 0 && (
         <div className="mb-8 grid gap-4 md:grid-cols-2">

@@ -11,6 +11,8 @@ const NEW_ROUTES = new Set([
   "thanh-toan", "dat-hang-thanh-cong", "so-sanh", "tim-kiem", "admin", "api",
   "uploads", "_next", "static", "favicon.ico", "logoqt.png", "robots.txt", "sitemap.xml",
   "wishlist", "cua-hang", "page", "author",
+  "huong-dan-mua-hang", "hinh-thuc-thanh-toan", "chinh-sach-giao-nhan",
+  "chinh-sach-bao-hanh", "chinh-sach-doi-tra", "chinh-sach-bao-mat", "doi-tac-chien-luoc",
 ]);
 
 const CATEGORY_SLUGS = new Set([

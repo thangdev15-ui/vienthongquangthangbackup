@@ -69,6 +69,11 @@
   .wrap {
     @apply mx-auto w-full max-w-[1320px] px-4 sm:px-6;
   }
+  @media (min-width: 1280px) {
+    .wrap {
+      max-width: min(1320px, calc(100vw - 340px));
+    }
+  }
   .btn-primary {
     @apply inline-flex h-10 cursor-pointer items-center justify-center gap-2 rounded-md bg-brand-700 px-4 text-sm font-semibold text-white transition-colors hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-50;
   }
@@ -106,39 +111,37 @@
     @apply h-full min-w-0;
   }
   .side-rail {
-    @apply pointer-events-auto fixed bottom-5 top-[128px] z-20 flex w-[220px] flex-col items-center gap-5 overflow-hidden rounded-t-lg border border-brand-200 px-5 py-8 text-center text-brand-900 shadow-sm transition-transform hover:-translate-y-1;
-    background-color: #eaf4ff;
-    background-image: url("/backgroundne.png");
-    background-position: center top;
-    background-size: cover;
+    @apply pointer-events-auto fixed bottom-5 top-[128px] z-20 block overflow-hidden rounded-md border border-brand-100 bg-white shadow-sm transition-transform hover:-translate-y-1;
+    width: clamp(130px, calc((100vw - min(1320px, calc(100vw - 340px))) / 2 - 22px), 220px);
   }
-  .side-rail-kicker {
-    @apply text-[10px] font-semibold uppercase tracking-wider text-brand-700;
-  }
-  .side-rail strong {
-    @apply text-lg font-extrabold leading-8;
-  }
-  .side-rail-button {
-    @apply mt-auto rounded-full bg-brand-700 px-3 py-2 text-[11px] font-bold text-white;
+  .side-rail-frame {
+    @apply h-full w-full object-cover;
+    border: 0;
+    pointer-events: none;
   }
   .hero-carousel {
     aspect-ratio: 21 / 8;
     background: #1f2937;
   }
   .side-rail-left {
-    left: 12px !important;
+    left: 14px !important;
     right: auto !important;
   }
   .side-rail-right {
-    right: 12px !important;
+    right: 14px !important;
     left: auto !important;
   }
   .side-rails {
     display: none;
   }
-  @media (min-width: 1700px) {
+  @media (min-width: 1280px) {
     .side-rails {
       display: block;
+    }
+  }
+  @media (min-width: 1700px) {
+    .side-rail {
+      width: 220px;
     }
   }
   .badge-dot {

@@ -37,7 +37,7 @@ export function AnnouncementBar({ text }: { text: string }) {
             Theo dõi đơn hàng
           </Link>
           <Link href="/tin-tuc" className="hover:text-white">
-            Download Software &amp; Firmware
+            Tin tức công nghệ
           </Link>
         </div>
       </div>
@@ -61,17 +61,9 @@ export function TopBar({ settings }: { settings: Settings }) {
             {settings.hours}
           </span>
         </div>
-        <div className="flex items-center gap-4">
-          <a href={settings.phone.replace(/[\s.]/g, "") && `tel:${settings.phone.replace(/\D/g, "")}`} className="hidden items-center gap-1.5 font-semibold text-ink-900 hover:text-brand-700 sm:flex">
-            <Icon name="phone" className="h-4 w-4 text-accent-600" />
-            {settings.phone}
-          </a>
-          <span className="hidden text-ink-300 sm:inline">|</span>
-          <Link href={settings.zalo} target="_blank" rel="noopener" className="flex items-center gap-1.5 font-medium hover:text-[#0068ff]">
-            <Icon name="message" className="h-4 w-4" />
-            CSKH: {settings.cs_kh}
-          </Link>
-        </div>
+        <Link href="/lien-he" className="hidden font-semibold text-brand-700 hover:text-brand-800 sm:inline">
+          Liên hệ
+        </Link>
       </div>
     </div>
   );
@@ -201,12 +193,11 @@ export function SearchBar({ autoFocus = false }: { autoFocus?: boolean }) {
 /* ----------------------------------- Header ---------------------------------- */
 
 export function Header({ settings, onOpenMobile, categories }: { settings: Settings; onOpenMobile: () => void; categories: NavCategory[] }) {
-  const { cartCount, wishlist, setCartOpen } = useShop();
-  const quickCategories = categories.slice(0, 5);
+  const quickCategories = categories.slice(0, 8);
   const pathname = usePathname();
   return (
     <div className="sticky top-0 z-40 border-b border-line bg-white/95 backdrop-blur">
-      <div className="wrap flex min-h-[76px] items-center gap-3 sm:gap-4">
+      <div className="wrap flex min-h-[76px] items-center gap-2.5 sm:gap-3">
         <button
           onClick={onOpenMobile}
           className="flex h-10 w-10 items-center justify-center rounded-md text-ink-700 hover:bg-ink-50 lg:hidden"
@@ -214,57 +205,32 @@ export function Header({ settings, onOpenMobile, categories }: { settings: Setti
         >
           <Icon name="menu" className="h-6 w-6" />
         </button>
-        <Link href="/" className="flex h-14 w-[150px] shrink-0 items-center px-1 sm:w-[178px]" aria-label="Trang chủ Viễn Thông Quang Thắng">
+        <Link href="/" className="flex h-14 w-[138px] shrink-0 items-center px-1 xl:w-[150px] 2xl:w-[178px]" aria-label="Trang chủ Viễn Thông Quang Thắng">
           <img src="/logoqt.png?v=2" alt="Viễn Thông Quang Thắng" width={300} height={106} className="h-auto w-full object-contain" />
         </Link>
-        <div className="hidden min-w-0 flex-1 lg:block lg:max-w-[500px]">
+        <div className="hidden min-w-0 flex-[0.9] lg:block lg:max-w-[280px] xl:max-w-[340px] 2xl:max-w-[500px]">
           <SearchBar />
         </div>
-        <nav aria-label="Danh mục nhanh" className="hidden min-w-0 flex-1 items-stretch gap-1 xl:flex">
+        <nav aria-label="Danh mục nhanh" className="hidden min-w-0 flex-[1.9] items-stretch gap-1 lg:flex">
           {quickCategories.map((cat) => {
             const active = pathname === `/danh-muc/${cat.slug}` || pathname.startsWith(`/danh-muc/${cat.slug}/`);
             return (
               <Link
                 key={cat.id}
                 href={`/danh-muc/${cat.slug}`}
-                className={`flex min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-md px-1 text-center text-[11px] font-semibold leading-tight transition-colors ${
+                className={`flex min-h-12 min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-md px-1.5 text-center text-[11px] font-semibold leading-tight transition-colors 2xl:text-[12px] ${
                   active ? "bg-brand-600 text-white" : "text-ink-700 hover:bg-brand-50 hover:text-brand-700"
                 }`}
               >
-                <Icon name={NAV_ICONS[cat.slug] ?? "box"} className="h-4 w-4 shrink-0" />
+                <Icon name={NAV_ICONS[cat.slug] ?? "box"} className="h-4.5 w-4.5 shrink-0" />
                 <span className="line-clamp-2">{cat.name}</span>
               </Link>
             );
           })}
-          <Link href="/san-pham" className="hidden shrink-0 items-center rounded-md px-2 text-[11px] font-bold text-brand-700 hover:bg-brand-50 2xl:flex">Xem thêm</Link>
+          <Link href="/san-pham" className="flex min-h-12 shrink-0 items-center justify-center rounded-md px-2 text-center text-[11px] font-bold text-brand-700 hover:bg-brand-50">
+            Xem thêm
+          </Link>
         </nav>
-        <div className="ml-auto flex items-center gap-0.5 sm:gap-1.5">
-          <div className="hidden flex-col items-end md:flex">
-            <span className="text-[11px] font-medium text-ink-500">Hotline tư vấn</span>
-            <a href={`tel:${settings.phone.replace(/\D/g, "")}`} className="text-[15px] font-extrabold text-accent-600 hover:text-accent-700">
-              {settings.phone}
-            </a>
-          </div>
-          <Link href="/tai-khoan?tab=wishlist" className="relative hidden h-10 w-10 items-center justify-center rounded-md text-ink-700 hover:bg-ink-50 sm:flex" aria-label="Yêu thích">
-            <Icon name="heart" className="h-5 w-5" />
-            {wishlist.length > 0 && (
-              <span className="absolute -top-0.5 right-0 flex h-4 min-w-4 items-center justify-center rounded-full bg-accent-600 px-1 text-[10px] font-bold text-white">
-                {wishlist.length}
-              </span>
-            )}
-          </Link>
-          <Link href="/tai-khoan" className="flex h-10 w-10 items-center justify-center rounded-md text-ink-700 hover:bg-ink-50" aria-label="Tài khoản">
-            <Icon name="user" className="h-5 w-5" />
-          </Link>
-          <button onClick={() => setCartOpen(true)} className="relative flex h-10 w-10 items-center justify-center rounded-md text-ink-700 hover:bg-ink-50" aria-label="Giỏ hàng">
-            <Icon name="cart" className="h-5 w-5" />
-            {cartCount > 0 && (
-              <span className="absolute -top-0.5 right-0 flex h-4 min-w-4 items-center justify-center rounded-full bg-accent-600 px-1 text-[10px] font-bold text-white">
-                {cartCount}
-              </span>
-            )}
-          </button>
-        </div>
       </div>
       <div className="border-t border-line bg-brand-700 py-2 lg:hidden">
         <div className="wrap">
@@ -516,26 +482,58 @@ export function CartDrawer({ settings }: { settings: Settings }) {
 /* ------------------------------- Floating contacts ------------------------------ */
 
 export function FloatingContacts({ settings }: { settings: Settings }) {
+  const { cartCount, wishlist, setCartOpen } = useShop();
   return (
-    <div className="fixed bottom-20 right-4 z-40 flex flex-col gap-2 lg:top-1/2 lg:bottom-auto lg:-translate-y-1/2">
-        <a
-          href={settings.zalo}
-          target="_blank"
-          rel="noopener"
-          className="flex h-12 w-12 items-center justify-center rounded-full bg-[#0068ff] text-[11px] font-extrabold text-white shadow-lg transition-transform hover:scale-105"
-          aria-label="Mở Zalo"
-        >
-          Zalo
-        </a>
-        <a
-          href={settings.facebook}
-          target="_blank"
-          rel="noopener"
-          className="flex h-12 w-12 items-center justify-center rounded-full bg-[#1877f2] text-white shadow-lg transition-transform hover:scale-105"
-          aria-label="Mở Facebook"
-        >
-          <Icon name="facebook" className="h-6 w-6" />
-        </a>
+    <div className="fixed bottom-20 right-4 z-40 flex flex-col gap-2.5 lg:top-1/2 lg:bottom-auto lg:-translate-y-1/2">
+      <button
+        onClick={() => setCartOpen(true)}
+        className="relative flex h-14 w-14 items-center justify-center rounded-full bg-ink-950 text-white shadow-lg transition-transform hover:scale-105"
+        aria-label="Giỏ hàng"
+      >
+        <Icon name="cart" className="h-6 w-6" />
+        {cartCount > 0 && (
+          <span className="absolute -right-0.5 -top-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-accent-600 px-1 text-[10px] font-bold text-white">
+            {cartCount}
+          </span>
+        )}
+      </button>
+      <Link
+        href="/tai-khoan?tab=wishlist"
+        className="relative flex h-14 w-14 items-center justify-center rounded-full bg-white text-ink-800 shadow-lg ring-1 ring-line transition-transform hover:scale-105 hover:text-brand-700"
+        aria-label="Yêu thích"
+      >
+        <Icon name="heart" className="h-6 w-6" />
+        {wishlist.length > 0 && (
+          <span className="absolute -right-0.5 -top-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-accent-600 px-1 text-[10px] font-bold text-white">
+            {wishlist.length}
+          </span>
+        )}
+      </Link>
+      <Link
+        href="/tai-khoan"
+        className="flex h-14 w-14 items-center justify-center rounded-full bg-white text-ink-800 shadow-lg ring-1 ring-line transition-transform hover:scale-105 hover:text-brand-700"
+        aria-label="Tài khoản"
+      >
+        <Icon name="user" className="h-6 w-6" />
+      </Link>
+      <a
+        href={settings.zalo}
+        target="_blank"
+        rel="noopener"
+        className="flex h-14 w-14 items-center justify-center rounded-full bg-[#0068ff] text-[12px] font-extrabold text-white shadow-lg transition-transform hover:scale-105"
+        aria-label="Mở Zalo"
+      >
+        Zalo
+      </a>
+      <a
+        href={settings.facebook}
+        target="_blank"
+        rel="noopener"
+        className="flex h-14 w-14 items-center justify-center rounded-full bg-[#1877f2] text-white shadow-lg transition-transform hover:scale-105"
+        aria-label="Mở Facebook"
+      >
+        <Icon name="facebook" className="h-7 w-7" />
+      </a>
     </div>
   );
 }
@@ -557,19 +555,13 @@ export function SideRails() {
     <div className="side-rails" aria-label="Quảng bá thương hiệu">
       <div className="side-rail-slot">
         <Link href="/thuong-hieu" className="side-rail side-rail-left" aria-label="Xem thương hiệu phân phối">
-          <img src="/logoqt.png?v=3" alt="" className="w-full object-contain" />
-          <span className="side-rail-kicker">Nhà phân phối</span>
-          <strong>THIẾT BỊ<br />CHÍNH HÃNG</strong>
-          <span className="side-rail-button">Xem thương hiệu</span>
+          <iframe src="/quang_thang_banner.html" title="Quang Thắng Telecom" className="side-rail-frame" tabIndex={-1} />
         </Link>
       </div>
       <div />
       <div className="side-rail-slot">
         <Link href="/thuong-hieu" className="side-rail side-rail-right" aria-label="Xem thương hiệu phân phối">
-          <img src="/logoqt.png?v=3" alt="" className="w-full object-contain" />
-          <span className="side-rail-kicker">Nhà phân phối</span>
-          <strong>THIẾT BỊ<br />CHÍNH HÃNG</strong>
-          <span className="side-rail-button">Xem thương hiệu</span>
+          <iframe src="/quang_thang_banner.html" title="Quang Thắng Telecom" className="side-rail-frame" tabIndex={-1} />
         </Link>
       </div>
     </div>
@@ -700,7 +692,7 @@ export function Footer({ categories, settings }: { categories: NavCategory[]; se
             <li><Link href="/chinh-sach-doi-tra" className="hover:text-white">Chính sách đổi trả</Link></li>
             <li><Link href="/chinh-sach-giao-nhan" className="hover:text-white">Chính sách giao nhận</Link></li>
             <li><Link href="/chinh-sach-bao-mat" className="hover:text-white">Chính sách bảo mật</Link></li>
-            <li><Link href="/tin-khuyen-mai-hot" className="hover:text-white">Khuyến mãi</Link></li>
+            <li><Link href="/khuyen-mai" className="hover:text-white">Khuyến mãi</Link></li>
           </ul>
         </div>
         <div>
