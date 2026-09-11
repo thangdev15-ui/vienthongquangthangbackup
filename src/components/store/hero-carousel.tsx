@@ -34,6 +34,12 @@ export function HeroCarousel({ firstImage }: { firstImage?: string | null }) {
         />
       ))}
       <div className="absolute inset-0 bg-black/20" />
+      <button type="button" onClick={() => setActive((active - 1 + images.length) % images.length)} className="absolute left-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/25 text-white transition-colors hover:bg-black/45" aria-label="Ảnh trước">
+        <Icon name="chevron-left" className="h-5 w-5" />
+      </button>
+      <button type="button" onClick={() => setActive((active + 1) % images.length)} className="absolute right-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/25 text-white transition-colors hover:bg-black/45" aria-label="Ảnh tiếp theo">
+        <Icon name="chevron-right" className="h-5 w-5" />
+      </button>
       <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-5 sm:p-8">
         <div className="max-w-lg text-white drop-shadow-md">
           <p className="text-xs font-semibold uppercase tracking-wider text-white/80">Quang Thang Telecom</p>

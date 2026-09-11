@@ -157,14 +157,14 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* ============ BEST SELLERS (dark) ============ */}
+      {/* ============ BEST SELLERS ============ */}
       {bestsellers.items.length > 0 && (
-        <section className="bg-ink-950 py-12">
+        <section className="bg-white py-12">
           <div className="wrap">
-            <SectionHeader dark title="Bán chạy nhất" subtitle="Sản phẩm được tin dùng tại các công trình" href="/san-pham" hrefLabel="Xem thêm" />
+            <SectionHeader title="Bán chạy nhất" subtitle="Sản phẩm được tin dùng tại các công trình" href="/san-pham" hrefLabel="Xem thêm" />
             <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
               {bestsellers.items.map((p) => (
-                <Link key={p.id} href={`/san-pham/${p.slug}`} className="group rounded-lg border border-white/10 bg-white p-3 transition-all hover:border-brand-400 hover:shadow-lg">
+                <Link key={p.id} href={`/san-pham/${p.slug}`} className="group rounded-lg border border-line bg-white p-3 transition-all hover:border-brand-400 hover:shadow-lg">
                   <div className="relative aspect-square overflow-hidden rounded-md bg-white">
                     {p.image ? (
                       <Image src={p.image} alt={p.name} fill sizes="25vw" className="object-cover transition-transform duration-300 group-hover:scale-[1.04]" />
