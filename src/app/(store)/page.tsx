@@ -57,7 +57,7 @@ export default async function HomePage() {
       {/* ============ HERO ============ */}
       <section className="bg-ink-50 py-3">
         <div className="wrap">
-          <HeroCarousel firstImage={banner?.image} />
+          <HeroCarousel />
         </div>
       </section>
 

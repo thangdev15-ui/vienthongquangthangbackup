@@ -5,14 +5,10 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Icon } from "@/components/ui";
 
-const HERO_IMAGES = [
-  "https://images.pexels.com/photos/5073493/pexels-photo-5073493.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=1400",
-  "https://images.pexels.com/photos/2881229/pexels-photo-2881229.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=1400",
-  "https://images.pexels.com/photos/325229/pexels-photo-325229.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=1400",
-];
+const HERO_IMAGES = ["/banner1.png", "/banner2.png", "/banner3.png"];
 
-export function HeroCarousel({ firstImage }: { firstImage?: string | null }) {
-  const images = firstImage ? [firstImage, ...HERO_IMAGES.slice(1)] : HERO_IMAGES;
+export function HeroCarousel() {
+  const images = HERO_IMAGES;
   const [active, setActive] = useState(0);
 
   useEffect(() => {

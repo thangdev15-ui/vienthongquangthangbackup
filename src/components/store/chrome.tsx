@@ -200,11 +200,13 @@ export function SearchBar({ autoFocus = false }: { autoFocus?: boolean }) {
 
 /* ----------------------------------- Header ---------------------------------- */
 
-export function Header({ settings, onOpenMobile }: { settings: Settings; onOpenMobile: () => void }) {
+export function Header({ settings, onOpenMobile, categories }: { settings: Settings; onOpenMobile: () => void; categories: NavCategory[] }) {
   const { cartCount, wishlist, setCartOpen } = useShop();
+  const quickCategories = categories.slice(0, 5);
+  const pathname = usePathname();
   return (
     <div className="sticky top-0 z-40 border-b border-line bg-white/95 backdrop-blur">
-      <div className="wrap flex h-20 items-center gap-3 sm:gap-5">
+      <div className="wrap flex min-h-[76px] items-center gap-3 sm:gap-4">
         <button
           onClick={onOpenMobile}
           className="flex h-10 w-10 items-center justify-center rounded-md text-ink-700 hover:bg-ink-50 lg:hidden"
@@ -212,12 +214,30 @@ export function Header({ settings, onOpenMobile }: { settings: Settings; onOpenM
         >
           <Icon name="menu" className="h-6 w-6" />
         </button>
-        <Link href="/" className="flex h-14 w-[145px] shrink-0 items-center px-2 sm:w-[190px]" aria-label="Trang chủ Viễn Thông Quang Thắng">
+        <Link href="/" className="flex h-14 w-[150px] shrink-0 items-center px-1 sm:w-[178px]" aria-label="Trang chủ Viễn Thông Quang Thắng">
           <img src="/logoqt.png?v=2" alt="Viễn Thông Quang Thắng" width={300} height={106} className="h-auto w-full object-contain" />
         </Link>
-        <div className="hidden flex-1 lg:block lg:max-w-2xl">
+        <div className="hidden min-w-0 flex-1 lg:block lg:max-w-[500px]">
           <SearchBar />
         </div>
+        <nav aria-label="Danh mục nhanh" className="hidden min-w-0 flex-1 items-stretch gap-1 xl:flex">
+          {quickCategories.map((cat) => {
+            const active = pathname === `/danh-muc/${cat.slug}` || pathname.startsWith(`/danh-muc/${cat.slug}/`);
+            return (
+              <Link
+                key={cat.id}
+                href={`/danh-muc/${cat.slug}`}
+                className={`flex min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-md px-1 text-center text-[11px] font-semibold leading-tight transition-colors ${
+                  active ? "bg-brand-600 text-white" : "text-ink-700 hover:bg-brand-50 hover:text-brand-700"
+                }`}
+              >
+                <Icon name={NAV_ICONS[cat.slug] ?? "box"} className="h-4 w-4 shrink-0" />
+                <span className="line-clamp-2">{cat.name}</span>
+              </Link>
+            );
+          })}
+          <Link href="/san-pham" className="hidden shrink-0 items-center rounded-md px-2 text-[11px] font-bold text-brand-700 hover:bg-brand-50 2xl:flex">Xem thêm</Link>
+        </nav>
         <div className="ml-auto flex items-center gap-0.5 sm:gap-1.5">
           <div className="hidden flex-col items-end md:flex">
             <span className="text-[11px] font-medium text-ink-500">Hotline tư vấn</span>
@@ -260,7 +280,7 @@ export function Header({ settings, onOpenMobile }: { settings: Settings; onOpenM
 export function MegaNav({ categories }: { categories: NavCategory[] }) {
   const pathname = usePathname();
   return (
-    <nav aria-label="Điều hướng chính" className="relative z-30 border-b border-line bg-white">
+    <nav aria-label="Điều hướng chính" className="relative z-30 border-b border-line bg-white lg:hidden">
       <div className="wrap hidden items-stretch gap-1 overflow-hidden py-1.5 lg:flex">
         <div className="flex min-w-0 flex-1 items-stretch gap-1">
           {categories.slice(0, 10).map((cat) => {

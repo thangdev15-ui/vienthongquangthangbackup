@@ -29,7 +29,7 @@ export function StoreShell({
     <>
       <AnnouncementBar text={settings.announcement} />
       <TopBar settings={settings} />
-      <Header settings={settings} onOpenMobile={() => setMenuOpen(true)} />
+      <Header settings={settings} categories={categories} onOpenMobile={() => setMenuOpen(true)} />
       <MegaNav categories={categories} />
       <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} categories={categories} />
       <SideRails />
