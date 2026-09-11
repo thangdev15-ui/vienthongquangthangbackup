@@ -126,10 +126,12 @@
     background: #1f2937;
   }
   .side-rail-left {
-    left: max(12px, calc(50% - 1000px));
+    left: 12px !important;
+    right: auto !important;
   }
   .side-rail-right {
-    right: max(12px, calc(50% - 1000px));
+    right: 12px !important;
+    left: auto !important;
   }
   .side-rails {
     display: none;
