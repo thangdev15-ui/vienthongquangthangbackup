@@ -32,8 +32,10 @@ export function StoreShell({
       <Header settings={settings} categories={categories} onOpenMobile={() => setMenuOpen(true)} />
       <MegaNav categories={categories} />
       <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} categories={categories} />
-      <SideRails />
-      <main className="min-h-[50vh] pb-16 lg:pb-0">{children}</main>
+      <main className="relative min-h-[50vh] pb-16 lg:pb-0">
+        <SideRails />
+        {children}
+      </main>
       <Footer categories={categories} settings={settings} />
       <MobileTabBar onOpenCategories={() => setMenuOpen(true)} />
       <FloatingContacts settings={settings} />
