@@ -27,16 +27,26 @@ type Settings = Record<string, string>;
 
 /* ------------------------------ Announcement bar ----------------------------- */
 
-export function AnnouncementBar({ text }: { text: string }) {
+export function AnnouncementBar({ text, settings }: { text: string; settings: Settings }) {
   return (
-    <div className="bg-ink-950 text-[13px] text-ink-200">
-      <div className="wrap flex h-9 items-center justify-between gap-4">
-        <p className="truncate">{text}</p>
-        <div className="hidden items-center gap-5 sm:flex">
+    <div className="bg-brand-800 text-[13px] text-white">
+      <div className="wrap flex min-h-10 items-center justify-between gap-4 py-1">
+        <div className="flex min-w-0 items-center gap-4">
+          <p className="hidden truncate font-semibold text-brand-50 lg:block">{text}</p>
+          <span className="flex min-w-0 items-center gap-1.5">
+            <Icon name="pin" className="h-4 w-4 shrink-0 text-accent-100" />
+            <span className="truncate">{settings.address}</span>
+          </span>
+          <a href={`tel:${settings.phone.replace(/\D/g, "")}`} className="hidden shrink-0 items-center gap-1.5 font-bold text-white hover:text-accent-100 md:flex">
+            <Icon name="phone" className="h-4 w-4 text-accent-100" />
+            {settings.phone}
+          </a>
+        </div>
+        <div className="hidden shrink-0 items-center gap-5 sm:flex">
           <Link href="/tai-khoan?tab=orders" className="hidden hover:text-white lg:inline">
             Theo dõi đơn hàng
           </Link>
-          <Link href="/tin-tuc" className="hover:text-white">
+          <Link href="/tin-tuc" className="hover:text-accent-100">
             Tin tức công nghệ
           </Link>
         </div>
@@ -52,10 +62,6 @@ export function TopBar({ settings }: { settings: Settings }) {
     <div className="border-b border-line bg-white">
       <div className="wrap flex h-10 items-center justify-between text-[13px] text-ink-600">
         <div className="flex min-w-0 items-center gap-5">
-          <span className="hidden items-center gap-1.5 md:flex">
-            <Icon name="pin" className="h-4 w-4 text-brand-700" />
-            <span className="truncate">{settings.address}</span>
-          </span>
           <span className="flex items-center gap-1.5">
             <Icon name="clock" className="h-4 w-4 text-brand-700" />
             {settings.hours}

@@ -111,13 +111,14 @@
     @apply h-full min-w-0;
   }
   .side-rail {
-    @apply pointer-events-auto fixed bottom-5 top-[128px] z-20 block overflow-hidden rounded-md border border-brand-100 bg-white shadow-sm transition-transform hover:-translate-y-1;
+    @apply pointer-events-auto fixed bottom-5 top-[118px] z-20 block overflow-y-auto overflow-x-hidden rounded-md border border-brand-100 bg-white shadow-sm transition-transform hover:-translate-y-1;
     width: clamp(160px, calc((100vw - min(1320px, calc(100vw - 400px))) / 2 - 22px), 250px);
+    scrollbar-width: thin;
   }
   .side-rail-frame {
     @apply h-full w-full object-cover;
     border: 0;
-    pointer-events: none;
+    min-height: 760px;
   }
   .hero-carousel {
     aspect-ratio: 21 / 8;

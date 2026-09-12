@@ -27,7 +27,7 @@ export function StoreShell({
   const [menuOpen, setMenuOpen] = useState(false);
   return (
     <>
-      <AnnouncementBar text={settings.announcement} />
+      <AnnouncementBar text={settings.announcement} settings={settings} />
       <TopBar settings={settings} />
       <Header settings={settings} categories={categories} onOpenMobile={() => setMenuOpen(true)} />
       <MegaNav categories={categories} />
