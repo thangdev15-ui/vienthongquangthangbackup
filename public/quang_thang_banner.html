@@ -52,7 +52,7 @@
   }
   .ring--bottom{ position:absolute; width:260px; height:260px; bottom:-110px; right:-90px; }
   .ring--bottom-fill{
-    position:absolute; width:170px; height:170px; bottom:-70px; right:-60px; border-radius:50%;
+    position:absolute; width:clamp(170px, 68vw, 230px); height:clamp(170px, 68vw, 230px); bottom:-78px; right:-72px; border-radius:50%;
     background:radial-gradient(circle at 65% 65%, var(--orange-light), var(--orange) 75%);
     opacity:0.9;
   }
@@ -71,32 +71,16 @@
     padding:clamp(28px, 7vh, 46px) clamp(10px, 8vw, 26px) clamp(18px, 5vh, 30px);
   }
 
-  .logo-mark{
-    width:clamp(34px, 15vw, 46px); height:clamp(34px, 15vw, 46px);
-    border-radius:50%;
-    background:conic-gradient(from 200deg, var(--orange) 0deg, var(--orange-light) 120deg, #fff 240deg, var(--orange) 360deg);
-    display:flex; align-items:center; justify-content:center;
+  .brand-logo{
+    width:clamp(108px, 70vw, 168px);
+    height:auto;
     margin-bottom:10px;
-    box-shadow:0 4px 14px rgba(0,0,0,0.25);
+    filter:drop-shadow(0 8px 16px rgba(0,0,0,0.25));
   }
-  .logo-mark::after{
-    content:"";
-    width:clamp(16px, 7vw, 22px); height:clamp(16px, 7vw, 22px);
-    border-radius:50%;
-    background:var(--navy-deep);
-  }
-  .wordmark{
-    color:#fff;
-    font-size:clamp(13px, 7vw, 19px);
-    font-weight:800;
-    letter-spacing:0.5px;
-    line-height:1.1;
-  }
-  .wordmark span{ color:var(--orange-light); }
   .sub-wordmark{
     color:rgba(255,255,255,0.75);
-    font-size:9px;
-    letter-spacing:clamp(1px, 1vw, 3px);
+    font-size:clamp(8px, 3vw, 10px);
+    letter-spacing:clamp(1px, 1vw, 2px);
     margin-top:2px;
   }
 
@@ -105,38 +89,30 @@
     color:rgba(255,255,255,0.65);
     font-size:10px;
     letter-spacing:clamp(0.5px, 1vw, 2px);
-    margin:18px 0 10px;
+    margin:clamp(12px, 3vh, 18px) 0 10px;
   }
   .divider .line{ width:clamp(10px, 9vw, 26px); height:1px; background:rgba(255,255,255,0.4); }
 
   .headline{
     color:#fff;
-    font-size:clamp(17px, 8vw, 23px);
+    font-size:clamp(23px, 12vw, 34px);
     font-weight:800;
     line-height:1.28;
-    max-width:230px;
+    max-width:250px;
   }
   .headline em{
     font-style:normal;
     color:var(--orange-light);
   }
 
-  .tagline{
-    color:rgba(255,255,255,0.78);
-    font-size:clamp(10.5px, 4vw, 12.5px);
-    line-height:1.5;
-    max-width:220px;
-    margin-top:12px;
-  }
-
   .features{
     width:100%;
-    margin-top:22px;
+    margin-top:clamp(18px, 5vh, 30px);
     display:flex;
     flex-direction:column;
-    gap:11px;
+    gap:clamp(12px, 2.2vh, 16px);
     text-align:left;
-    max-width:230px;
+    max-width:240px;
   }
   .feature{
     display:flex;
@@ -145,7 +121,7 @@
   }
   .feature .icon{
     flex:0 0 auto;
-    width:clamp(22px, 10vw, 26px); height:clamp(22px, 10vw, 26px);
+    width:clamp(26px, 12vw, 34px); height:clamp(26px, 12vw, 34px);
     border-radius:50%;
     background:rgba(255,255,255,0.12);
     display:flex; align-items:center; justify-content:center;
@@ -153,8 +129,8 @@
     border:1px solid rgba(255,255,255,0.2);
   }
   .feature .icon svg{
-    width:14px;
-    height:14px;
+    width:clamp(14px, 5vw, 18px);
+    height:clamp(14px, 5vw, 18px);
     stroke:currentColor;
     stroke-width:2.5;
     fill:none;
@@ -163,13 +139,45 @@
   }
   .feature .txt{
     color:#fff;
-    font-size:clamp(10.5px, 4vw, 12.5px);
-    font-weight:600;
+    font-size:clamp(13px, 5vw, 17px);
+    font-weight:700;
+  }
+  .contact{
+    width:100%;
+    max-width:250px;
+    margin-top:auto;
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+    border-radius:18px;
+    background:rgba(8,45,105,0.74);
+    border:1px solid rgba(255,255,255,0.18);
+    padding:12px 12px;
+    text-align:left;
+  }
+  .contact-row{
+    display:flex;
+    align-items:flex-start;
+    gap:8px;
+    color:#fff;
+    font-size:clamp(10.5px, 4vw, 13px);
+    font-weight:650;
+    line-height:1.35;
+  }
+  .contact-row svg{
+    width:15px;
+    height:15px;
+    flex:0 0 auto;
+    margin-top:1px;
+    stroke:var(--orange-light);
+    stroke-width:2.2;
+    fill:none;
+    stroke-linecap:round;
+    stroke-linejoin:round;
   }
 
   .cta{
-    margin-top:auto;
-    padding-top:24px;
+    padding-top:clamp(16px, 4vh, 26px);
   }
   .cta a{
     display:inline-flex;
@@ -182,47 +190,7 @@
     padding:10px clamp(14px, 8vw, 26px);
     border-radius:999px;
     text-decoration:none;
-    box-shadow:0 10px 22px rgba(255,106,26,0.4);
-  }
-
-  .services{
-    display:flex;
-    justify-content:center;
-    gap:clamp(8px, 7vw, 22px);
-    margin-top:20px;
-    padding-top:16px;
-    border-top:1px solid rgba(255,255,255,0.15);
-    width:100%;
-  }
-  .service{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:5px;
-    color:rgba(255,255,255,0.85);
-  }
-  .service .s-icon{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    width:18px;
-    height:18px;
-    color:var(--orange-light);
-  }
-  .service .s-icon svg{
-    width:18px;
-    height:18px;
-    stroke:currentColor;
-    stroke-width:2;
-    fill:none;
-    stroke-linecap:round;
-    stroke-linejoin:round;
-  }
-  .service .s-label{
-    font-size:clamp(7px, 3vw, 8.5px);
-    letter-spacing:0.3px;
-    text-align:center;
-    line-height:1.2;
+    box-shadow:0 12px 28px rgba(255,106,26,0.48);
   }
 </style>
 </head>
@@ -237,29 +205,24 @@
     <div class="dot dot2"></div>
 
     <div class="content">
-      <div class="logo-mark"></div>
-      <div class="wordmark">QUANG THẮNG <span>TELECOM</span></div>
+      <img class="brand-logo" src="/logoqt.png?v=4" alt="Quang Thắng Telecom">
       <div class="sub-wordmark">KẾT NỐI TIN CẬY</div>
 
       <div class="divider"><span class="line"></span>NHÀ PHÂN PHỐI<span class="line"></span></div>
 
       <div class="headline">THIẾT BỊ <em>CHÍNH HÃNG</em></div>
-      <div class="tagline">Giải pháp kết nối thông minh cho mọi nhà, mọi doanh nghiệp</div>
 
       <div class="features">
         <div class="feature"><div class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></div><div class="txt">Sản phẩm chính hãng</div></div>
         <div class="feature"><div class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 18V6h3l3 4v8h-2"/><path d="M14 18H9"/><path d="M5 18H3V8h11"/><circle cx="7" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg></div><div class="txt">Giao hàng nhanh, toàn quốc</div></div>
-        <div class="feature"><div class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13a8 8 0 0 1 16 0"/><path d="M18 19c0 1.1-.9 2-2 2h-3"/><path d="M4 13v3a2 2 0 0 0 2 2h1v-7H6a2 2 0 0 0-2 2Z"/><path d="M20 13v3a2 2 0 0 1-2 2h-1v-7h1a2 2 0 0 1 2 2Z"/></svg></div><div class="txt">Tư vấn chuyên nghiệp</div></div>
-        <div class="feature"><div class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3l-5.6 2.9 1.1-6.2L3 9.6l6.2-.9L12 3Z"/></svg></div><div class="txt">Giá tốt nhất thị trường</div></div>
+      </div>
+
+      <div class="contact">
+        <div class="contact-row"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg><span>435/26 Thống Nhất, TP.HCM</span></div>
+        <div class="contact-row"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.6a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.5-1.2a2 2 0 0 1 2.1-.4c.8.3 1.7.6 2.6.7a2 2 0 0 1 1.7 1.9Z"/></svg><span>0941.74.6161</span></div>
       </div>
 
       <div class="cta"><a href="#">Xem thêm →</a></div>
-
-      <div class="services">
-        <div class="service"><div class="s-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 13a10 10 0 0 1 14 0"/><path d="M8.5 16.5a5 5 0 0 1 7 0"/><path d="M12 20h.01"/></svg></div><div class="s-label">Internet<br>cáp quang</div></div>
-        <div class="service"><div class="s-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="12" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg></div><div class="s-label">Truyền hình<br>IPTV</div></div>
-        <div class="service"><div class="s-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 10 20 7v10l-5-3"/><rect x="3" y="6" width="12" height="12" rx="2"/></svg></div><div class="s-label">Camera<br>giám sát</div></div>
-      </div>
     </div>
   </div>
 

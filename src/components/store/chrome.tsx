@@ -227,7 +227,7 @@ export function Header({ settings, onOpenMobile, categories }: { settings: Setti
               </Link>
             );
           })}
-          <Link href="/san-pham" className="flex min-h-12 shrink-0 items-center justify-center rounded-md px-2 text-center text-[11px] font-bold text-brand-700 hover:bg-brand-50">
+          <Link href="/san-pham" className="flex min-h-12 shrink-0 items-center justify-center rounded-md px-2 text-center text-[11px] font-bold text-accent-600 hover:bg-accent-50 hover:text-accent-700">
             Xem thêm
           </Link>
         </nav>
@@ -539,18 +539,6 @@ export function FloatingContacts({ settings }: { settings: Settings }) {
 }
 
 export function SideRails() {
-  const [footerVisible, setFooterVisible] = useState(false);
-
-  useEffect(() => {
-    const footer = document.querySelector("footer");
-    if (!footer) return;
-    const observer = new IntersectionObserver(([entry]) => setFooterVisible(entry.isIntersecting), { threshold: 0 });
-    observer.observe(footer);
-    return () => observer.disconnect();
-  }, []);
-
-  if (footerVisible) return null;
-
   return (
     <div className="side-rails" aria-label="Quảng bá thương hiệu">
       <div className="side-rail-slot">
@@ -650,7 +638,7 @@ export function NewsletterForm({ compact = false }: { compact?: boolean }) {
 
 export function Footer({ categories, settings }: { categories: NavCategory[]; settings: Settings }) {
   return (
-    <footer className="mt-14 border-t border-line bg-ink-950 pb-20 text-ink-300 lg:pb-0">
+    <footer className="mt-14 border-t border-brand-800 bg-brand-950 pb-20 text-brand-100 lg:pb-0">
       <div className="wrap grid gap-10 py-12 md:grid-cols-2 lg:grid-cols-4">
         <div>
           <div className="mb-4 flex items-center gap-2.5">
@@ -658,15 +646,15 @@ export function Footer({ categories, settings }: { categories: NavCategory[]; se
               <img src="/logoqt.png?v=3" alt="Quang Thang Telecom" className="h-auto w-full object-contain" />
             </span>
           </div>
-          <p className="text-[13px] leading-6 text-ink-300">
+          <p className="text-[13px] leading-6 text-brand-100/85">
             Tổng kho thiết bị viễn thông, cáp mạng &amp; camera tại TP. Hồ Chí Minh. Sản phẩm chính hãng, tư vấn kỹ thuật,
             giao hàng toàn quốc.
           </p>
           <div className="mt-4 flex gap-3">
-            <a href={settings.facebook} target="_blank" rel="noopener" aria-label="Facebook" className="flex h-9 w-9 items-center justify-center rounded-md bg-white/10 hover:bg-white/20">
+            <a href={settings.facebook} target="_blank" rel="noopener" aria-label="Facebook" className="flex h-9 w-9 items-center justify-center rounded-md bg-white/10 hover:bg-accent-600">
               <Icon name="facebook" className="h-4 w-4" />
             </a>
-            <a href={settings.zalo} target="_blank" rel="noopener" aria-label="Zalo" className="flex h-9 w-9 items-center justify-center rounded-md bg-white/10 hover:bg-white/20">
+            <a href={settings.zalo} target="_blank" rel="noopener" aria-label="Zalo" className="flex h-9 w-9 items-center justify-center rounded-md bg-white/10 hover:bg-accent-600">
               <Icon name="message" className="h-4 w-4" />
             </a>
           </div>
@@ -676,7 +664,7 @@ export function Footer({ categories, settings }: { categories: NavCategory[]; se
           <ul className="grid grid-cols-1 gap-2 text-[13px]">
             {categories.slice(0, 9).map((c) => (
               <li key={c.id}>
-                <Link href={`/danh-muc/${c.slug}`} className="hover:text-white">
+                <Link href={`/danh-muc/${c.slug}`} className="hover:text-accent-100">
                   {c.name}
                 </Link>
               </li>
@@ -686,44 +674,44 @@ export function Footer({ categories, settings }: { categories: NavCategory[]; se
         <div>
           <h3 className="mb-4 text-sm font-bold uppercase tracking-wide text-white">Hỗ trợ &amp; Chính sách</h3>
           <ul className="space-y-2 text-[13px]">
-            <li><Link href="/huong-dan-mua-hang" className="hover:text-white">Hướng dẫn mua hàng online</Link></li>
-            <li><Link href="/hinh-thuc-thanh-toan" className="hover:text-white">Hình thức thanh toán</Link></li>
-            <li><Link href="/chinh-sach-bao-hanh" className="hover:text-white">Chính sách bảo hành</Link></li>
-            <li><Link href="/chinh-sach-doi-tra" className="hover:text-white">Chính sách đổi trả</Link></li>
-            <li><Link href="/chinh-sach-giao-nhan" className="hover:text-white">Chính sách giao nhận</Link></li>
-            <li><Link href="/chinh-sach-bao-mat" className="hover:text-white">Chính sách bảo mật</Link></li>
-            <li><Link href="/khuyen-mai" className="hover:text-white">Khuyến mãi</Link></li>
+            <li><Link href="/huong-dan-mua-hang" className="hover:text-accent-100">Hướng dẫn mua hàng online</Link></li>
+            <li><Link href="/hinh-thuc-thanh-toan" className="hover:text-accent-100">Hình thức thanh toán</Link></li>
+            <li><Link href="/chinh-sach-bao-hanh" className="hover:text-accent-100">Chính sách bảo hành</Link></li>
+            <li><Link href="/chinh-sach-doi-tra" className="hover:text-accent-100">Chính sách đổi trả</Link></li>
+            <li><Link href="/chinh-sach-giao-nhan" className="hover:text-accent-100">Chính sách giao nhận</Link></li>
+            <li><Link href="/chinh-sach-bao-mat" className="hover:text-accent-100">Chính sách bảo mật</Link></li>
+            <li><Link href="/khuyen-mai" className="hover:text-accent-100">Khuyến mãi</Link></li>
           </ul>
         </div>
         <div>
           <h3 className="mb-4 text-sm font-bold uppercase tracking-wide text-white">Liên hệ</h3>
           <ul className="space-y-2.5 text-[13px]">
             <li className="flex gap-2.5">
-              <Icon name="pin" className="mt-0.5 h-4 w-4 shrink-0 text-brand-300" />
+              <Icon name="pin" className="mt-0.5 h-4 w-4 shrink-0 text-accent-100" />
               {settings.address}
             </li>
             <li className="flex gap-2.5">
-              <Icon name="clock" className="mt-0.5 h-4 w-4 shrink-0 text-brand-300" />
+              <Icon name="clock" className="mt-0.5 h-4 w-4 shrink-0 text-accent-100" />
               {settings.hours}
             </li>
             <li className="flex gap-2.5">
-              <Icon name="phone" className="mt-0.5 h-4 w-4 shrink-0 text-brand-300" />
-              <a href={`tel:${settings.phone.replace(/\D/g, "")}`} className="font-semibold text-white hover:text-brand-300">
+              <Icon name="phone" className="mt-0.5 h-4 w-4 shrink-0 text-accent-100" />
+              <a href={`tel:${settings.phone.replace(/\D/g, "")}`} className="font-semibold text-white hover:text-accent-100">
                 {settings.phone} (tư vấn)
               </a>
             </li>
             <li className="flex gap-2.5">
-              <Icon name="message" className="mt-0.5 h-4 w-4 shrink-0 text-brand-300" />
-              <a href={settings.zalo} target="_blank" rel="noopener" className="hover:text-white">
+              <Icon name="message" className="mt-0.5 h-4 w-4 shrink-0 text-accent-100" />
+              <a href={settings.zalo} target="_blank" rel="noopener" className="hover:text-accent-100">
                 Zalo: {settings.zalo.replace("https://zalo.me/", "")} — Quang Thắng
               </a>
             </li>
           </ul>
-          <p className="mt-4 text-[12px] text-ink-400">MST: {settings.mst} — đăng ký kinh doanh do SKH&amp;ĐT TP.HCM cấp</p>
+          <p className="mt-4 text-[12px] text-brand-100/70">MST: {settings.mst} — đăng ký kinh doanh do SKH&amp;ĐT TP.HCM cấp</p>
         </div>
       </div>
       <div className="border-t border-white/10">
-        <div className="wrap flex flex-col items-center justify-between gap-2 py-4 text-[12px] text-ink-400 sm:flex-row">
+        <div className="wrap flex flex-col items-center justify-between gap-2 py-4 text-[12px] text-brand-100/70 sm:flex-row">
           <span>© {new Date().getFullYear()} Viễn Thông Quang Thắng. Thiết bị chính hãng — giá tốt cho công trình.</span>
           <span>GPKD số {settings.mst}</span>
         </div>

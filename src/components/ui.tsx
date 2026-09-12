@@ -264,13 +264,13 @@ export function SectionHeader({
   return (
     <div className="mb-6 flex items-end justify-between gap-4">
       <div>
-        <h2 className={`text-xl font-bold sm:text-2xl ${dark ? "text-white" : "text-ink-950"}`}>{title}</h2>
+        <h2 className={`text-xl font-bold sm:text-2xl ${dark ? "text-white" : "text-brand-800"}`}>{title}</h2>
         {subtitle && <p className={`mt-1 text-sm ${dark ? "text-ink-300" : "text-ink-500"}`}>{subtitle}</p>}
       </div>
       {href && (
         <Link
           href={href}
-          className={`hidden shrink-0 items-center gap-1.5 text-sm font-semibold sm:inline-flex ${dark ? "text-brand-300 hover:text-brand-200" : "text-brand-700 hover:text-brand-800"}`}
+          className={`hidden shrink-0 items-center gap-1.5 text-sm font-semibold sm:inline-flex ${dark ? "text-accent-100 hover:text-white" : "text-accent-600 hover:text-accent-700"}`}
         >
           {hrefLabel ?? "Xem tất cả"}
           <Icon name="arrow-right" className="h-4 w-4" />

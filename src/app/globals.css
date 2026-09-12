@@ -71,7 +71,7 @@
   }
   @media (min-width: 1280px) {
     .wrap {
-      max-width: min(1320px, calc(100vw - 340px));
+      max-width: min(1320px, calc(100vw - 400px));
     }
   }
   .btn-primary {
@@ -112,7 +112,7 @@
   }
   .side-rail {
     @apply pointer-events-auto fixed bottom-5 top-[128px] z-20 block overflow-hidden rounded-md border border-brand-100 bg-white shadow-sm transition-transform hover:-translate-y-1;
-    width: clamp(130px, calc((100vw - min(1320px, calc(100vw - 340px))) / 2 - 22px), 220px);
+    width: clamp(160px, calc((100vw - min(1320px, calc(100vw - 400px))) / 2 - 22px), 250px);
   }
   .side-rail-frame {
     @apply h-full w-full object-cover;
@@ -141,7 +141,7 @@
   }
   @media (min-width: 1700px) {
     .side-rail {
-      width: 220px;
+      width: 250px;
     }
   }
   .badge-dot {

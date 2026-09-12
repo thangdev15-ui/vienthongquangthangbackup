@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getActiveBanners, getActiveBrands, getActiveCategories, getActivePromotions, getArticles, getSettings, queryProducts } from "@/lib/data";
+import { getActiveBanners, getActiveBrands, getActivePromotions, getArticles, queryProducts } from "@/lib/data";
 import { ProductGrid } from "@/components/store/product";
 import { Icon, SectionHeader, type IconName } from "@/components/ui";
 import { NewsletterForm } from "@/components/store/chrome";
@@ -9,36 +9,8 @@ import { formatVND } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
-const CAT_ICONS: Record<string, IconName> = {
-  "day-cap-mang": "cable",
-  "day-cap-quang": "zap",
-  "thiet-bi-mang": "server",
-  "thiet-bi-quang": "zap",
-  "camera-quan-sat": "eye",
-  "tu-mang": "box",
-  "phu-kien-mang": "grid",
-  "phu-kien-quang": "cable",
-  "thang-mang-cap": "layers",
-  "den-nang-luong-mat-troi": "sun",
-};
-
-const POPULAR_CATEGORY_SLUGS = [
-  "camera-quan-sat",
-  "day-cap-mang",
-  "thiet-bi-mang",
-  "thiet-bi-quang",
-  "day-cap-quang",
-  "tu-mang",
-  "phu-kien-mang",
-  "phu-kien-quang",
-  "thang-mang-cap",
-  "den-nang-luong-mat-troi",
-];
-
 export default async function HomePage() {
-  const [settings, categories, featured, bestsellers, saleItems, brands, banners, promotions, articles] = await Promise.all([
-    getSettings(),
-    getActiveCategories(),
+  const [featured, bestsellers, saleItems, brands, banners, promotions, articles] = await Promise.all([
     queryProducts({ only: "featured", limit: 8 }),
     queryProducts({ only: "bestseller", limit: 8 }),
     queryProducts({ only: "sale", limit: 4 }),
@@ -47,7 +19,6 @@ export default async function HomePage() {
     getActivePromotions(),
     getArticles({ limit: 4 }),
   ]);
-  const popularCats = POPULAR_CATEGORY_SLUGS.map((slug) => categories.find((c) => c.slug === slug)).filter((c): c is (typeof categories)[number] => Boolean(c));
   const hero = banners.find((b) => b.image) ?? null;
   const promo = promotions[0] ?? null;
   const banner = hero;
@@ -110,32 +81,6 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* ============ POPULAR CATEGORIES ============ */}
-      <section className="bg-white py-10">
-        <div className="wrap">
-          <SectionHeader title="Danh mục phổ biến" subtitle="Các nhóm sản phẩm chính cho hệ thống mạng, camera và hạ tầng quang" href="/san-pham" hrefLabel="Xem tất cả sản phẩm" />
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
-            {popularCats.map((c) => (
-              <Link key={c.id} href={`/danh-muc/${c.slug}`} className="card group flex min-h-[112px] items-center gap-3 p-3 transition-all hover:border-brand-400 hover:shadow-md">
-                <div className="relative flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-md bg-brand-50">
-                  {c.image ? (
-                    <Image src={c.image} alt={c.name} fill sizes="64px" className="object-cover opacity-90 transition-transform duration-500 group-hover:scale-105" />
-                  ) : (
-                    <Icon name={CAT_ICONS[c.slug] ?? "box"} className="h-8 w-8 text-brand-600" />
-                  )}
-                </div>
-                <div className="min-w-0 flex-1">
-                  <span className="line-clamp-2 text-[13px] font-bold leading-snug text-ink-900 group-hover:text-brand-700">{c.name}</span>
-                  <span className="mt-1 inline-flex items-center gap-1 text-[12px] font-semibold text-brand-700">
-                    Xem danh mục <Icon name="chevron-right" className="h-3.5 w-3.5" />
-                  </span>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ============ BRANDS ============ */}
       {brands.length > 0 && (
         <section className="wrap py-10">
@@ -186,17 +131,17 @@ export default async function HomePage() {
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {(
             [
-              ["shield", "Sản phẩm chính hãng", "Cam kết hàng chính hãng 100%, đầy đủ chứng từ cho dự án."],
-              ["headset", "Tư vấn kỹ thuật", "Đội ngũ kỹ thuật thiết kế & tư vấn miễn phí cho công trình."],
-              ["truck", "Giao hàng toàn quốc", "Đóng gói, vận chuyển nhanh — hỗ trợ công trình tại các tỉnh."],
-              ["check-circle", "Hỗ trợ sau bán hàng", "Bảo hành theo chính sách hãng, đổi trả theo quy định."],
+              ["shield", "Hàng rõ nguồn gốc", "Ưu tiên hàng có tem nhãn, serial và chứng từ theo từng dự án."],
+              ["headset", "Có người tư vấn", "Hỗ trợ chọn đúng cáp, switch, camera và phụ kiện trước khi chốt đơn."],
+              ["truck", "Đóng gói kỹ", "Giao nội thành và gửi tỉnh; hàng cồng kềnh được báo phí trước."],
+              ["check-circle", "Theo sát sau bán", "Tiếp nhận bảo hành, đổi trả đúng điều kiện và hỗ trợ kiểm tra lỗi."],
             ] as [IconName, string, string][]
           ).map(([icon, t, d]) => (
             <div key={t} className="card p-5">
               <span className="mb-3 flex h-11 w-11 items-center justify-center rounded-md bg-brand-50 text-brand-700">
                 <Icon name={icon} className="h-5 w-5" />
               </span>
-              <h3 className="text-[15px] font-bold text-ink-950">{t}</h3>
+              <h3 className="text-[15px] font-bold text-brand-800">{t}</h3>
               <p className="mt-1 text-[13px] leading-6 text-ink-500">{d}</p>
             </div>
           ))}
