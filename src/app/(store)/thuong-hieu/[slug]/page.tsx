@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getBrandBySlug, queryProducts, stripHtml } from "@/lib/data";
@@ -44,7 +43,8 @@ export default async function BrandPage({
       <div className="mt-3 mb-5 flex items-center gap-4">
         <span className="relative flex h-14 w-14 items-center justify-center overflow-hidden rounded-md border border-line bg-ink-50">
           {b.logo ? (
-            <Image src={b.logo} alt={b.name} fill sizes="56px" className="object-contain p-1.5" />
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={b.logo} alt={b.name} className="h-full w-full object-contain p-1.5" />
           ) : (
             <span className="text-xl font-extrabold text-brand-700">{b.name.charAt(0)}</span>
           )}

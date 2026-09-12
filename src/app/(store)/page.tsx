@@ -90,7 +90,8 @@ export default async function HomePage() {
               <Link key={b.id} href={`/thuong-hieu/${b.slug}`} className="card group flex h-20 w-[220px] shrink-0 snap-start items-center gap-3 p-3 transition-all hover:border-brand-400 hover:shadow-md">
                 <span className="relative flex h-12 w-20 shrink-0 items-center justify-center overflow-hidden rounded-md bg-white ring-1 ring-line">
                   {b.logo ? (
-                    <Image src={b.logo} alt={b.name} fill sizes="80px" className="object-contain p-2" />
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={b.logo} alt={b.name} className="h-full w-full object-contain p-2" />
                   ) : (
                     <span className="text-sm font-extrabold text-brand-700">{b.name.charAt(0)}</span>
                   )}

@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { sql, eq } from "drizzle-orm";
 import { db } from "@/db";
@@ -34,7 +33,8 @@ export default async function BrandsPage() {
           <Link key={b.id} href={`/thuong-hieu/${b.slug}`} className="card group flex flex-col items-center gap-3 p-6 text-center transition-all hover:border-brand-400 hover:shadow-md">
             <span className="relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-md bg-ink-50">
               {b.logo ? (
-                <Image src={b.logo} alt={b.name} fill sizes="64px" className="object-contain p-2" />
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={b.logo} alt={b.name} className="h-full w-full object-contain p-2" />
               ) : (
                 <span className="text-2xl font-extrabold text-brand-700">{b.name.charAt(0)}</span>
               )}
