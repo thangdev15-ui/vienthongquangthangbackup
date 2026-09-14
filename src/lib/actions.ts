@@ -363,6 +363,11 @@ export type ProductForm = {
   specs: { name: string; value: string }[];
 };
 
+function roundedWebPriceFromBase(value: string | undefined): number {
+  const base = Math.max(0, Number(value) || 0);
+  return Math.round((base * 1.2) / 1000) * 1000;
+}
+
 async function uniqueSlug(table: "products" | "categories" | "brands" | "articles" | "pages", base: string, excludeId?: string): Promise<string> {
   const t =
     table === "products" ? products : table === "categories" ? categories : table === "brands" ? brands : table === "articles" ? articles : pages;
@@ -380,8 +385,8 @@ export async function saveProductAction(form: ProductForm): Promise<ActionResult
   if (!admin) return { ok: false, error: "Không có quyền." };
   if (!form.name.trim()) return { ok: false, error: "Tên sản phẩm bắt buộc." };
 
-  const price = form.priceType === "fixed" ? Number(form.price) || 0 : null;
-  const salePrice = form.priceType === "fixed" && form.salePrice ? Number(form.salePrice) || null : null;
+  const price = form.priceType === "fixed" ? roundedWebPriceFromBase(form.price) : null;
+  const salePrice = form.priceType === "fixed" && form.salePrice ? roundedWebPriceFromBase(form.salePrice) || null : null;
   const stock = Math.max(0, Math.floor(Number(form.stock) || 0));
   const slug = form.slug.trim() ? await uniqueSlug("products", form.slug.trim(), form.id) : await uniqueSlug("products", form.name, form.id);
 

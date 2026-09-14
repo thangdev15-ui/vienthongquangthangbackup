@@ -20,7 +20,8 @@ export type NavCategory = {
 const NAV_ICONS: Record<string, IconName> = {
   "camera-quan-sat": "eye", "day-cap-mang": "cable", "phu-kien-mang": "grid", "thiet-bi-mang": "server",
   "tu-mang": "box", "phu-kien-quang": "cable", "thiet-bi-quang": "zap", "day-cap-quang": "zap",
-  "thang-mang-cap": "layers", "den-nang-luong-mat-troi": "sun",
+  "cap-mang": "cable", "cap-quang": "zap", "phu-kien-camera": "eye", "camera": "eye",
+  "thang-mang-cap": "layers", "den-nang-luong-mat-troi": "sun", "den-nlmt": "sun",
 };
 
 type Settings = Record<string, string>;
@@ -199,7 +200,7 @@ export function SearchBar({ autoFocus = false }: { autoFocus?: boolean }) {
 /* ----------------------------------- Header ---------------------------------- */
 
 export function Header({ settings, onOpenMobile, categories }: { settings: Settings; onOpenMobile: () => void; categories: NavCategory[] }) {
-  const quickCategories = categories.slice(0, 8);
+  const quickCategories = categories.slice(0, 9);
   const pathname = usePathname();
   return (
     <div className="sticky top-0 z-40 border-b border-line bg-white/95 backdrop-blur">
@@ -214,17 +215,17 @@ export function Header({ settings, onOpenMobile, categories }: { settings: Setti
         <Link href="/" className="flex h-14 w-[138px] shrink-0 items-center px-1 xl:w-[150px] 2xl:w-[178px]" aria-label="Trang chủ Viễn Thông Quang Thắng">
           <img src="/logoqt.png?v=2" alt="Viễn Thông Quang Thắng" width={300} height={106} className="h-auto w-full object-contain" />
         </Link>
-        <div className="hidden min-w-0 flex-[0.9] lg:block lg:max-w-[280px] xl:max-w-[340px] 2xl:max-w-[500px]">
+        <div className="hidden min-w-0 flex-[0.75] lg:block lg:max-w-[230px] xl:max-w-[310px] 2xl:max-w-[440px]">
           <SearchBar />
         </div>
-        <nav aria-label="Danh mục nhanh" className="hidden min-w-0 flex-[1.9] items-stretch gap-1 lg:flex">
+        <nav aria-label="Danh mục nhanh" className="hidden min-w-0 flex-[2.25] items-stretch gap-0.5 lg:flex xl:gap-1">
           {quickCategories.map((cat) => {
             const active = pathname === `/danh-muc/${cat.slug}` || pathname.startsWith(`/danh-muc/${cat.slug}/`);
             return (
               <Link
                 key={cat.id}
                 href={`/danh-muc/${cat.slug}`}
-                className={`flex min-h-12 min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-md px-1.5 text-center text-[11px] font-semibold leading-tight transition-colors 2xl:text-[12px] ${
+                className={`flex min-h-12 min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-md px-1 text-center text-[10px] font-semibold leading-tight transition-colors xl:text-[11px] 2xl:text-[12px] ${
                   active ? "bg-brand-600 text-white" : "text-ink-700 hover:bg-brand-50 hover:text-brand-700"
                 }`}
               >
@@ -549,13 +550,15 @@ export function SideRails() {
     <div className="side-rails" aria-label="Quảng bá thương hiệu">
       <div className="side-rail-slot">
         <Link href="/thuong-hieu" className="side-rail side-rail-left" aria-label="Xem thương hiệu phân phối">
-          <iframe src="/quang_thang_banner.html" title="Quang Thắng Telecom" className="side-rail-frame" tabIndex={-1} />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/daifinal.png" alt="Quang Thắng Telecom" className="side-rail-frame" />
         </Link>
       </div>
       <div />
       <div className="side-rail-slot">
         <Link href="/thuong-hieu" className="side-rail side-rail-right" aria-label="Xem thương hiệu phân phối">
-          <iframe src="/quang_thang_banner.html" title="Quang Thắng Telecom" className="side-rail-frame" tabIndex={-1} />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/daifinal.png" alt="Quang Thắng Telecom" className="side-rail-frame" />
         </Link>
       </div>
     </div>

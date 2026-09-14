@@ -31,6 +31,11 @@ import {
 
 export const dynamic = "force-dynamic";
 
+function toBasePriceInput(value: number | null): string {
+  if (value == null) return "";
+  return String(Math.round(value / 1.2));
+}
+
 export default async function AdminEntityPage({ params }: { params: Promise<{ section: string; id: string }> }) {
   const { section, id } = await params;
   await requireAdmin();
@@ -81,8 +86,8 @@ export default async function AdminEntityPage({ params }: { params: Promise<{ se
         shortDescription: p.shortDescription ?? "",
         description: p.description ?? "",
         priceType: (p.priceType === "fixed" ? "fixed" : "contact") as "fixed" | "contact",
-        price: p.price != null ? String(p.price) : "",
-        salePrice: p.salePrice != null ? String(p.salePrice) : "",
+        price: toBasePriceInput(p.price),
+        salePrice: toBasePriceInput(p.salePrice),
         stock: String(p.stock),
         brandId: p.brandId ?? "",
         categoryId: p.categoryId ?? "",

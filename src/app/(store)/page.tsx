@@ -40,6 +40,14 @@ export default async function HomePage() {
         </section>
       )}
 
+      {/* ============ SHOP PHOTO ============ */}
+      <section className="wrap py-8">
+        <div className="overflow-hidden rounded-lg border border-line bg-white">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/quangthangshop.png" alt="Kho và cửa hàng Viễn Thông Quang Thắng" className="h-auto w-full object-cover" />
+        </div>
+      </section>
+
       {/* ============ PROMO BANNER ============ */}
       {(banner || promo) && (
         <section className="wrap py-8">

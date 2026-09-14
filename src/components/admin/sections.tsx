@@ -319,10 +319,10 @@ export function ProductForm({
           </div>
           {f.priceType === "fixed" && (
             <div className="grid gap-4 sm:grid-cols-3">
-              <Field label="Giá bán (VNĐ)" required>
+              <Field label="Giá gốc chưa VAT (VNĐ)" hint="Web tự cộng 20% và làm tròn đến 1.000đ khi lưu." required>
                 <input type="number" min={0} value={f.price ?? ""} onChange={(e) => set("price", e.target.value)} className="input" />
               </Field>
-              <Field label="Giá khuyến mãi (VNĐ)">
+              <Field label="Giá khuyến mãi chưa VAT (VNĐ)" hint="Nếu nhập, giá web cũng được cộng 20% và làm tròn.">
                 <input type="number" min={0} value={f.salePrice ?? ""} onChange={(e) => set("salePrice", e.target.value)} className="input" />
               </Field>
               <Field label="Tồn kho">

@@ -41,11 +41,27 @@ import { BUSINESS } from "./types";
 /* ------------------------------- categories ------------------------------- */
 
 export async function getActiveCategories(): Promise<Category[]> {
+  const headerPriority = sql`case ${categories.slug}
+    when 'day-cap-mang' then 1
+    when 'cap-mang' then 1
+    when 'day-cap-quang' then 2
+    when 'cap-quang' then 2
+    when 'thiet-bi-mang' then 3
+    when 'thiet-bi-quang' then 4
+    when 'tu-mang' then 5
+    when 'camera-quan-sat' then 6
+    when 'camera' then 6
+    when 'den-nang-luong-mat-troi' then 7
+    when 'den-nlmt' then 7
+    when 'phu-kien-quang' then 8
+    when 'phu-kien-camera' then 9
+    else 100
+  end`;
   return db
     .select()
     .from(categories)
     .where(eq(categories.active, true))
-    .orderBy(asc(categories.sortOrder), asc(categories.name));
+    .orderBy(asc(headerPriority), asc(categories.sortOrder), asc(categories.name));
 }
 
 export async function getCategoryBySlug(slug: string): Promise<Category | null> {
