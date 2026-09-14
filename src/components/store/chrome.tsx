@@ -551,14 +551,14 @@ export function SideRails() {
       <div className="side-rail-slot">
         <Link href="/thuong-hieu" className="side-rail side-rail-left" aria-label="Xem thương hiệu phân phối">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/daifinal.png" alt="Quang Thắng Telecom" className="side-rail-frame" />
+          <img src="/leftbanner.png" alt="Quang Thắng Telecom" className="side-rail-frame" />
         </Link>
       </div>
       <div />
       <div className="side-rail-slot">
         <Link href="/thuong-hieu" className="side-rail side-rail-right" aria-label="Xem thương hiệu phân phối">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/daifinal.png" alt="Quang Thắng Telecom" className="side-rail-frame" />
+          <img src="/rightbanner.png" alt="Quang Thắng Telecom" className="side-rail-frame" />
         </Link>
       </div>
     </div>
