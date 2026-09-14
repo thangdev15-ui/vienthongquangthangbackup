@@ -116,7 +116,7 @@
     scrollbar-width: thin;
   }
   .side-rail-frame {
-    @apply block h-auto w-full object-contain;
+    @apply block h-full w-full object-cover;
     border: 0;
   }
   .hero-carousel {

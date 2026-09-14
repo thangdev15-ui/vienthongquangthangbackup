@@ -40,11 +40,39 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* ============ SHOP PHOTO ============ */}
-      <section className="wrap py-8">
-        <div className="overflow-hidden rounded-lg border border-line bg-white">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/quangthangshop.png" alt="Kho và cửa hàng Viễn Thông Quang Thắng" className="h-auto w-full object-cover" />
+      {/* ============ CUSTOMER TRUST ============ */}
+      <section className="wrap py-10">
+        <div className="grid items-center gap-6 lg:grid-cols-[1.18fr_0.82fr]">
+          <div className="overflow-hidden rounded-lg border border-line bg-brand-50">
+            <div className="relative aspect-[4/3] bg-[repeating-linear-gradient(90deg,#e8f3fb_0,#e8f3fb_52px,#dbeaf5_52px,#dbeaf5_104px)]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/quangthangshop.jpg" alt="Kho hàng và cửa hàng Viễn Thông Quang Thắng" className="h-full w-full object-cover" />
+            </div>
+          </div>
+          <div>
+            <h2 className="text-2xl font-extrabold leading-tight text-ink-950 sm:text-3xl">
+              Vì sao khách hàng chọn Quang Thắng?
+            </h2>
+            <p className="mt-3 text-sm leading-6 text-ink-500">
+              Ưu tiên bằng chứng thật thay vì các câu “uy tín - chất lượng - tận tâm” chung chung.
+            </p>
+            <div className="mt-6 space-y-3">
+              {[
+                ["Phục vụ B2B", "Đại lý, nhà thầu, doanh nghiệp và dự án."],
+                ["Hỗ trợ kỹ thuật", "Tư vấn chọn cáp theo môi trường và hệ thống thực tế."],
+                ["Chứng từ", "Hỗ trợ CO/CQ và hồ sơ theo yêu cầu dự án."],
+                ["Giao hàng", "Hỗ trợ giao nội thành và vận chuyển toàn quốc."],
+              ].map(([title, desc]) => (
+                <div key={title} className="flex gap-3 rounded-lg border border-line bg-white p-4">
+                  <Icon name="check" className="mt-0.5 h-5 w-5 shrink-0 text-brand-700" />
+                  <div>
+                    <h3 className="text-sm font-extrabold text-ink-950">{title}</h3>
+                    <p className="mt-1 text-[13px] leading-5 text-ink-600">{desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
