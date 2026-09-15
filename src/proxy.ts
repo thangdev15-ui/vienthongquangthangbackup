@@ -106,8 +106,10 @@ export default function proxy(request: NextRequest) {
     if (PAGE_REDIRECTS[slug]) return redirect(request, PAGE_REDIRECTS[slug]);
     if (CATEGORY_SLUGS.has(slug)) return redirect(request, `/danh-muc/${slug}`);
     if (ARTICLE_SLUGS.has(slug)) return redirect(request, `/tin-tuc/${slug}`);
-    // Old catalog served products at the top level
-    return redirect(request, `/san-pham/${slug}`);
+    // Let the dynamic CMS route resolve pages created from the admin panel.
+    // Unknown legacy slugs will render the normal 404 instead of being
+    // incorrectly treated as product slugs.
+    return NextResponse.next();
   }
 
   return NextResponse.next();
