@@ -43,18 +43,18 @@ export function GrapesPageEditor({ value, onChange }: { value: string; onChange:
       blockManager: {
         appendTo: blocksRef.current,
         blocks: [
-          { id: "section", label: "Khu vực", category: "Bố cục", content: { type: "section", components: "<h2>Tiêu đề khu vực</h2><p>Nội dung khu vực...</p>" } },
-          { id: "heading", label: "Tiêu đề", category: "Nội dung", content: "<h2>Tiêu đề mới</h2>" },
-          { id: "text", label: "Văn bản", category: "Nội dung", content: { type: "text", content: "Nhập nội dung của bạn ở đây..." } },
-          { id: "image", label: "Hình ảnh", category: "Nội dung", content: { type: "image" } },
-          { id: "quote", label: "Trích dẫn", category: "Nội dung", content: "<blockquote>Nhập nội dung trích dẫn...</blockquote>" },
-          { id: "list", label: "Danh sách", category: "Nội dung", content: "<ul><li>Mục thứ nhất</li><li>Mục thứ hai</li><li>Mục thứ ba</li></ul>" },
-          { id: "button", label: "Nút liên kết", category: "Nội dung", content: { type: "link", content: "Xem thêm", attributes: { href: "#" }, style: { display: "inline-block", padding: "12px 20px", color: "#ffffff", "background-color": "#f58220", "border-radius": "6px", "text-decoration": "none" } } },
-          { id: "gallery", label: "Khung ảnh", category: "Media", content: { type: "default", components: [{ tagName: "div", style: { display: "grid", "grid-template-columns": "repeat(3, 1fr)", gap: "12px" }, components: [{ type: "image" }, { type: "image" }, { type: "image" }] }] } },
-          { id: "video", label: "Video", category: "Media", content: { type: "video", attributes: { controls: true }, style: { width: "100%" } } },
-          { id: "columns", label: "Hai cột", category: "Bố cục", content: { type: "default", components: [{ tagName: "div", style: { display: "flex", gap: "24px", "align-items": "flex-start" }, components: [{ tagName: "div", style: { flex: "1" }, components: "<h3>Cột trái</h3><p>Nội dung...</p>" }, { tagName: "div", style: { flex: "1" }, components: "<h3>Cột phải</h3><p>Nội dung...</p>" }] }] } },
-          { id: "divider", label: "Đường phân cách", category: "Bố cục", content: "<hr style=\"border:0;border-top:1px solid #dce6f0;margin:24px 0;\" />" },
-          { id: "spacer", label: "Khoảng cách", category: "Bố cục", content: { type: "default", style: { height: "48px" } } },
+          { id: "section", label: "Khu vực", media: "<span class='builder-block-symbol'>▦</span>", category: "Bố cục", content: { type: "section", components: "<h2>Tiêu đề khu vực</h2><p>Nội dung khu vực...</p>" } },
+          { id: "heading", label: "Tiêu đề", media: "<span class='builder-block-symbol'>H1</span>", category: "Nội dung", content: "<h2>Tiêu đề mới</h2>" },
+          { id: "text", label: "Văn bản", media: "<span class='builder-block-symbol'>Tt</span>", category: "Nội dung", content: { type: "text", content: "Nhập nội dung của bạn ở đây..." } },
+          { id: "image", label: "Hình ảnh", media: "<span class='builder-block-symbol'>▧</span>", category: "Nội dung", content: { type: "image" } },
+          { id: "quote", label: "Trích dẫn", media: "<span class='builder-block-symbol'>“</span>", category: "Nội dung", content: "<blockquote>Nhập nội dung trích dẫn...</blockquote>" },
+          { id: "list", label: "Danh sách", media: "<span class='builder-block-symbol'>☷</span>", category: "Nội dung", content: "<ul><li>Mục thứ nhất</li><li>Mục thứ hai</li><li>Mục thứ ba</li></ul>" },
+          { id: "button", label: "Nút liên kết", media: "<span class='builder-block-symbol'>▭</span>", category: "Nội dung", content: { type: "link", content: "Xem thêm", attributes: { href: "#" }, style: { display: "inline-block", padding: "12px 20px", color: "#ffffff", "background-color": "#f58220", "border-radius": "6px", "text-decoration": "none" } } },
+          { id: "gallery", label: "Khung ảnh", media: "<span class='builder-block-symbol'>▦</span>", category: "Media", content: { type: "default", components: [{ tagName: "div", style: { display: "grid", "grid-template-columns": "repeat(3, 1fr)", gap: "12px" }, components: [{ type: "image" }, { type: "image" }, { type: "image" }] }] } },
+          { id: "video", label: "Video", media: "<span class='builder-block-symbol'>▶</span>", category: "Media", content: { type: "video", attributes: { controls: true }, style: { width: "100%" } } },
+          { id: "columns", label: "Hai cột", media: "<span class='builder-block-symbol'>▥</span>", category: "Bố cục", content: { type: "default", components: [{ tagName: "div", style: { display: "flex", gap: "24px", "align-items": "flex-start" }, components: [{ tagName: "div", style: { flex: "1" }, components: "<h3>Cột trái</h3><p>Nội dung...</p>" }, { tagName: "div", style: { flex: "1" }, components: "<h3>Cột phải</h3><p>Nội dung...</p>" }] }] } },
+          { id: "divider", label: "Đường phân cách", media: "<span class='builder-block-symbol'>—</span>", category: "Bố cục", content: "<hr style=\"border:0;border-top:1px solid #dce6f0;margin:24px 0;\" />" },
+          { id: "spacer", label: "Khoảng cách", media: "<span class='builder-block-symbol'>↕</span>", category: "Bố cục", content: { type: "default", style: { height: "48px" } } },
         ],
       },
       styleManager: { appendTo: stylesRef.current ?? undefined },
@@ -84,7 +84,7 @@ export function GrapesPageEditor({ value, onChange }: { value: string; onChange:
         <span className="font-medium">Kéo thả các khối vào vùng thiết kế, chọn phần tử để chỉnh sửa.</span>
         <span className="hidden text-ink-400 sm:inline">Page Builder</span>
       </div>
-      <div className="grid min-h-[720px] grid-cols-[248px_minmax(0,1fr)_288px]">
+      <div className="grid min-h-[720px] grid-cols-[290px_minmax(0,1fr)_310px]">
         <aside className="builder-blocks-panel min-w-0 overflow-y-auto border-r border-line bg-white" aria-label="Các khối thiết kế">
           <div className="border-b border-line p-3">
             <div className="flex h-9 items-center gap-2 rounded-md border border-line bg-white px-3 text-sm text-ink-400">
