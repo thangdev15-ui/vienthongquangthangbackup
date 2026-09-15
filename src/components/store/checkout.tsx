@@ -188,14 +188,14 @@ export function CheckoutForm({
                 <p className="truncate text-[13px] font-medium text-ink-900">{c.name}</p>
                 <p className="text-[12px] text-ink-400">x{c.qty}</p>
               </div>
-              <span className="text-[13px] font-semibold text-ink-900">{c.priceType === "fixed" ? formatVND(((c.salePrice ?? c.price) ?? 0) * c.qty) : "Liên hệ"}</span>
+              <span className={`text-[13px] font-semibold ${c.priceType === "fixed" ? "text-ink-900" : "text-accent-600"}`}>{c.priceType === "fixed" ? formatVND(((c.salePrice ?? c.price) ?? 0) * c.qty) : "Liên hệ"}</span>
             </li>
           ))}
         </ul>
         <dl className="mt-4 space-y-2 border-t border-line pt-4 text-sm">
           <div className="flex justify-between">
             <dt className="text-ink-500">Tạm tính</dt>
-            <dd className="font-semibold text-ink-900">{hasContactItems ? "Liên hệ" : formatVND(subtotal)}</dd>
+            <dd className={`font-semibold ${hasContactItems ? "text-accent-600" : "text-ink-900"}`}>{hasContactItems ? "Liên hệ" : formatVND(subtotal)}</dd>
           </div>
           <div className="flex justify-between">
             <dt className="text-ink-500">Phí vận chuyển</dt>
@@ -203,7 +203,7 @@ export function CheckoutForm({
           </div>
           <div className="flex justify-between border-t border-line pt-3 text-base">
             <dt className="font-bold text-ink-950">Tổng cộng</dt>
-            <dd className="font-extrabold text-brand-700">{hasContactItems ? "Liên hệ" : formatVND(total)}</dd>
+            <dd className={`font-extrabold ${hasContactItems ? "text-accent-600" : "text-brand-700"}`}>{hasContactItems ? "Liên hệ" : formatVND(total)}</dd>
           </div>
         </dl>
         <p className="mt-4 flex items-start gap-2 text-[12px] leading-5 text-ink-500">

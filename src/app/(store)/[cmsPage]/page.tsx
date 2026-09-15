@@ -5,16 +5,6 @@ import { Breadcrumbs } from "@/components/ui";
 
 export const dynamic = "force-dynamic";
 
-const ALLOWED: Record<string, string> = {
-  "huong-dan-mua-hang": "Hướng dẫn mua hàng online",
-  "hinh-thuc-thanh-toan": "Hình thức thanh toán",
-  "chinh-sach-bao-hanh": "Chính sách bảo hành",
-  "chinh-sach-doi-tra": "Chính sách đổi trả",
-  "chinh-sach-giao-nhan": "Chính sách giao nhận",
-  "chinh-sach-bao-mat": "Chính sách bảo mật",
-  "doi-tac-chien-luoc": "Đối tác chiến lược",
-};
-
 const STATIC_PAGES: Record<string, { title: string; seoTitle: string; seoDescription: string; content: string }> = {
   "huong-dan-mua-hang": {
     title: "Hướng dẫn mua hàng online",
@@ -93,19 +83,16 @@ const STATIC_PAGES: Record<string, { title: string; seoTitle: string; seoDescrip
 export async function generateMetadata({ params }: { params: Promise<Record<string, string | undefined>> }): Promise<Metadata> {
   const p = await params;
   const slug = Object.values(p)[0] as string;
-  const title = ALLOWED[slug];
-  if (!title) return { title: "Trang không tồn tại" };
   const staticPage = STATIC_PAGES[slug];
   if (staticPage) return { title: staticPage.seoTitle, description: staticPage.seoDescription };
   const page = await getPageBySlug(slug);
-  return { title: page?.seoTitle ?? title, description: page?.seoDescription ?? title };
+  if (!page) return { title: "Trang không tồn tại" };
+  return { title: page.seoTitle ?? page.title, description: page.seoDescription ?? page.title };
 }
 
 export default async function CmsPage({ params }: { params: Promise<Record<string, string | undefined>> }) {
   const p = await params;
   const slug = Object.values(p)[0] as string;
-  const fallbackTitle = ALLOWED[slug];
-  if (!fallbackTitle) notFound();
   const staticPage = STATIC_PAGES[slug];
   const page = staticPage ?? await getPageBySlug(slug);
   if (!page) notFound();

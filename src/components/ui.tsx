@@ -110,7 +110,7 @@ export function Price({
   const sizes = { sm: "text-[15px]", md: "text-lg", lg: "text-2xl" };
   if (priceType !== "fixed" || price == null) {
     return (
-      <span className={`font-bold tracking-wide text-ink-500 ${sizes[size]} ${className}`}>
+      <span className={`font-bold tracking-wide text-accent-600 ${sizes[size]} ${className}`}>
         LIÊN HỆ
       </span>
     );

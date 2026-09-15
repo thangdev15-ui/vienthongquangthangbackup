@@ -63,7 +63,7 @@ export function CartPageView({ shippingFee, zalo }: { shippingFee: number; zalo:
                       </div>
                     </div>
                   </td>
-                  <td className="whitespace-nowrap">{c.priceType === "fixed" ? formatVND(c.salePrice ?? c.price) : "Liên hệ"}</td>
+                  <td className={`whitespace-nowrap ${c.priceType === "fixed" ? "" : "font-semibold text-accent-600"}`}>{c.priceType === "fixed" ? formatVND(c.salePrice ?? c.price) : "Liên hệ"}</td>
                   <td>
                     <div className="flex items-center rounded-md border border-line">
                       <button onClick={() => updateQty(c.productId, c.qty - 1)} className="flex h-8 w-8 items-center justify-center text-ink-600 hover:text-brand-700" aria-label="Giảm">
@@ -75,7 +75,7 @@ export function CartPageView({ shippingFee, zalo }: { shippingFee: number; zalo:
                       </button>
                     </div>
                   </td>
-                  <td className="whitespace-nowrap font-bold">{c.priceType === "fixed" ? formatVND(((c.salePrice ?? c.price) ?? 0) * c.qty) : "Liên hệ"}</td>
+                  <td className={`whitespace-nowrap font-bold ${c.priceType === "fixed" ? "" : "text-accent-600"}`}>{c.priceType === "fixed" ? formatVND(((c.salePrice ?? c.price) ?? 0) * c.qty) : "Liên hệ"}</td>
                   <td>
                     <button onClick={() => removeFromCart(c.productId)} className="text-ink-400 hover:text-sale-600" aria-label={`Xoá ${c.name}`}>
                       <Icon name="trash" className="h-4 w-4" />

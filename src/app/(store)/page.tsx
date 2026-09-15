@@ -28,7 +28,7 @@ export default async function HomePage() {
       {/* ============ HERO ============ */}
       <section className="bg-ink-50 py-3">
         <div className="wrap">
-          <HeroCarousel />
+          <HeroCarousel linkUrl={banner?.buttonUrl} />
         </div>
       </section>
 
@@ -155,7 +155,7 @@ export default async function HomePage() {
                     )}
                   </div>
                   <p className="mt-2.5 line-clamp-2 min-h-[2.6em] text-[13px] font-semibold leading-snug text-ink-900">{p.name}</p>
-                  <p className="mt-1 text-sm font-bold text-brand-700">{p.priceType === "fixed" ? formatVND(p.salePrice ?? p.price) : "LIÊN HỆ"}</p>
+                  <p className={`mt-1 text-sm font-bold ${p.priceType === "fixed" ? "text-brand-700" : "text-accent-600"}`}>{p.priceType === "fixed" ? formatVND(p.salePrice ?? p.price) : "LIÊN HỆ"}</p>
                 </Link>
               ))}
             </div>
