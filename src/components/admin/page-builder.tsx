@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import grapesjs, { type Editor } from "grapesjs";
 import "grapesjs/dist/css/grapes.min.css";
+import { Icon } from "@/components/ui";
 
 const DEFAULT_CONTENT = `
 <section style="padding: 48px 24px; max-width: 1100px; margin: 0 auto;">
@@ -78,14 +79,22 @@ export function GrapesPageEditor({ value, onChange }: { value: string; onChange:
   }, []);
 
   return (
-    <div className="page-builder overflow-hidden rounded-md border border-line bg-white">
-      <div className="flex items-center justify-between border-b border-line bg-ink-50 px-3 py-2 text-xs text-ink-600">
-        <span>Kéo thả các khối vào vùng thiết kế, chọn phần tử để chỉnh sửa.</span>
-        <span className="hidden sm:inline">GrapesJS Page Builder</span>
+    <div className="page-builder overflow-hidden rounded-xl border border-line bg-[#f8fbff] shadow-sm">
+      <div className="flex items-center justify-between border-b border-line bg-white px-4 py-3 text-xs text-ink-600">
+        <span className="font-medium">Kéo thả các khối vào vùng thiết kế, chọn phần tử để chỉnh sửa.</span>
+        <span className="hidden text-ink-400 sm:inline">Page Builder</span>
       </div>
-      <div className="grid min-h-[680px] grid-cols-[220px_minmax(0,1fr)_250px]">
-        <aside ref={blocksRef} className="min-w-0 overflow-y-auto border-r border-line bg-ink-50 p-2" aria-label="Các khối thiết kế" />
-        <div ref={canvasRef} className="min-w-0" />
+      <div className="grid min-h-[720px] grid-cols-[248px_minmax(0,1fr)_288px]">
+        <aside className="builder-blocks-panel min-w-0 overflow-y-auto border-r border-line bg-white" aria-label="Các khối thiết kế">
+          <div className="border-b border-line p-3">
+            <div className="flex h-9 items-center gap-2 rounded-md border border-line bg-white px-3 text-sm text-ink-400">
+              <Icon name="search" className="h-4 w-4" />
+              <span>Tìm kiếm thành phần...</span>
+            </div>
+          </div>
+          <div ref={blocksRef} className="p-2" />
+        </aside>
+        <div ref={canvasRef} className="builder-canvas min-w-0" />
         <aside className="builder-inspector min-w-0 overflow-y-auto border-l border-line" aria-label="Bảng thiết kế">
           <div className="border-b border-white/10 px-4 py-3 text-sm font-bold text-white">Thiết kế <span className="float-right font-normal text-ink-300">Nâng cao</span></div>
           <div ref={stylesRef} />

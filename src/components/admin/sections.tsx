@@ -900,8 +900,17 @@ export function PageForm({ initial }: { initial: PageForm & { id?: string } }) {
   const { saving, run } = useSave();
   const set = <K extends keyof PageForm>(k: K, v: PageForm[K]) => setF((p) => ({ ...p, [k]: v }));
   return (
-    <div className="grid w-full gap-5">
-      <div className="card grid gap-4 p-4 sm:grid-cols-2">
+    <div className="page-builder-form grid w-full gap-4">
+      <div className="flex items-center justify-between rounded-xl border border-line bg-white px-5 py-3 shadow-sm">
+        <div className="flex items-center gap-3">
+          <span className="flex h-9 w-9 items-center justify-center rounded-md bg-brand-50 text-brand-700"><Icon name="grid" className="h-5 w-5" /></span>
+          <h2 className="text-lg font-bold text-ink-950">Thêm trang</h2>
+        </div>
+        <button type="button" onClick={() => run(() => savePageAction(f), "/admin/pages", "Đã lưu trang.")} disabled={saving} className="btn-primary h-10 px-5">
+          {saving && <Spinner />} Lưu trang
+        </button>
+      </div>
+      <div className="card grid gap-4 rounded-xl p-4 sm:grid-cols-2">
         <Field label="Tiêu đề" required><input value={f.title} onChange={(e) => set("title", e.target.value)} className="input" /></Field>
         <Field label="Slug"><input value={f.slug} onChange={(e) => set("slug", e.target.value)} className="input" /></Field>
         <div className="sm:col-span-2">
