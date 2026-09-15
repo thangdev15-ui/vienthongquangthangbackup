@@ -24,6 +24,7 @@ const NAV: { href: string; label: string; icon: IconName }[] = [
 
 export function AdminShell({ title, action, children }: { title: string; action?: React.ReactNode; children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
   const pathname = usePathname();
   const { toast } = useShop();
   const router = useRouter();
@@ -40,18 +41,21 @@ export function AdminShell({ title, action, children }: { title: string; action?
   return (
     <div className="flex min-h-screen bg-paper">
       {/* Sidebar */}
-      <aside className={`fixed inset-y-0 left-0 z-50 w-60 transform border-r border-line bg-ink-950 transition-transform lg:static lg:translate-x-0 ${open ? "translate-x-0" : "-translate-x-full"}`}>
-        <div className="flex h-14 items-center gap-2.5 border-b border-white/10 px-4">
-          <span className="flex h-8 w-8 items-center justify-center rounded-md bg-brand-600 text-sm font-extrabold text-white">QT</span>
-          <div className="leading-tight">
+      <aside className={`fixed inset-y-0 left-0 z-50 transform border-r border-line bg-ink-950 transition-all lg:static lg:translate-x-0 ${collapsed ? "lg:w-[72px]" : "lg:w-60"} ${open ? "translate-x-0" : "-translate-x-full"}`}>
+        <div className={`flex h-14 items-center border-b border-white/10 px-4 ${collapsed ? "justify-center" : "gap-2.5"}`}>
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-600 text-sm font-extrabold text-white">QT</span>
+          <div className={`leading-tight ${collapsed ? "hidden" : ""}`}>
             <p className="text-[13px] font-bold text-white">Quang Thắng</p>
             <p className="text-[10px] font-medium uppercase tracking-wider text-ink-400">Admin CMS</p>
           </div>
           <button onClick={() => setOpen(false)} className="ml-auto text-ink-300 lg:hidden" aria-label="Đóng menu">
             <Icon name="x" className="h-5 w-5" />
           </button>
+          <button onClick={() => setCollapsed((v) => !v)} className="ml-auto hidden text-ink-300 transition-colors hover:text-white lg:block" aria-label={collapsed ? "Mở rộng menu" : "Thu gọn menu"} title={collapsed ? "Mở rộng menu" : "Thu gọn menu"}>
+            <Icon name={collapsed ? "chevron-right" : "chevron-left"} className="h-5 w-5" />
+          </button>
         </div>
-        <nav className="space-y-0.5 p-3" aria-label="Menu quản trị">
+        <nav className={`space-y-0.5 p-3 ${collapsed ? "lg:px-2" : ""}`} aria-label="Menu quản trị">
           {NAV.map((n) => {
             const active = n.href === "/admin" ? pathname === "/admin" : pathname.startsWith(n.href);
             return (
@@ -59,24 +63,25 @@ export function AdminShell({ title, action, children }: { title: string; action?
                 key={n.href}
                 href={n.href}
                 onClick={() => setOpen(false)}
-                className={`flex items-center gap-2.5 rounded-md px-3 py-2 text-[13px] font-medium transition-colors ${
+                className={`flex items-center gap-2.5 rounded-md px-3 py-2 text-[13px] font-medium transition-colors ${collapsed ? "lg:justify-center lg:px-2" : ""} ${
                   active ? "bg-brand-600 text-white" : "text-ink-300 hover:bg-white/5 hover:text-white"
                 }`}
+                title={collapsed ? n.label : undefined}
               >
                 <Icon name={n.icon} className="h-4 w-4" />
-                {n.label}
+                <span className={collapsed ? "lg:hidden" : ""}>{n.label}</span>
               </Link>
             );
           })}
         </nav>
-        <div className="absolute bottom-0 left-0 right-0 space-y-0.5 border-t border-white/10 p-3">
-          <Link href="/" target="_blank" className="flex items-center gap-2.5 rounded-md px-3 py-2 text-[13px] font-medium text-ink-300 hover:bg-white/5 hover:text-white">
+        <div className={`absolute bottom-0 left-0 right-0 space-y-0.5 border-t border-white/10 p-3 ${collapsed ? "lg:px-2" : ""}`}>
+          <Link href="/" target="_blank" title={collapsed ? "Xem website" : undefined} className={`flex items-center gap-2.5 rounded-md px-3 py-2 text-[13px] font-medium text-ink-300 hover:bg-white/5 hover:text-white ${collapsed ? "lg:justify-center lg:px-2" : ""}`}>
             <Icon name="external" className="h-4 w-4" />
-            Xem website
+            <span className={collapsed ? "lg:hidden" : ""}>Xem website</span>
           </Link>
-          <button onClick={logout} className="flex w-full items-center gap-2.5 rounded-md px-3 py-2 text-[13px] font-medium text-ink-300 hover:bg-white/5 hover:text-white">
+          <button onClick={logout} title={collapsed ? "Đăng xuất" : undefined} className={`flex w-full items-center gap-2.5 rounded-md px-3 py-2 text-[13px] font-medium text-ink-300 hover:bg-white/5 hover:text-white ${collapsed ? "lg:justify-center lg:px-2" : ""}`}>
             <Icon name="logout" className="h-4 w-4" />
-            Đăng xuất
+            <span className={collapsed ? "lg:hidden" : ""}>Đăng xuất</span>
           </button>
         </div>
       </aside>
