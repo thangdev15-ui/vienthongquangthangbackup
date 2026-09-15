@@ -10,9 +10,10 @@ import { formatVND } from "@/lib/types";
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const [featured, bestsellers, saleItems, brands, banners, promotions, articles] = await Promise.all([
-    queryProducts({ only: "featured", limit: 8 }),
+  const [bestsellers, cameraProducts, networkCableProducts, saleItems, brands, banners, promotions, articles] = await Promise.all([
     queryProducts({ only: "bestseller", limit: 8 }),
+    queryProducts({ categorySlug: "camera-quan-sat", limit: 8 }),
+    queryProducts({ categorySlug: "day-cap-mang", limit: 8 }),
     queryProducts({ only: "sale", limit: 4 }),
     getActiveBrands(),
     getActiveBanners(),
@@ -28,15 +29,29 @@ export default async function HomePage() {
       {/* ============ HERO ============ */}
       <section className="bg-ink-50 py-3">
         <div className="wrap">
-          <HeroCarousel linkUrl={banner?.buttonUrl} />
+          <HeroCarousel banners={banners} />
         </div>
       </section>
 
-      {/* ============ FEATURED ============ */}
-      {featured.items.length > 0 && (
+      {/* ============ BEST SELLERS ============ */}
+      {bestsellers.items.length > 0 && (
         <section className="wrap py-6">
-          <SectionHeader title="Sản phẩm nổi bật" subtitle="Được chọn cho công trình và dự án" href="/san-pham" />
-          <ProductGrid products={featured.items} />
+          <SectionHeader title="Bán chạy nhất" subtitle="Sản phẩm được tin dùng tại các công trình" href="/san-pham" />
+          <ProductGrid products={bestsellers.items} />
+        </section>
+      )}
+
+      {/* ============ CATEGORY SHOWCASE ============ */}
+      {cameraProducts.items.length > 0 && (
+        <section className="wrap py-6">
+          <SectionHeader title="Camera" subtitle="Thiết bị camera quan sát chính hãng" href="/danh-muc/camera-quan-sat" />
+          <ProductGrid products={cameraProducts.items} />
+        </section>
+      )}
+      {networkCableProducts.items.length > 0 && (
+        <section className="wrap py-6">
+          <SectionHeader title="Cáp mạng" subtitle="Cáp mạng cho công trình và hệ thống mạng" href="/danh-muc/day-cap-mang" />
+          <ProductGrid products={networkCableProducts.items} />
         </section>
       )}
 
@@ -135,30 +150,6 @@ export default async function HomePage() {
                 <span className="min-w-0 flex-1 truncate text-[13px] font-bold text-ink-800 group-hover:text-brand-700">{b.name}</span>
               </Link>
             ))}
-          </div>
-        </section>
-      )}
-
-      {/* ============ BEST SELLERS ============ */}
-      {bestsellers.items.length > 0 && (
-        <section className="bg-white py-12">
-          <div className="wrap">
-            <SectionHeader title="Bán chạy nhất" subtitle="Sản phẩm được tin dùng tại các công trình" href="/san-pham" hrefLabel="Xem thêm" />
-            <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
-              {bestsellers.items.map((p) => (
-                <Link key={p.id} href={`/san-pham/${p.slug}`} className="group rounded-lg border border-line bg-white p-3 transition-all hover:border-brand-400 hover:shadow-lg">
-                  <div className="relative aspect-square overflow-hidden rounded-md bg-white">
-                    {p.image ? (
-                      <Image src={p.image} alt={p.name} fill sizes="25vw" className="object-cover transition-transform duration-300 group-hover:scale-[1.04]" />
-                    ) : (
-                      <div className="flex h-full items-center justify-center text-ink-300"><Icon name="box" className="h-10 w-10" /></div>
-                    )}
-                  </div>
-                  <p className="mt-2.5 line-clamp-2 min-h-[2.6em] text-[13px] font-semibold leading-snug text-ink-900">{p.name}</p>
-                  <p className={`mt-1 text-sm font-bold ${p.priceType === "fixed" ? "text-brand-700" : "text-accent-600"}`}>{p.priceType === "fixed" ? formatVND(p.salePrice ?? p.price) : "LIÊN HỆ"}</p>
-                </Link>
-              ))}
-            </div>
           </div>
         </section>
       )}
