@@ -18,11 +18,15 @@ function serialize(editor: Editor) {
 
 export function GrapesPageEditor({ value, onChange }: { value: string; onChange: (value: string) => void }) {
   const canvasRef = useRef<HTMLDivElement>(null);
+  const blocksRef = useRef<HTMLDivElement>(null);
   const editorRef = useRef<Editor | null>(null);
   const initialValueRef = useRef(value);
+  const onChangeRef = useRef(onChange);
+  onChangeRef.current = onChange;
 
+  // GrapesJS owns the editor DOM; keep it alive while the form state updates.
   useEffect(() => {
-    if (!canvasRef.current || editorRef.current) return;
+    if (!canvasRef.current || !blocksRef.current || editorRef.current) return;
 
     const editor = grapesjs.init({
       container: canvasRef.current,
@@ -32,6 +36,7 @@ export function GrapesPageEditor({ value, onChange }: { value: string; onChange:
       storageManager: false,
       selectorManager: { componentFirst: true },
       blockManager: {
+        appendTo: blocksRef.current,
         blocks: [
           { id: "section", label: "Khu vực", category: "Bố cục", content: { type: "section", components: "<h2>Tiêu đề khu vực</h2><p>Nội dung khu vực...</p>" } },
           { id: "text", label: "Văn bản", category: "Nội dung", content: { type: "text", content: "Nhập nội dung của bạn ở đây..." } },
@@ -51,14 +56,15 @@ export function GrapesPageEditor({ value, onChange }: { value: string; onChange:
     });
 
     editor.setComponents(initialValueRef.current || DEFAULT_CONTENT);
-    editor.on("update", () => onChange(serialize(editor)));
+    editor.on("update", () => onChangeRef.current(serialize(editor)));
     editorRef.current = editor;
 
     return () => {
       editor.destroy();
       editorRef.current = null;
     };
-  }, [onChange]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="overflow-hidden rounded-md border border-line bg-white">
@@ -66,7 +72,10 @@ export function GrapesPageEditor({ value, onChange }: { value: string; onChange:
         <span>Kéo thả các khối vào vùng thiết kế, chọn phần tử để chỉnh sửa.</span>
         <span className="hidden sm:inline">GrapesJS Page Builder</span>
       </div>
-      <div ref={canvasRef} />
+      <div className="grid min-h-[680px] grid-cols-[210px_minmax(0,1fr)]">
+        <aside ref={blocksRef} className="min-w-0 overflow-y-auto border-r border-line bg-ink-50 p-2" aria-label="Các khối thiết kế" />
+        <div ref={canvasRef} className="min-w-0" />
+      </div>
     </div>
   );
 }
