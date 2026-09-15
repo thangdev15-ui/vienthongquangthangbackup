@@ -15,6 +15,7 @@ import {
 import { AdminTable, ConfirmButton, Field, SaveBar, type Column } from "@/components/admin/shell";
 import { useShop } from "@/components/store/shops";
 import { formatDate, formatVND, ORDER_STATUS, ORDER_STATUS_FLOW, PAYMENT_METHODS, type ActionResult } from "@/lib/types";
+import { GrapesPageEditor } from "@/components/admin/page-builder";
 
 /* --------------------------------- helpers --------------------------------- */
 
@@ -905,7 +906,7 @@ export function PageForm({ initial }: { initial: PageForm & { id?: string } }) {
         <Field label="Slug"><input value={f.slug} onChange={(e) => set("slug", e.target.value)} className="input" /></Field>
         <div className="sm:col-span-2">
           <Field label="Nội dung trang">
-            <RichTextEditor value={f.content} onChange={(v) => set("content", v)} minHeight={420} />
+            <GrapesPageEditor value={f.content} onChange={(v) => set("content", v)} />
           </Field>
         </div>
         <Field label="SEO Title"><input value={f.seoTitle} onChange={(e) => set("seoTitle", e.target.value)} className="input" /></Field>

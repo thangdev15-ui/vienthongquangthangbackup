@@ -61,5 +61,5 @@ export async function POST(req: Request) {
   } catch {
     /* media registry is non-critical */
   }
-  return Response.json({ url });
+  return Response.json({ url, data: [{ src: url }] });
 }
