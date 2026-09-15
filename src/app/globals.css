@@ -123,6 +123,49 @@
     aspect-ratio: 21 / 8;
     background: #1f2937;
   }
+  .page-builder .gjs-editor {
+    font-family: inherit;
+  }
+  .page-builder .gjs-blocks-c,
+  .page-builder .gjs-sm-sectors,
+  .page-builder .gjs-layers {
+    background: #f1f5f9;
+  }
+  .page-builder .gjs-block {
+    min-height: 68px;
+    width: calc(50% - 6px);
+    margin: 3px;
+    border: 1px solid #dce6f0;
+    border-radius: 6px;
+    background: #ffffff;
+    color: #1f2937;
+    box-shadow: none;
+  }
+  .page-builder .gjs-block:hover {
+    border-color: #1e73be;
+    color: #1e73be;
+    box-shadow: 0 2px 7px rgb(30 115 190 / 12%);
+  }
+  .page-builder .gjs-title,
+  .page-builder .gjs-sm-sector .gjs-sm-title,
+  .page-builder .gjs-layer-title {
+    color: #1f2937;
+  }
+  .page-builder .gjs-sm-sector,
+  .page-builder .gjs-layer {
+    border-color: #dce6f0;
+  }
+  .page-builder .gjs-field,
+  .page-builder .gjs-input-holder input,
+  .page-builder .gjs-sm-select {
+    border-color: #dce6f0;
+    background: #ffffff;
+    color: #1f2937;
+  }
+  .page-builder .gjs-cv-canvas {
+    width: 100%;
+    top: 0;
+  }
   .side-rail-left {
     left: 14px !important;
     right: auto !important;

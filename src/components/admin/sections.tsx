@@ -900,7 +900,7 @@ export function PageForm({ initial }: { initial: PageForm & { id?: string } }) {
   const { saving, run } = useSave();
   const set = <K extends keyof PageForm>(k: K, v: PageForm[K]) => setF((p) => ({ ...p, [k]: v }));
   return (
-    <div className="grid max-w-3xl gap-5">
+    <div className="grid w-full gap-5">
       <div className="card grid gap-4 p-4 sm:grid-cols-2">
         <Field label="Tiêu đề" required><input value={f.title} onChange={(e) => set("title", e.target.value)} className="input" /></Field>
         <Field label="Slug"><input value={f.slug} onChange={(e) => set("slug", e.target.value)} className="input" /></Field>
