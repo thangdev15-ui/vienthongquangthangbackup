@@ -126,6 +126,13 @@
   .page-builder .gjs-editor {
     font-family: inherit;
   }
+  .page-builder .gjs-blocks-c {
+    padding: 8px;
+  }
+  .page-builder .gjs-block-label {
+    font-size: 12px;
+    font-weight: 600;
+  }
   .page-builder .gjs-blocks-c,
   .page-builder .gjs-sm-sectors,
   .page-builder .gjs-layers {
@@ -150,6 +157,24 @@
   .page-builder .gjs-sm-sector .gjs-sm-title,
   .page-builder .gjs-layer-title {
     color: #1f2937;
+  }
+  .page-builder .gjs-cv-canvas {
+    background: #f1f5f9;
+  }
+  .page-builder .builder-inspector {
+    background: #1f2937;
+  }
+  .page-builder .builder-inspector .gjs-sm-sector,
+  .page-builder .builder-inspector .gjs-layers {
+    background: #1f2937;
+  }
+  .page-builder .builder-inspector .gjs-sm-sector,
+  .page-builder .builder-inspector .gjs-layer,
+  .page-builder .builder-inspector .gjs-title,
+  .page-builder .builder-inspector .gjs-sm-sector .gjs-sm-title,
+  .page-builder .builder-inspector .gjs-layer-title {
+    color: #ffffff;
+    border-color: rgb(255 255 255 / 12%);
   }
   .page-builder .gjs-sm-sector,
   .page-builder .gjs-layer {

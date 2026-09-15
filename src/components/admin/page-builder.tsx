@@ -86,10 +86,10 @@ export function GrapesPageEditor({ value, onChange }: { value: string; onChange:
       <div className="grid min-h-[680px] grid-cols-[220px_minmax(0,1fr)_250px]">
         <aside ref={blocksRef} className="min-w-0 overflow-y-auto border-r border-line bg-ink-50 p-2" aria-label="Các khối thiết kế" />
         <div ref={canvasRef} className="min-w-0" />
-        <aside className="min-w-0 overflow-y-auto border-l border-line bg-ink-50" aria-label="Bảng thiết kế">
-          <div className="border-b border-line px-3 py-2 text-xs font-bold uppercase tracking-wide text-ink-600">Thiết kế</div>
+        <aside className="builder-inspector min-w-0 overflow-y-auto border-l border-line" aria-label="Bảng thiết kế">
+          <div className="border-b border-white/10 px-4 py-3 text-sm font-bold text-white">Thiết kế <span className="float-right font-normal text-ink-300">Nâng cao</span></div>
           <div ref={stylesRef} />
-          <div className="border-y border-line px-3 py-2 text-xs font-bold uppercase tracking-wide text-ink-600">Lớp</div>
+          <div className="border-y border-white/10 px-4 py-3 text-sm font-bold text-white">Lớp</div>
           <div ref={layersRef} />
         </aside>
       </div>
