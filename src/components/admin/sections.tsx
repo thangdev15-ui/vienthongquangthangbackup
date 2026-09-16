@@ -77,6 +77,7 @@ function ImageInput({ value, onChange, label = "Ảnh" }: { value: string; onCha
 
 function RichTextEditor({ value, onChange, minHeight = 220 }: { value: string; onChange: (v: string) => void; minHeight?: number }) {
   const editorRef = useRef<HTMLDivElement>(null);
+  const uploadRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (editorRef.current && editorRef.current.innerHTML !== value) editorRef.current.innerHTML = value || "";
@@ -85,6 +86,40 @@ function RichTextEditor({ value, onChange, minHeight = 220 }: { value: string; o
   function command(name: string, arg?: string) {
     editorRef.current?.focus();
     document.execCommand(name, false, arg);
+    if (editorRef.current) onChange(editorRef.current.innerHTML);
+  }
+
+  function selectedImage() {
+    const selection = window.getSelection();
+    const node = selection?.anchorNode;
+    const element = node instanceof HTMLElement ? node : node?.parentElement;
+    return element?.closest("img") as HTMLImageElement | null;
+  }
+
+  function insertImage(src: string) {
+    editorRef.current?.focus();
+    document.execCommand("insertHTML", false, `<img src="${src.replace(/"/g, "&quot;")}" alt="" style="display:block;max-width:100%;height:auto;margin:16px 0;" />`);
+    if (editorRef.current) onChange(editorRef.current.innerHTML);
+  }
+
+  async function uploadImage(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+    const formData = new FormData();
+    formData.append("file", file);
+    const response = await fetch("/api/upload", { method: "POST", body: formData });
+    const result = await response.json();
+    if (result.url) insertImage(result.url);
+    else alert(result.error ?? "Upload ảnh thất bại");
+  }
+
+  function setImageStyle(property: "width" | "align", value: string) {
+    const image = selectedImage();
+    if (!image) return;
+    if (property === "width") image.style.width = value;
+    else image.style.margin = value === "center" ? "16px auto" : value === "right" ? "16px 0 16px auto" : "16px 0";
+    image.style.display = "block";
     if (editorRef.current) onChange(editorRef.current.innerHTML);
   }
 
@@ -97,6 +132,15 @@ function RichTextEditor({ value, onChange, minHeight = 220 }: { value: string; o
         <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => command("formatBlock", "<h3>")} className="btn-outline h-8 px-2 text-xs font-bold" title="Tiêu đề nhỏ">H3</button>
         <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => command("insertUnorderedList")} className="btn-outline h-8 px-2 text-xs" title="Danh sách">Danh sách</button>
         <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => command("formatBlock", "<blockquote>")} className="btn-outline h-8 px-2 text-xs" title="Trích dẫn">Trích dẫn</button>
+        <button type="button" onClick={() => { const src = window.prompt("URL hình ảnh"); if (src?.trim()) insertImage(src.trim()); }} className="btn-outline inline-flex h-8 items-center gap-1 px-2 text-xs" title="Chèn ảnh"><Icon name="image" className="h-3.5 w-3.5" />Ảnh</button>
+        <button type="button" onClick={() => uploadRef.current?.click()} className="btn-outline inline-flex h-8 items-center gap-1 px-2 text-xs" title="Tải ảnh lên"><Icon name="upload" className="h-3.5 w-3.5" />Upload</button>
+        <input ref={uploadRef} type="file" accept="image/*" onChange={uploadImage} className="hidden" />
+        <select defaultValue="" onChange={(e) => { if (e.target.value) setImageStyle("width", e.target.value); e.target.value = ""; }} className="input h-8 w-auto min-w-28 px-2 text-xs" aria-label="Kích thước ảnh">
+          <option value="">Kích thước ảnh</option><option value="100%">Rộng 100%</option><option value="75%">Rộng 75%</option><option value="50%">Rộng 50%</option><option value="25%">Rộng 25%</option>
+        </select>
+        <select defaultValue="" onChange={(e) => { if (e.target.value) setImageStyle("align", e.target.value); e.target.value = ""; }} className="input h-8 w-auto min-w-28 px-2 text-xs" aria-label="Căn ảnh">
+          <option value="">Căn ảnh</option><option value="left">Căn trái</option><option value="center">Căn giữa</option><option value="right">Căn phải</option>
+        </select>
         <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => command("removeFormat")} className="btn-outline h-8 px-2 text-xs" title="Xoá định dạng">Bỏ định dạng</button>
       </div>
       <div
@@ -769,7 +813,7 @@ export function ArticlesSection({ rows }: { rows: ArticleLite[] }) {
   return <AdminTable columns={columns} rows={rows} onRowClick={(r) => (window.location.href = `/admin/articles/${r.id}`)} />;
 }
 
-export function ArticleForm({ initial }: { initial: ArticleForm & { id?: string } }) {
+export function ArticleForm({ initial, categories }: { initial: ArticleForm & { id?: string }; categories: string[] }) {
   const [f, setF] = useState<ArticleForm>(initial);
   const { saving, run } = useSave();
   const set = <K extends keyof ArticleForm>(k: K, v: ArticleForm[K]) => setF((p) => ({ ...p, [k]: v }));
@@ -780,7 +824,7 @@ export function ArticleForm({ initial }: { initial: ArticleForm & { id?: string 
           <Field label="Tiêu đề" required><input value={f.title} onChange={(e) => set("title", e.target.value)} className="input" /></Field>
         </div>
         <Field label="Slug"><input value={f.slug} onChange={(e) => set("slug", e.target.value)} className="input" /></Field>
-        <Field label="Chuyên mục"><input value={f.category} onChange={(e) => set("category", e.target.value)} className="input" placeholder="Cáp mạng, Camera…" /></Field>
+        <Field label="Chuyên mục"><select value={f.category} onChange={(e) => set("category", e.target.value)} className="input"><option value="">Chọn chuyên mục</option>{categories.map((category) => <option key={category} value={category}>{category}</option>)}{f.category && !categories.includes(f.category) && <option value={f.category}>{f.category}</option>}</select></Field>
         <Field label="Tags (phân cách bằng dấu phẩy)"><input value={f.tags} onChange={(e) => set("tags", e.target.value)} className="input" placeholder="cat6, cáp quang, poe" /></Field>
         <Field label="Trạng thái">
           <select value={f.status} onChange={(e) => set("status", e.target.value)} className="input">

@@ -163,6 +163,7 @@ export default async function AdminEntityPage({ params }: { params: Promise<{ se
 
   /* ---------------- articles ---------------- */
   if (section === "articles") {
+    const articleCategories = await db.select({ name: categories.name }).from(categories).where(eq(categories.active, true)).orderBy(asc(categories.name));
     let initial;
     if (id !== "new") {
       const rows = await db.select().from(articles).where(eq(articles.id, id)).limit(1);
@@ -178,7 +179,7 @@ export default async function AdminEntityPage({ params }: { params: Promise<{ se
     }
     return (
       <AdminShell title={id === "new" ? "Viết bài mới" : "Chỉnh sửa bài viết"}>
-        <ArticleForm initial={initial} />
+        <ArticleForm initial={initial} categories={articleCategories.map((category) => category.name)} />
       </AdminShell>
     );
   }
