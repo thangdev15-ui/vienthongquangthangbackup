@@ -60,6 +60,7 @@ export type ProductRow = {
 export const BUSINESS = {
   name: "Viễn Thông Quang Thắng",
   phone: "0941.74.6161",
+  salesPhones: "(028) 3760.4760\n0941.59.6161\n0949.09.6161\n0941.74.6161\n0941.80.6161",
   phoneHref: "tel:0941746161",
   csKh: "0941.80.6161",
   zalo: "https://zalo.me/0941746161",

@@ -1093,6 +1093,7 @@ export function SettingsForm({ initial }: { initial: Record<string, string> }) {
         <Field label="Tên website"><input value={f.site_name ?? ""} onChange={(e) => set("site_name", e.target.value)} className="input" /></Field>
         <Field label="Dòng thông báo (announcement)"><input value={f.announcement ?? ""} onChange={(e) => set("announcement", e.target.value)} className="input" /></Field>
         <Field label="Điện thoại tư vấn"><input value={f.phone ?? ""} onChange={(e) => set("phone", e.target.value)} className="input" /></Field>
+        <Field label="Số điện thoại bán hàng" hint="Mỗi số một dòng"><textarea value={f.sales_phones ?? ""} onChange={(e) => set("sales_phones", e.target.value)} className="textarea" rows={3} /></Field>
         <Field label="Hotline CSKH"><input value={f.cs_kh ?? ""} onChange={(e) => set("cs_kh", e.target.value)} className="input" /></Field>
         <Field label="Zalo (link)"><input value={f.zalo ?? ""} onChange={(e) => set("zalo", e.target.value)} className="input" /></Field>
         <Field label="Email"><input value={f.email ?? ""} onChange={(e) => set("email", e.target.value)} className="input" /></Field>

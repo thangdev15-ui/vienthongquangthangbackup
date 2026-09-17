@@ -705,9 +705,11 @@ export function Footer({ categories, settings }: { categories: NavCategory[]; se
             </li>
             <li className="flex gap-2.5">
               <Icon name="phone" className="mt-0.5 h-4 w-4 shrink-0 text-accent-100" />
-              <a href={`tel:${settings.phone.replace(/\D/g, "")}`} className="font-semibold text-white hover:text-accent-100">
-                {settings.phone} (tư vấn)
-              </a>
+              <div className="space-y-1">
+                {(settings.sales_phones || settings.phone).split(/\n|,/).map((phone) => phone.trim()).filter(Boolean).map((phone) => (
+                  <a key={phone} href={`tel:${phone.replace(/\D/g, "")}`} className="block font-semibold text-white hover:text-accent-100">{phone}</a>
+                ))}
+              </div>
             </li>
             <li className="flex gap-2.5">
               <Icon name="message" className="mt-0.5 h-4 w-4 shrink-0 text-accent-100" />

@@ -436,6 +436,7 @@ export async function getSettings(): Promise<Record<string, string>> {
   const out: Record<string, string> = {
     site_name: BUSINESS.name,
     phone: BUSINESS.phone,
+    sales_phones: BUSINESS.salesPhones,
     cs_kh: BUSINESS.csKh,
     zalo: BUSINESS.zalo,
     email: BUSINESS.email,

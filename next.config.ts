@@ -2,6 +2,9 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
+    // Product/banner assets are already stored at their display-ready source URLs.
+    // Avoid paying for a new optimizer transformation on every image request.
+    unoptimized: true,
     remotePatterns: [
       { protocol: "https", hostname: "images.pexels.com" },
       { protocol: "https", hostname: "www.pexels.com" },
