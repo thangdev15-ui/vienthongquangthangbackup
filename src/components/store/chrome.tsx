@@ -648,12 +648,10 @@ export function NewsletterForm({ compact = false }: { compact?: boolean }) {
 export function Footer({ categories, settings }: { categories: NavCategory[]; settings: Settings }) {
   return (
     <footer className="mt-14 border-t border-brand-800 bg-brand-950 pb-20 text-brand-100 lg:pb-0">
-      <div className="wrap grid gap-10 py-12 md:grid-cols-2 lg:grid-cols-4">
-        <div>
-          <div className="mb-4 flex items-center gap-2.5">
-            <span className="flex h-12 w-[150px] items-center justify-center rounded-md bg-white px-2">
-              <img src="/logoqt.png?v=3" alt="Quang Thang Telecom" className="h-auto w-full object-contain" />
-            </span>
+      <div className="wrap grid gap-x-10 gap-y-8 py-12 md:grid-cols-2 lg:grid-cols-[1.1fr_1fr_1fr_1.25fr]">
+        <div className="min-w-0">
+          <div className="mb-5 flex h-14 w-[170px] items-center">
+            <img src="/logoqt.png?v=3" alt="Quang Thang Telecom" className="h-auto w-full object-contain brightness-0 invert" />
           </div>
           <p className="text-[13px] leading-6 text-brand-100/85">
             Tổng kho thiết bị viễn thông, cáp mạng &amp; camera tại TP. Hồ Chí Minh. Sản phẩm chính hãng, tư vấn kỹ thuật,
@@ -668,7 +666,7 @@ export function Footer({ categories, settings }: { categories: NavCategory[]; se
             </a>
           </div>
         </div>
-        <div>
+        <div className="min-w-0">
           <h3 className="mb-4 text-sm font-bold uppercase tracking-wide text-white">Danh mục sản phẩm</h3>
           <ul className="grid grid-cols-1 gap-2 text-[13px]">
             {categories.slice(0, 9).map((c) => (
@@ -680,7 +678,7 @@ export function Footer({ categories, settings }: { categories: NavCategory[]; se
             ))}
           </ul>
         </div>
-        <div>
+        <div className="min-w-0">
           <h3 className="mb-4 text-sm font-bold uppercase tracking-wide text-white">Hỗ trợ &amp; Chính sách</h3>
           <ul className="space-y-2 text-[13px]">
             <li><Link href="/huong-dan-mua-hang" className="hover:text-accent-100">Hướng dẫn mua hàng online</Link></li>
@@ -692,7 +690,7 @@ export function Footer({ categories, settings }: { categories: NavCategory[]; se
             <li><Link href="/khuyen-mai" className="hover:text-accent-100">Khuyến mãi</Link></li>
           </ul>
         </div>
-        <div>
+        <div className="min-w-0">
           <h3 className="mb-4 text-sm font-bold uppercase tracking-wide text-white">Liên hệ</h3>
           <ul className="space-y-2.5 text-[13px]">
             <li className="flex gap-2.5">

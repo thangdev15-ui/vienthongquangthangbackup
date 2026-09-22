@@ -33,6 +33,22 @@ export default async function HomePage() {
         </div>
       </section>
 
+      <section className="border-b border-line bg-white py-5">
+        <div className="wrap grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {([
+            ["shield", "Hàng chính hãng", "Nguồn gốc rõ ràng, hỗ trợ chứng từ"],
+            ["headset", "Tư vấn kỹ thuật", "Chọn đúng thiết bị cho từng công trình"],
+            ["truck", "Giao hàng toàn quốc", "Đóng gói kỹ, giao đúng tiến độ"],
+            ["check-circle", "Hỗ trợ sau bán", "Bảo hành và đồng hành lâu dài"],
+          ] as [IconName, string, string][]).map(([icon, title, description]) => (
+            <div key={title} className="flex items-center gap-3 rounded-lg border border-line bg-ink-50/40 px-4 py-3">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-700"><Icon name={icon} className="h-5 w-5" /></span>
+              <div className="min-w-0"><h2 className="text-[13px] font-bold text-ink-900">{title}</h2><p className="mt-0.5 text-[11px] leading-4 text-ink-500">{description}</p></div>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* ============ BEST SELLERS ============ */}
       {bestsellers.items.length > 0 && (
         <section className="wrap py-6">
@@ -134,22 +150,23 @@ export default async function HomePage() {
 
       {/* ============ BRANDS ============ */}
       {brands.length > 0 && (
-        <section className="wrap py-10">
-          <SectionHeader title="Thương hiệu đại lý & phân phối" subtitle="Các hãng thiết bị đang có trong kho sản phẩm" href="/thuong-hieu" />
-          <div className="flex snap-x gap-3 overflow-x-auto pb-2 no-scrollbar">
+        <section className="bg-ink-50 py-10">
+          <div className="wrap">
+            <SectionHeader title="Thương hiệu & đối tác" subtitle="Các thương hiệu đang được Quang Thắng phân phối" href="/thuong-hieu" />
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
             {brands.slice(0, 12).map((b) => (
-              <Link key={b.id} href={`/thuong-hieu/${b.slug}`} className="card group flex h-20 w-[220px] shrink-0 snap-start items-center gap-3 p-3 transition-all hover:border-brand-400 hover:shadow-md">
-                <span className="relative flex h-12 w-20 shrink-0 items-center justify-center overflow-hidden rounded-md bg-white ring-1 ring-line">
+              <Link key={b.id} href={`/thuong-hieu/${b.slug}`} className="group flex min-h-28 items-center justify-center overflow-hidden rounded-lg border border-line bg-white p-5 transition-all hover:border-brand-400 hover:shadow-md">
+                <span className="relative flex h-16 w-full items-center justify-center">
                   {b.logo ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={b.logo} alt={b.name} className="h-full w-full object-contain p-2" />
+                    <img src={b.logo} alt={b.name} className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105" />
                   ) : (
                     <span className="text-sm font-extrabold text-brand-700">{b.name.charAt(0)}</span>
                   )}
                 </span>
-                <span className="min-w-0 flex-1 truncate text-[13px] font-bold text-ink-800 group-hover:text-brand-700">{b.name}</span>
               </Link>
             ))}
+            </div>
           </div>
         </section>
       )}
