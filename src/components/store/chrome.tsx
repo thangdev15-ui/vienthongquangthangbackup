@@ -672,27 +672,43 @@ export function Footer({ categories, settings }: { categories: NavCategory[]; se
           </div>
         </div>
         <div className="min-w-0">
-          <h3 className="mb-4 text-sm font-bold uppercase tracking-wide text-white">Danh mục sản phẩm</h3>
+          <h3 className="mb-4 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-white">
+            <Icon name="layers" className="h-4 w-4 text-accent-100" />
+            Danh mục sản phẩm
+          </h3>
           <ul className="grid grid-cols-1 gap-2 text-[13px]">
             {categories.slice(0, 9).map((c) => (
               <li key={c.id}>
-                <Link href={`/danh-muc/${c.slug}`} className="hover:text-accent-100">
-                  {c.name}
+                <Link href={`/danh-muc/${c.slug}`} className="group flex items-center gap-2 hover:text-accent-100">
+                  <Icon name={NAV_ICONS[c.slug] ?? "layers"} className="h-3.5 w-3.5 shrink-0 text-brand-200 transition-colors group-hover:text-accent-100" />
+                  <span>{c.name}</span>
                 </Link>
               </li>
             ))}
           </ul>
         </div>
         <div className="min-w-0">
-          <h3 className="mb-4 text-sm font-bold uppercase tracking-wide text-white">Hỗ trợ &amp; Chính sách</h3>
+          <h3 className="mb-4 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-white">
+            <Icon name="shield" className="h-4 w-4 text-accent-100" />
+            Hỗ trợ &amp; Chính sách
+          </h3>
           <ul className="space-y-2 text-[13px]">
-            <li><Link href="/huong-dan-mua-hang" className="hover:text-accent-100">Hướng dẫn mua hàng online</Link></li>
-            <li><Link href="/hinh-thuc-thanh-toan" className="hover:text-accent-100">Hình thức thanh toán</Link></li>
-            <li><Link href="/chinh-sach-bao-hanh" className="hover:text-accent-100">Chính sách bảo hành</Link></li>
-            <li><Link href="/chinh-sach-doi-tra" className="hover:text-accent-100">Chính sách đổi trả</Link></li>
-            <li><Link href="/chinh-sach-giao-nhan" className="hover:text-accent-100">Chính sách giao nhận</Link></li>
-            <li><Link href="/chinh-sach-bao-mat" className="hover:text-accent-100">Chính sách bảo mật</Link></li>
-            <li><Link href="/khuyen-mai" className="hover:text-accent-100">Khuyến mãi</Link></li>
+            {[
+              ["/huong-dan-mua-hang", "Hướng dẫn mua hàng online", "headset"],
+              ["/hinh-thuc-thanh-toan", "Hình thức thanh toán", "credit-card"],
+              ["/chinh-sach-bao-hanh", "Chính sách bảo hành", "shield"],
+              ["/chinh-sach-doi-tra", "Chính sách đổi trả", "refresh"],
+              ["/chinh-sach-giao-nhan", "Chính sách giao nhận", "truck"],
+              ["/chinh-sach-bao-mat", "Chính sách bảo mật", "lock"],
+              ["/khuyen-mai", "Khuyến mãi", "zap"],
+            ].map(([href, label, icon]) => (
+              <li key={href}>
+                <Link href={href} className="group flex items-center gap-2 hover:text-accent-100">
+                  <Icon name={icon as IconName} className="h-3.5 w-3.5 shrink-0 text-brand-200 transition-colors group-hover:text-accent-100" />
+                  <span>{label}</span>
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
         <div className="min-w-0">
