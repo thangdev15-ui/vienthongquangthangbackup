@@ -697,9 +697,9 @@ export function Footer({ categories, settings }: { categories: NavCategory[]; se
               ["/huong-dan-mua-hang", "Hướng dẫn mua hàng online", "headset"],
               ["/hinh-thuc-thanh-toan", "Hình thức thanh toán", "credit-card"],
               ["/chinh-sach-bao-hanh", "Chính sách bảo hành", "shield"],
-              ["/chinh-sach-doi-tra", "Chính sách đổi trả", "refresh"],
+              ["/chinh-sach-doi-tra", "Chính sách đổi trả", "check-circle"],
               ["/chinh-sach-giao-nhan", "Chính sách giao nhận", "truck"],
-              ["/chinh-sach-bao-mat", "Chính sách bảo mật", "lock"],
+              ["/chinh-sach-bao-mat", "Chính sách bảo mật", "shield"],
               ["/khuyen-mai", "Khuyến mãi", "zap"],
             ].map(([href, label, icon]) => (
               <li key={href}>
