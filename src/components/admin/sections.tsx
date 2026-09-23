@@ -9,6 +9,7 @@ import {
   deleteBrandAction, deleteArticleAction, deleteBannerAction, deleteCategoryAction, deletePageAction,
   deleteProductAction, deletePromotionAction, deleteReviewAction, saveArticleAction, saveBannerAction,
   saveBrandAction, saveCategoryAction, savePageAction, saveProductAction, savePromotionAction,
+  updateProductQuickAction,
   saveSettingsAction, setOrderStatusAction, setReviewStatusAction, registerMediaAsset,
   type ArticleForm, type BannerForm, type BrandForm, type CategoryForm, type PageForm, type ProductForm, type PromotionForm,
 } from "@/lib/actions";
@@ -274,23 +275,52 @@ export function DashboardView({
 
 export type ProductRowLite = {
   id: string; name: string; slug: string; sku: string | null; price: number | null; salePrice: number | null;
-  priceType: string; stock: number; status: string; brandName: string; categoryName: string;
+  priceType: string; stock: number; status: string; brandId: string | null; brandName: string; categoryName: string;
   featured: boolean; bestseller: boolean; sale: boolean; createdAt: Date;
 };
 
-export function ProductsSection({ rows }: { rows: ProductRowLite[] }) {
+function QuickProductFields({ row, brands }: { row: ProductRowLite; brands: { id: string; name: string }[] }) {
+  const { toast } = useShop();
+  const [brandId, setBrandId] = useState(row.brandId ?? "");
+  const [stock, setStock] = useState(String(row.stock));
+  const [saving, setSaving] = useState(false);
+
+  async function save(e: React.MouseEvent) {
+    e.stopPropagation();
+    setSaving(true);
+    const result = await updateProductQuickAction({ id: row.id, brandId, stock: Number(stock) });
+    setSaving(false);
+    toast(result.ok ? "Đã cập nhật thương hiệu và tồn kho." : result.error ?? "Không thể cập nhật.", result.ok ? "success" : "error");
+  }
+
+  return (
+    <div className="flex min-w-[230px] items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
+      <select value={brandId} onChange={(e) => setBrandId(e.target.value)} className="input h-8 min-w-0 flex-1 px-2 text-xs" aria-label="Thương hiệu">
+        <option value="">Chưa chọn</option>
+        {brands.map((brand) => <option key={brand.id} value={brand.id}>{brand.name}</option>)}
+      </select>
+      <input value={stock} onChange={(e) => setStock(e.target.value)} type="number" min={0} className="input h-8 w-16 px-2 text-xs" aria-label="Tồn kho" />
+      <button type="button" onClick={save} disabled={saving} className="btn-primary h-8 w-8 shrink-0 px-0" title="Lưu nhanh" aria-label="Lưu nhanh">
+        {saving ? <Spinner /> : <Icon name="check" className="h-4 w-4" />}
+      </button>
+    </div>
+  );
+}
+
+export function ProductsSection({ rows, brands }: { rows: ProductRowLite[]; brands: { id: string; name: string }[] }) {
+  const [brandFilter, setBrandFilter] = useState("");
+  const filteredRows = brandFilter ? rows.filter((row) => row.brandId === brandFilter) : rows;
   const columns: Column<ProductRowLite>[] = [
     { key: "name", label: "Sản phẩm", sortable: true, value: (r) => r.name, render: (r) => (
       <div>
-        <Link href={`/admin/products/${r.id}`} className="font-semibold text-ink-900 hover:text-brand-700">{r.name}</Link>
+        <span className="font-semibold text-ink-900">{r.name}</span>
         {r.sku && <p className="text-[11px] text-ink-400">{r.sku}</p>}
       </div>
     ) },
     { key: "price", label: "Giá", render: (r) => (
       <Price price={r.priceType === "fixed" ? r.price : null} salePrice={r.salePrice} priceType={r.priceType} size="sm" />
     ) },
-    { key: "stock", label: "Tồn kho", value: (r) => r.stock, render: (r) => <span className={r.stock > 0 ? "text-success-600" : "text-ink-400"}>{r.stock > 0 ? r.stock : "—"}</span> },
-    { key: "brand", label: "Thương hiệu", value: (r) => r.brandName, render: (r) => r.brandName || "—" },
+    { key: "brand", label: "Thương hiệu / tồn kho", value: (r) => r.brandName, render: (r) => <QuickProductFields row={r} brands={brands} /> },
     { key: "status", label: "Trạng thái", value: (r) => r.status, render: (r) => (
       r.status === "published" ? <StatusBadge label="Đang bán" tone="green" /> : <StatusBadge label="Bản nháp" tone="amber" />
     ) },
@@ -303,7 +333,17 @@ export function ProductsSection({ rows }: { rows: ProductRowLite[] }) {
     ) },
   ];
   return (
-    <AdminTable columns={columns} rows={rows} onRowClick={(r) => (window.location.href = `/admin/products/${r.id}`)} />
+    <AdminTable
+      columns={columns}
+      rows={filteredRows}
+      toolbar={
+        <select value={brandFilter} onChange={(e) => setBrandFilter(e.target.value)} className="input h-9 w-52 text-xs" aria-label="Lọc theo thương hiệu">
+          <option value="">Tất cả thương hiệu</option>
+          {brands.map((brand) => <option key={brand.id} value={brand.id}>{brand.name}</option>)}
+        </select>
+      }
+      onRowClick={(r, page) => (window.location.href = `/admin/products/${r.id}?returnPage=${page}`)}
+    />
   );
 }
 
@@ -316,6 +356,8 @@ export function ProductForm({
 }) {
   const [f, setF] = useState<ProductForm>({ ...initial });
   const { saving, run } = useSave();
+  const returnPage = typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("returnPage") : null;
+  const backHref = returnPage ? `/admin/products?page=${returnPage}` : "/admin/products";
   const set = <K extends keyof ProductForm>(k: K, v: ProductForm[K]) => setF((p) => ({ ...p, [k]: v }));
   const isEdit = !!initial.id;
 
@@ -502,7 +544,7 @@ export function ProductForm({
           <DeleteProductBtn id={f.id!} />
         )}
       </div>
-      <SaveBar saving={saving} onSave={submit} backHref="/admin/products" />
+      <SaveBar saving={saving} onSave={submit} backHref={backHref} />
     </div>
   );
 }

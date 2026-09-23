@@ -244,7 +244,8 @@ export async function queryProducts(f: ProductFilters): Promise<{ items: Product
 }
 
 export async function getAdminProducts(): Promise<ProductRow[]> {
-  return fetchRows(undefined, [desc(products.createdAt)], 500);
+  // Admin needs the complete catalog so search can find products shown on the storefront.
+  return fetchRows(undefined, [asc(brands.name), asc(products.name)], 5000);
 }
 
 export async function getProductBySlug(slug: string) {

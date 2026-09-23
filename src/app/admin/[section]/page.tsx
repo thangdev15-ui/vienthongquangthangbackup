@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { asc, desc } from "drizzle-orm";
+import { asc, desc, eq } from "drizzle-orm";
 import { db } from "@/db";
 import { articles, banners, brands, categories, mediaAssets, pages, promotions } from "@/db/schema";
 import { requireAdmin } from "@/lib/auth";
@@ -47,13 +47,17 @@ export default async function AdminSectionPage({ params }: { params: Promise<{ s
   if (!title) notFound();
 
   if (section === "products") {
-    const rows = await getAdminProducts();
+    const [rows, allBrands] = await Promise.all([
+      getAdminProducts(),
+      db.select({ id: brands.id, name: brands.name }).from(brands).where(eq(brands.active, true)).orderBy(asc(brands.name)),
+    ]);
     return (
       <AdminShell title={title} action={<AddButton href="/admin/products/new" label="Thêm sản phẩm" />}>
         <ProductsSection
+          brands={allBrands}
           rows={rows.map((r) => ({
             id: r.id, name: r.name, slug: r.slug, sku: r.sku, price: r.price, salePrice: r.salePrice,
-            priceType: r.priceType, stock: r.stock, status: r.status, brandName: r.brandName || "",
+            priceType: r.priceType, stock: r.stock, status: r.status, brandId: r.brandId, brandName: r.brandName || "",
             categoryName: r.categoryName || "", featured: r.featured, bestseller: r.bestseller, sale: r.sale,
             createdAt: r.createdAt,
           }))}

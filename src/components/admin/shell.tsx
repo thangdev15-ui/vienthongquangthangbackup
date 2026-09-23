@@ -116,17 +116,32 @@ export function AdminTable<T extends { id: string }>({
   columns,
   rows,
   onRowClick,
+  toolbar,
   pageSize = 15,
 }: {
   columns: Column<T>[];
   rows: T[];
-  onRowClick?: (row: T) => void;
+  onRowClick?: (row: T, page: number) => void;
+  toolbar?: React.ReactNode;
   pageSize?: number;
 }) {
   const [q, setQ] = useState("");
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(() => {
+    if (typeof window === "undefined") return 1;
+    const value = Number(new URLSearchParams(window.location.search).get("page"));
+    return value > 0 ? value : 1;
+  });
   const [sortKey, setSortKey] = useState<string | null>(null);
   const [sortDir, setSortDir] = useState<1 | -1>(1);
+
+  function goToPage(next: number) {
+    const value = Math.max(1, next);
+    setPage(value);
+    const url = new URL(window.location.href);
+    if (value === 1) url.searchParams.delete("page");
+    else url.searchParams.set("page", String(value));
+    window.history.replaceState({}, "", url);
+  }
 
   const filtered = useMemo(() => {
     if (!q.trim()) return rows;
@@ -168,13 +183,14 @@ export function AdminTable<T extends { id: string }>({
             value={q}
             onChange={(e) => {
               setQ(e.target.value);
-              setPage(1);
+              goToPage(1);
             }}
             placeholder="Tìm kiếm…"
             aria-label="Tìm kiếm trong bảng"
             className="input h-9 w-64 pl-8"
           />
         </div>
+        {toolbar}
         <span className="ml-auto text-[13px] text-ink-500">{sorted.length} bản ghi</span>
       </div>
       <div className="overflow-x-auto">
@@ -204,7 +220,7 @@ export function AdminTable<T extends { id: string }>({
               </tr>
             )}
             {slice.map((row) => (
-              <tr key={row.id} onClick={onRowClick ? () => onRowClick(row) : undefined} className={onRowClick ? "cursor-pointer" : ""}>
+              <tr key={row.id} onClick={onRowClick ? () => onRowClick(row, cur) : undefined} className={onRowClick ? "cursor-pointer" : ""}>
                 {columns.map((c) => (
                   <td key={c.key}>{c.render ? c.render(row) : String((row as Record<string, unknown>)[c.key] ?? "")}</td>
                 ))}
@@ -215,13 +231,13 @@ export function AdminTable<T extends { id: string }>({
       </div>
       {pages > 1 && (
         <div className="flex items-center justify-between border-t border-line p-3 text-sm">
-          <button onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={cur <= 1} className="btn-outline h-8 px-3 disabled:opacity-40">
+          <button onClick={() => goToPage(cur - 1)} disabled={cur <= 1} className="btn-outline h-8 px-3 disabled:opacity-40">
             Trước
           </button>
           <span className="text-[13px] text-ink-500">
             Trang {cur} / {pages}
           </span>
-          <button onClick={() => setPage((p) => Math.min(pages, p + 1))} disabled={cur >= pages} className="btn-outline h-8 px-3 disabled:opacity-40">
+          <button onClick={() => goToPage(cur + 1)} disabled={cur >= pages} className="btn-outline h-8 px-3 disabled:opacity-40">
             Sau
           </button>
         </div>

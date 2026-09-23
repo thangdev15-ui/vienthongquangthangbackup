@@ -455,6 +455,16 @@ export async function saveProductAction(form: ProductForm): Promise<ActionResult
   return { ok: true, code: slug };
 }
 
+export async function updateProductQuickAction(input: { id: string; brandId: string; stock: number }): Promise<ActionResult> {
+  const admin = await getAdminOrThrow();
+  if (!admin) return { ok: false, error: "Không có quyền." };
+  const stock = Math.max(0, Math.floor(Number(input.stock) || 0));
+  await db.update(products).set({ brandId: input.brandId || null, stock, updatedAt: new Date() }).where(eq(products.id, input.id));
+  revalidateStore();
+  revalidatePath("/admin/products");
+  return { ok: true };
+}
+
 export async function deleteProductAction(id: string): Promise<ActionResult> {
   const admin = await getAdminOrThrow();
   if (!admin) return { ok: false, error: "Không có quyền." };
