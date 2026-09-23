@@ -650,8 +650,13 @@ export function Footer({ categories, settings }: { categories: NavCategory[]; se
     <footer className="mt-14 border-t border-brand-800 bg-brand-950 pb-20 text-brand-100 lg:pb-0">
       <div className="wrap grid gap-x-10 gap-y-8 py-12 md:grid-cols-2 lg:grid-cols-[1.1fr_1fr_1fr_1.25fr]">
         <div className="min-w-0">
-          <div className="mb-5 flex h-14 w-[170px] items-center">
-            <img src="/logoqt.png?v=3" alt="Quang Thang Telecom" className="h-auto w-full object-contain brightness-0 invert" />
+          <div className="mb-5 inline-flex h-16 w-[190px] items-center rounded-md border border-white/20 bg-white/10 px-4 shadow-sm">
+            <img
+              src="/logoqt.png?v=4"
+              alt="Quang Thang Telecom"
+              className="h-auto w-full object-contain"
+              style={{ filter: "brightness(0) invert(1)" }}
+            />
           </div>
           <p className="text-[13px] leading-6 text-brand-100/85">
             Tổng kho thiết bị viễn thông, cáp mạng &amp; camera tại TP. Hồ Chí Minh. Sản phẩm chính hãng, tư vấn kỹ thuật,
