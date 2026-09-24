@@ -2,12 +2,9 @@ import { randomBytes } from "node:crypto";
 import { db } from "@/db";
 import { mediaAssets } from "@/db/schema";
 import { getAdminOrThrow } from "@/lib/auth";
+import { uploadToR2 } from "@/lib/r2";
 
 export const dynamic = "force-dynamic";
-
-const storageUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-const bucket = process.env.SUPABASE_STORAGE_BUCKET ?? "admin-media";
 
 const EXT_BY_MIME: Record<string, string> = {
   "image/jpeg": "jpg",
@@ -30,32 +27,13 @@ export async function POST(req: Request) {
   const yearMonth = new Date().toISOString().slice(0, 7).replace("-", "");
   const filename = `${yearMonth}-${randomBytes(6).toString("hex")}.${ext}`;
   const buf = Buffer.from(await file.arrayBuffer());
-  if (!storageUrl || !serviceRoleKey) {
-    return Response.json({ error: "Thiếu cấu hình Supabase Storage trên máy chủ." }, { status: 500 });
+  let url: string;
+  try {
+    url = await uploadToR2({ key: `uploads/${filename}`, body: buf, contentType: file.type });
+  } catch (error) {
+    console.error("R2 upload failed", error);
+    return Response.json({ error: "Không thể tải ảnh lên Cloudflare R2." }, { status: 502 });
   }
-
-  const authHeaders = { apikey: serviceRoleKey, Authorization: `Bearer ${serviceRoleKey}` };
-  await fetch(`${storageUrl}/storage/v1/bucket`, {
-    method: "POST",
-    headers: { ...authHeaders, "Content-Type": "application/json" },
-    body: JSON.stringify({ id: bucket, name: bucket, public: true }),
-  });
-  await fetch(`${storageUrl}/storage/v1/bucket/${bucket}`, {
-    method: "PUT",
-    headers: { ...authHeaders, "Content-Type": "application/json" },
-    body: JSON.stringify({ public: true }),
-  });
-  const upload = await fetch(`${storageUrl}/storage/v1/object/${bucket}/${filename}`, {
-    method: "POST",
-    headers: { ...authHeaders, "Content-Type": file.type || "application/octet-stream", "x-upsert": "true", "Cache-Control": "31536000" },
-    body: buf,
-  });
-  if (!upload.ok) {
-    console.error("Supabase Storage upload failed", upload.status, await upload.text().catch(() => ""));
-    return Response.json({ error: "Không thể tải ảnh lên Supabase Storage." }, { status: 502 });
-  }
-
-  const url = `${storageUrl}/storage/v1/object/public/${bucket}/${filename}`;
   try {
     await db.insert(mediaAssets).values({ url, filename, mimeType: file.type, size: file.size });
   } catch {
