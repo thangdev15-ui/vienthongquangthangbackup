@@ -69,7 +69,7 @@ async function loadActiveCategories(): Promise<Category[]> {
 
 
 export async function getActiveCategories() {
-  return unstable_cache(loadActiveCategories, ["store-active-categories"], { revalidate: STORE_CACHE_SECONDS, tags: ["store-catalog"] })();
+  return unstable_cache(loadActiveCategories, ["store-v2-active-categories"], { revalidate: STORE_CACHE_SECONDS, tags: ["store-catalog"] })();
 }
 export async function getCategoryBySlug(slug: string): Promise<Category | null> {
   const rows = await db.select().from(categories).where(eq(categories.slug, slug)).limit(1);
@@ -111,7 +111,7 @@ async function loadActiveBrands(): Promise<Brand[]> {
 
 
 export async function getActiveBrands() {
-  return unstable_cache(loadActiveBrands, ["store-active-brands"], { revalidate: STORE_CACHE_SECONDS, tags: ["store-catalog"] })();
+  return unstable_cache(loadActiveBrands, ["store-v2-active-brands"], { revalidate: STORE_CACHE_SECONDS, tags: ["store-catalog"] })();
 }
 export async function getBrandBySlug(slug: string): Promise<Brand | null> {
   const rows = await db.select().from(brands).where(eq(brands.slug, slug)).limit(1);
@@ -257,7 +257,7 @@ async function queryProductsUncached(f: ProductFilters): Promise<{ items: Produc
 
 export async function queryProducts(f: ProductFilters): Promise<{ items: ProductRow[]; total: number; pages: number }> {
   const key = JSON.stringify(f);
-  return unstable_cache(() => queryProductsUncached(f), ["store-products-query", key], { revalidate: STORE_CACHE_SECONDS, tags: ["store-products"] })();
+  return unstable_cache(() => queryProductsUncached(f), ["store-v2-products-query", key], { revalidate: STORE_CACHE_SECONDS, tags: ["store-products"] })();
 }
 export async function getAdminProducts(): Promise<ProductRow[]> {
   // Admin needs the complete catalog so search can find products shown on the storefront.
@@ -421,7 +421,7 @@ async function getArticlesUncached(opts: { status?: string; category?: string; l
 
 export async function getArticles(opts: { status?: string; category?: string; limit?: number; offset?: number; excludeId?: string } = {}) {
   const key = JSON.stringify(opts);
-  return unstable_cache(() => getArticlesUncached(opts), ["store-articles-query", key], { revalidate: STORE_CACHE_SECONDS, tags: ["store-articles"] })();
+  return unstable_cache(() => getArticlesUncached(opts), ["store-v2-articles-query", key], { revalidate: STORE_CACHE_SECONDS, tags: ["store-articles"] })();
 }
 export async function getArticleBySlug(slug: string): Promise<Article | null> {
   const rows = await db.select().from(articles).where(eq(articles.slug, slug)).limit(1);
@@ -438,7 +438,7 @@ async function loadActiveBanners(): Promise<Banner[]> {
 
 
 export async function getActiveBanners() {
-  return unstable_cache(loadActiveBanners, ["store-active-banners"], { revalidate: STORE_CACHE_SECONDS, tags: ["store-content"] })();
+  return unstable_cache(loadActiveBanners, ["store-v2-active-banners"], { revalidate: STORE_CACHE_SECONDS, tags: ["store-content"] })();
 }
 async function loadActivePromotions(): Promise<Promotion[]> {
   const today = new Date().toISOString().slice(0, 10);
@@ -448,7 +448,7 @@ async function loadActivePromotions(): Promise<Promotion[]> {
 
 
 export async function getActivePromotions() {
-  return unstable_cache(loadActivePromotions, ["store-active-promotions"], { revalidate: STORE_CACHE_SECONDS, tags: ["store-content"] })();
+  return unstable_cache(loadActivePromotions, ["store-v2-active-promotions"], { revalidate: STORE_CACHE_SECONDS, tags: ["store-content"] })();
 }
 export async function getPageBySlug(slug: string): Promise<Page | null> {
   const rows = await db.select().from(pages).where(eq(pages.slug, slug)).limit(1);
@@ -489,7 +489,7 @@ async function loadSettings(): Promise<Record<string, string>> {
 
 
 export async function getSettings() {
-  return unstable_cache(loadSettings, ["store-settings"], { revalidate: STORE_CACHE_SECONDS, tags: ["store-settings"] })();
+  return unstable_cache(loadSettings, ["store-v2-settings"], { revalidate: STORE_CACHE_SECONDS, tags: ["store-v2-settings"] })();
 }
 export async function getWishlistProducts(profileId: string): Promise<ProductRow[]> {
   const rows = await db.select({ productId: wishlists.productId }).from(wishlists).where(eq(wishlists.profileId, profileId));
