@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { eq, inArray, and, asc } from "drizzle-orm";
 import { db } from "@/db";
 import {
@@ -40,6 +40,11 @@ import { getSettings, nextOrderCode, getApprovedReviews } from "./data";
 import { slugify, type ActionResult } from "./types";
 
 function revalidateStore() {
+  revalidateTag("store-catalog", "max");
+  revalidateTag("store-products", "max");
+  revalidateTag("store-content", "max");
+  revalidateTag("store-articles", "max");
+  revalidateTag("store-settings", "max");
   revalidatePath("/");
   revalidatePath("/san-pham");
   revalidatePath("/danh-muc");
