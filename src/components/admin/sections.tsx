@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { Icon, Price, Spinner, StatusBadge, type IconName } from "@/components/ui";
 import {
   deleteBrandAction, deleteArticleAction, deleteBannerAction, deleteCategoryAction, deletePageAction,
+  saveBannerBatchAction,
   deleteProductAction, deletePromotionAction, deleteReviewAction, saveArticleAction, saveBannerAction,
   saveBrandAction, saveCategoryAction, savePageAction, saveProductAction, savePromotionAction,
   updateProductQuickAction,
@@ -908,7 +909,66 @@ export function BannersSection({ rows }: { rows: { id: string; title: string; ac
     { key: "url", label: "Link", render: (r) => r.buttonUrl ?? "—" },
     { key: "active", label: "Trạng thái", render: (r) => (r.active ? <StatusBadge label="Đang chạy" tone="green" /> : <StatusBadge label="Tắt" tone="gray" />) },
   ];
-  return <AdminTable columns={columns} rows={rows} onRowClick={(r) => (window.location.href = `/admin/banners/${r.id}`)} />;
+  return (
+    <div className="space-y-5">
+      <BannerBulkUpload nextSortOrder={rows.length ? Math.max(...rows.map((row) => row.sortOrder)) + 1 : 0} />
+      <AdminTable columns={columns} rows={rows} onRowClick={(r) => (window.location.href = "/admin/banners/" + r.id)} />
+    </div>
+  );
+}
+
+function BannerBulkUpload({ nextSortOrder }: { nextSortOrder: number }) {
+  const [title, setTitle] = useState("Banner trang chủ");
+  const [files, setFiles] = useState<File[]>([]);
+  const [uploading, setUploading] = useState(false);
+  const { toast } = useShop();
+  const router = useRouter();
+
+  async function upload() {
+    if (!files.length || uploading) return;
+    setUploading(true);
+    try {
+      const uploaded: { url: string; name?: string }[] = [];
+      for (const file of files) {
+        const form = new FormData();
+        form.append("file", file);
+        const response = await fetch("/api/upload", { method: "POST", body: form });
+        const result = await response.json();
+        if (!response.ok || !result.url) throw new Error(result.error || "Không thể tải " + file.name);
+        uploaded.push({ url: result.url, name: file.name.replace(/\.[^.]+$/, "") });
+      }
+      const result = await saveBannerBatchAction({ images: uploaded, titlePrefix: title, startSortOrder: nextSortOrder });
+      if (!result.ok) throw new Error(result.error || "Không thể tạo banner");
+      setFiles([]);
+      toast("Đã tạo " + uploaded.length + " slide banner.");
+      router.refresh();
+    } catch (error) {
+      toast(error instanceof Error ? error.message : "Upload banner thất bại.", "error");
+    } finally {
+      setUploading(false);
+    }
+  }
+
+  return (
+    <div className="card border-brand-200 bg-brand-50/50 p-4">
+      <div className="flex flex-wrap items-end gap-3">
+        <div className="min-w-56 flex-1">
+          <Field label="Tên nhóm banner"><input value={title} onChange={(e) => setTitle(e.target.value)} className="input bg-white" placeholder="Banner trang chủ" /></Field>
+        </div>
+        <label className="btn-outline inline-flex h-10 cursor-pointer items-center gap-2 bg-white">
+          <Icon name="image" className="h-4 w-4" />
+          Chọn nhiều ảnh
+          <input type="file" accept="image/*" multiple className="hidden" onChange={(e) => setFiles(Array.from(e.target.files ?? []))} />
+        </label>
+        <button type="button" onClick={upload} disabled={!files.length || uploading} className="btn-primary h-10 disabled:cursor-not-allowed disabled:opacity-50">
+          {uploading ? <Spinner /> : <Icon name="upload" className="h-4 w-4" />}
+          {uploading ? "Đang tải..." : "Tải lên & tạo slide"}
+        </button>
+      </div>
+      <p className="mt-2 text-xs text-ink-500">Chọn nhiều ảnh cùng lúc. Mỗi ảnh sẽ thành một slide và được xếp tiếp từ thứ tự {nextSortOrder}.</p>
+      {files.length > 0 && <p className="mt-1 text-xs font-semibold text-brand-700">Đã chọn {files.length} ảnh: {files.map((file) => file.name).join(", ")}</p>}
+    </div>
+  );
 }
 
 export function BannerForm({ initial }: { initial: BannerForm & { id?: string } }) {

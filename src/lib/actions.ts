@@ -685,16 +685,40 @@ export async function saveBannerAction(form: BannerForm): Promise<ActionResult> 
   };
   if (form.id) await db.update(banners).set(data).where(eq(banners.id, form.id));
   else await db.insert(banners).values(data);
-  revalidatePath("/");
+  revalidateStore();
   revalidatePath("/admin/banners");
   return { ok: true };
+}
+
+export async function saveBannerBatchAction(input: { images: { url: string; name?: string }[]; titlePrefix?: string; startSortOrder?: number }): Promise<ActionResult> {
+  const admin = await getAdminOrThrow();
+  if (!admin) return { ok: false, error: "Không có quyền." };
+  const images = input.images.filter((item) => /^https?:\/\//.test(item.url));
+  if (!images.length) return { ok: false, error: "Chưa có ảnh banner hợp lệ." };
+  const titlePrefix = input.titlePrefix?.trim() || "Banner trang chủ";
+  const startSortOrder = Math.max(0, Math.floor(Number(input.startSortOrder) || 0));
+  await db.insert(banners).values(images.map((item, index) => ({
+    title: item.name?.trim() || `${titlePrefix} ${String(index + 1).padStart(2, "0")}`,
+    image: item.url,
+    mobileImage: null,
+    subtitle: null,
+    buttonText: null,
+    buttonUrl: null,
+    active: true,
+    sortOrder: startSortOrder + index,
+    startDate: null,
+    endDate: null,
+  })));
+  revalidateStore();
+  revalidatePath("/admin/banners");
+  return { ok: true, code: String(images.length) };
 }
 
 export async function deleteBannerAction(id: string): Promise<ActionResult> {
   const admin = await getAdminOrThrow();
   if (!admin) return { ok: false, error: "Không có quyền." };
   await db.delete(banners).where(eq(banners.id, id));
-  revalidatePath("/");
+  revalidateStore();
   revalidatePath("/admin/banners");
   return { ok: true };
 }
