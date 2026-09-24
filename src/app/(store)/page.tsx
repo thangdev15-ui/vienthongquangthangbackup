@@ -1,29 +1,22 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getActiveBanners, getActiveBrands, getActivePromotions, getArticles, queryProducts } from "@/lib/data";
+import { getActiveBanners, getActiveBrands, getArticles, queryProducts } from "@/lib/data";
 import { ProductGrid } from "@/components/store/product";
 import { Icon, SectionHeader, type IconName } from "@/components/ui";
 import { NewsletterForm } from "@/components/store/chrome";
 import { HeroCarousel } from "@/components/store/hero-carousel";
-import { formatVND } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const [bestsellers, cameraProducts, networkCableProducts, saleItems, brands, banners, promotions, articles] = await Promise.all([
+  const [bestsellers, cameraProducts, networkCableProducts, brands, banners, articles] = await Promise.all([
     queryProducts({ only: "bestseller", limit: 8 }),
     queryProducts({ categorySlug: "camera-quan-sat", limit: 8 }),
     queryProducts({ categorySlug: "day-cap-mang", limit: 8 }),
-    queryProducts({ only: "sale", limit: 4 }),
     getActiveBrands(),
     getActiveBanners(),
-    getActivePromotions(),
     getArticles({ limit: 4 }),
   ]);
-  const hero = banners.find((b) => b.image) ?? null;
-  const promo = promotions[0] ?? null;
-  const banner = hero;
-
   return (
     <div>
       {/* ============ HERO ============ */}
@@ -106,47 +99,6 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
-
-      {/* ============ PROMO BANNER ============ */}
-      {(banner || promo) && (
-        <section className="wrap py-8">
-          {banner?.image ? (
-            <Link href={banner.buttonUrl || "/san-pham"} className="group relative block overflow-hidden rounded-lg border border-line">
-              <div className="relative aspect-[21/8]">
-                <Image src={banner.image} alt={banner.title} fill sizes="1200px" className="object-cover transition-transform duration-500 group-hover:scale-[1.02]" />
-                <div className="absolute inset-0 bg-gradient-to-r from-ink-950/85 via-ink-950/50 to-transparent" />
-                <div className="absolute inset-0 flex flex-col justify-center p-6 sm:p-10">
-                  <h2 className="max-w-lg text-xl font-extrabold leading-tight text-white sm:text-3xl">{banner.title}</h2>
-                  {banner.subtitle && <p className="mt-2 max-w-md text-sm text-ink-200 sm:text-[15px]">{banner.subtitle}</p>}
-                  {banner.buttonText && (
-                    <span className="mt-4 inline-flex w-fit items-center gap-2 rounded-md bg-accent-600 px-4 py-2 text-sm font-bold text-white group-hover:bg-accent-700">
-                      {banner.buttonText}
-                      <Icon name="arrow-right" className="h-4 w-4" />
-                    </span>
-                  )}
-                </div>
-              </div>
-            </Link>
-          ) : (
-            <PromoStrip promo={promo} />
-          )}
-          {saleItems.items.length > 0 && (
-            <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-              {saleItems.items.map((p) => (
-                <Link key={p.id} href={`/san-pham/${p.slug}`} className="card flex h-full items-center gap-3 p-3 transition-all hover:border-brand-400 hover:shadow-md">
-                  <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-md bg-ink-50">
-                    {p.image && <Image src={p.image} alt="" fill sizes="56px" className="object-cover" />}
-                  </div>
-                  <div className="min-w-0">
-                    <p className="line-clamp-2 text-[13px] font-semibold text-ink-900">{p.name}</p>
-                    <p className="text-[13px] font-bold text-sale-600">{formatVND(p.salePrice ?? p.price)}</p>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          )}
-        </section>
-      )}
 
       {/* ============ BRANDS ============ */}
       {brands.length > 0 && (
@@ -233,19 +185,5 @@ export default async function HomePage() {
         </div>
       </section>
     </div>
-  );
-}
-
-function PromoStrip({ promo }: { promo: { title: string; badge: string | null; description: string | null; url: string | null; image: string | null } | null }) {
-  if (!promo) return null;
-  return (
-    <Link href={promo.url ?? "/khuyen-mai"} className="card group flex items-center gap-4 overflow-hidden p-5 transition-all hover:border-accent-500">
-      {promo.badge && <span className="rounded-md bg-accent-600 px-2.5 py-1 text-[12px] font-extrabold tracking-wide text-white">{promo.badge}</span>}
-      <div className="min-w-0 flex-1">
-        <h2 className="text-base font-extrabold text-ink-950 sm:text-lg">{promo.title}</h2>
-        {promo.description && <p className="mt-0.5 text-[13px] text-ink-500">{promo.description}</p>}
-      </div>
-      <Icon name="arrow-right" className="h-5 w-5 shrink-0 text-accent-600" />
-    </Link>
   );
 }
