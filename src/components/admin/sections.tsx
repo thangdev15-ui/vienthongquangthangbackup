@@ -45,16 +45,29 @@ function ImageInput({ value, onChange, label = "Ảnh" }: { value: string; onCha
   async function upload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      alert("Vui lòng chọn tệp hình ảnh.");
+      e.target.value = "";
+      return;
+    }
+    if (file.size > 4 * 1024 * 1024) {
+      alert("Ảnh tối đa 4MB. Vui lòng nén ảnh rồi thử lại.");
+      e.target.value = "";
+      return;
+    }
     setUp(true);
     try {
       const fd = new FormData();
       fd.append("file", file);
       const res = await fetch("/api/upload", { method: "POST", body: fd });
-      const json = await res.json();
+      const raw = await res.text();
+      let json: { url?: string; error?: string } = {};
+      try { json = JSON.parse(raw); } catch { /* Vercel may return a plain error page. */ }
+      if (!res.ok) throw new Error(json.error || ("Upload thất bại (" + res.status + ")"));
       if (json.url) onChange(json.url);
-      else alert(json.error ?? "Upload thất bại");
-    } catch {
-      alert("Upload thất bại");
+      else throw new Error(json.error || "Upload thất bại");
+    } catch (error) {
+      alert(error instanceof Error ? error.message : "Upload thất bại");
     }
     setUp(false);
   }
@@ -108,6 +121,10 @@ function RichTextEditor({ value, onChange, minHeight = 220 }: { value: string; o
     const file = e.target.files?.[0];
     e.target.value = "";
     if (!file) return;
+    if (!file.type.startsWith("image/") || file.size > 4 * 1024 * 1024) {
+      alert("Ảnh phải đúng định dạng và tối đa 4MB.");
+      return;
+    }
     const formData = new FormData();
     formData.append("file", file);
     const response = await fetch("/api/upload", { method: "POST", body: formData });
@@ -926,6 +943,11 @@ function BannerBulkUpload({ nextSortOrder }: { nextSortOrder: number }) {
 
   async function upload() {
     if (!files.length || uploading) return;
+    const oversized = files.find((file) => file.size > 4 * 1024 * 1024);
+    if (oversized) {
+      toast(oversized.name + " vượt quá 4MB.", "error");
+      return;
+    }
     setUploading(true);
     try {
       const uploaded: { url: string; name?: string }[] = [];

@@ -21,7 +21,7 @@ export async function POST(req: Request) {
   const form = await req.formData().catch(() => null);
   const file = form?.get("file");
   if (!(file instanceof File)) return Response.json({ error: "Không nhận được tệp." }, { status: 400 });
-  if (file.size > 5 * 1024 * 1024) return Response.json({ error: "Tệp tối đa 5MB." }, { status: 400 });
+  if (file.size > 4 * 1024 * 1024) return Response.json({ error: "Tệp tối đa 4MB để tương thích giới hạn upload của Vercel." }, { status: 413 });
 
   const ext = EXT_BY_MIME[file.type] ?? "jpg";
   const yearMonth = new Date().toISOString().slice(0, 7).replace("-", "");
