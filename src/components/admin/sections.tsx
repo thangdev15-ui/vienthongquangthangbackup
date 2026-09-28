@@ -50,8 +50,8 @@ function ImageInput({ value, onChange, label = "Ảnh" }: { value: string; onCha
       e.target.value = "";
       return;
     }
-    if (file.size > 4 * 1024 * 1024) {
-      alert("Ảnh tối đa 4MB. Vui lòng nén ảnh rồi thử lại.");
+    if (file.size > 5 * 1024 * 1024) {
+      alert("Ảnh tối đa 5MB. File trên khoảng 4.5MB có thể bị Vercel từ chối.");
       e.target.value = "";
       return;
     }
@@ -121,8 +121,8 @@ function RichTextEditor({ value, onChange, minHeight = 220 }: { value: string; o
     const file = e.target.files?.[0];
     e.target.value = "";
     if (!file) return;
-    if (!file.type.startsWith("image/") || file.size > 4 * 1024 * 1024) {
-      alert("Ảnh phải đúng định dạng và tối đa 4MB.");
+    if (!file.type.startsWith("image/") || file.size > 5 * 1024 * 1024) {
+      alert("Ảnh phải đúng định dạng và tối đa 5MB. File trên khoảng 4.5MB có thể bị Vercel từ chối.");
       return;
     }
     const formData = new FormData();
@@ -943,9 +943,9 @@ function BannerBulkUpload({ nextSortOrder }: { nextSortOrder: number }) {
 
   async function upload() {
     if (!files.length || uploading) return;
-    const oversized = files.find((file) => file.size > 4 * 1024 * 1024);
+    const oversized = files.find((file) => file.size > 5 * 1024 * 1024);
     if (oversized) {
-      toast(oversized.name + " vượt quá 4MB.", "error");
+      toast(oversized.name + " vượt quá 5MB.", "error");
       return;
     }
     setUploading(true);
