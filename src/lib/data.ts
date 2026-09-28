@@ -39,7 +39,7 @@ import type {
 } from "./types";
 import { BUSINESS } from "./types";
 
-const STORE_CACHE_SECONDS = 300;
+const STORE_CACHE_SECONDS = 600;
 
 /* ------------------------------- categories ------------------------------- */
 
@@ -502,7 +502,7 @@ export async function getProfileAddresses(profileId: string): Promise<Address[]>
   return db.select().from(addresses).where(eq(addresses.profileId, profileId));
 }
 
-export async function searchAll(q: string) {
+async function searchAllUncached(q: string) {
   const like = `%${q.replace(/[%_]/g, "")}%`;
   const [productsRes, catRows, articleRows] = await Promise.all([
     fetchRows(and(eq(products.status, "published"), or(ilike(products.name, like), ilike(products.sku, like), ilike(products.shortDescription, like))), [desc(products.createdAt)], 24),
@@ -510,6 +510,11 @@ export async function searchAll(q: string) {
     db.select().from(articles).where(and(ilike(articles.title, like), eq(articles.status, "published"))).orderBy(desc(articles.publishedAt)).limit(5),
   ]);
   return { products: productsRes, categories: catRows, articles: articleRows };
+}
+
+export async function searchAll(q: string) {
+  const normalized = q.trim().toLowerCase();
+  return unstable_cache(() => searchAllUncached(normalized), ["store-search", normalized], { revalidate: 60, tags: ["store-search"] })();
 }
 
 export async function getMediaAssets() {

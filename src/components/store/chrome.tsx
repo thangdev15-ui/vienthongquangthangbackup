@@ -91,16 +91,23 @@ export function SearchBar({ autoFocus = false }: { autoFocus?: boolean }) {
   const router = useRouter();
 
   useEffect(() => {
-    if (q.trim().length < 2) return;
+    const query = q.trim();
+    if (query.length < 2) return;
+    const controller = new AbortController();
     const t = setTimeout(async () => {
       try {
-        const res = await fetch(`/api/suggestions?q=${encodeURIComponent(q.trim())}`);
+        const res = await fetch("/api/suggestions?q=" + encodeURIComponent(query), { signal: controller.signal });
         if (res.ok) setSug(await res.json());
-      } catch {
-        /* noop */
+      } catch (error) {
+        if (!(error instanceof DOMException && error.name === "AbortError")) {
+          /* Search suggestions are optional and should not interrupt typing. */
+        }
       }
-    }, 250);
-    return () => clearTimeout(t);
+    }, 350);
+    return () => {
+      clearTimeout(t);
+      controller.abort();
+    };
   }, [q]);
 
   useEffect(() => {
