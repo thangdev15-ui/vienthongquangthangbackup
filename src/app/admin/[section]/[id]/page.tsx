@@ -11,7 +11,6 @@ import {
   productSpecifications,
   products,
   promotions,
-  pages,
 } from "@/db/schema";
 import { requireAdmin } from "@/lib/auth";
 import { getOrders } from "@/lib/data";
@@ -23,7 +22,6 @@ import {
   BrandForm,
   CategoryForm,
   OrderDetail,
-  PageForm,
   ProductForm,
   PromotionForm,
   type OrderLite,
@@ -223,24 +221,6 @@ export default async function AdminEntityPage({ params }: { params: Promise<{ se
     return (
       <AdminShell title={id === "new" ? "Thêm khuyến mãi" : "Chỉnh sửa khuyến mãi"}>
         <PromotionForm initial={initial} />
-      </AdminShell>
-    );
-  }
-
-  /* ---------------- pages ---------------- */
-  if (section === "pages") {
-    let initial;
-    if (id !== "new") {
-      const rows = await db.select().from(pages).where(eq(pages.id, id)).limit(1);
-      const p = rows[0];
-      if (!p) notFound();
-      initial = { id: p.id, title: p.title, slug: p.slug, content: p.content ?? "", seoTitle: p.seoTitle ?? "", seoDescription: p.seoDescription ?? "" };
-    } else {
-      initial = { title: "", slug: "", content: "", seoTitle: "", seoDescription: "" };
-    }
-    return (
-      <AdminShell title={id === "new" ? "Thêm trang" : "Chỉnh sửa trang"}>
-        <PageForm initial={initial} />
       </AdminShell>
     );
   }

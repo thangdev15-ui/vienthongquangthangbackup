@@ -16,7 +16,6 @@ import {
   articles,
   banners,
   promotions,
-  pages,
   reviews,
   addresses,
   adminSettings,
@@ -373,9 +372,9 @@ function roundedWebPriceFromBase(value: string | undefined): number {
   return Math.round((base * 1.2) / 1000) * 1000;
 }
 
-async function uniqueSlug(table: "products" | "categories" | "brands" | "articles" | "pages", base: string, excludeId?: string): Promise<string> {
+async function uniqueSlug(table: "products" | "categories" | "brands" | "articles", base: string, excludeId?: string): Promise<string> {
   const t =
-    table === "products" ? products : table === "categories" ? categories : table === "brands" ? brands : table === "articles" ? articles : pages;
+    table === "products" ? products : table === "categories" ? categories : table === "brands" ? brands : articles;
   let slug = slugify(base || "sp");
   for (let i = 0; i < 5; i++) {
     const candidate = i === 0 ? slug : `${slug}-${i + 1}`;
@@ -765,40 +764,6 @@ export async function deletePromotionAction(id: string): Promise<ActionResult> {
   await db.delete(promotions).where(eq(promotions.id, id));
   revalidatePath("/");
   revalidatePath("/admin/promotions");
-  return { ok: true };
-}
-
-/* ================================ ADMIN: PAGES ================================ */
-
-export type PageForm = { id?: string; slug: string; title: string; content: string; seoTitle: string; seoDescription: string };
-
-export async function savePageAction(form: PageForm): Promise<ActionResult> {
-  const admin = await getAdminOrThrow();
-  if (!admin) return { ok: false, error: "Không có quyền." };
-  if (!form.title.trim()) return { ok: false, error: "Tiêu đề bắt buộc." };
-  const base = form.slug.trim() || form.title;
-  const slug = await uniqueSlug("pages", base, form.id);
-  const data = {
-    title: form.title.trim(),
-    slug,
-    content: form.content || "",
-    seoTitle: form.seoTitle.trim() || null,
-    seoDescription: form.seoDescription.trim() || null,
-    updatedAt: new Date(),
-  };
-  if (form.id) await db.update(pages).set(data).where(eq(pages.id, form.id));
-  else await db.insert(pages).values(data);
-  revalidateStore();
-  revalidatePath("/admin/pages");
-  return { ok: true };
-}
-
-export async function deletePageAction(id: string): Promise<ActionResult> {
-  const admin = await getAdminOrThrow();
-  if (!admin) return { ok: false, error: "Không có quyền." };
-  await db.delete(pages).where(eq(pages.id, id));
-  revalidateStore();
-  revalidatePath("/admin/pages");
   return { ok: true };
 }
 

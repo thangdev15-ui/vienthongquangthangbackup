@@ -6,18 +6,17 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Icon, Price, Spinner, StatusBadge, type IconName } from "@/components/ui";
 import {
-  deleteBrandAction, deleteArticleAction, deleteBannerAction, deleteCategoryAction, deletePageAction,
+  deleteBrandAction, deleteArticleAction, deleteBannerAction, deleteCategoryAction,
   saveBannerBatchAction,
   deleteProductAction, deletePromotionAction, deleteReviewAction, saveArticleAction, saveBannerAction,
-  saveBrandAction, saveCategoryAction, savePageAction, saveProductAction, savePromotionAction,
+  saveBrandAction, saveCategoryAction, saveProductAction, savePromotionAction,
   updateProductQuickAction,
   saveSettingsAction, setOrderStatusAction, setReviewStatusAction, registerMediaAsset,
-  type ArticleForm, type BannerForm, type BrandForm, type CategoryForm, type PageForm, type ProductForm, type PromotionForm,
+  type ArticleForm, type BannerForm, type BrandForm, type CategoryForm, type ProductForm, type PromotionForm,
 } from "@/lib/actions";
 import { AdminTable, ConfirmButton, Field, SaveBar, type Column } from "@/components/admin/shell";
 import { useShop } from "@/components/store/shops";
 import { formatDate, formatVND, ORDER_STATUS, ORDER_STATUS_FLOW, PAYMENT_METHODS, type ActionResult } from "@/lib/types";
-import { GrapesPageEditor } from "@/components/admin/page-builder";
 
 /* --------------------------------- helpers --------------------------------- */
 
@@ -1050,47 +1049,6 @@ export function PromotionForm({ initial }: { initial: PromotionForm & { id?: str
       </div>
       {initial.id && <div className="card border-sale-500/30 p-4"><DeleteRow action={deletePromotionAction} id={initial.id} back="/admin/promotions" label="Xoá khuyến mãi" /></div>}
       <SaveBar saving={saving} onSave={() => run(() => savePromotionAction(f), "/admin/promotions", "Đã lưu khuyến mãi.")} backHref="/admin/promotions" />
-    </div>
-  );
-}
-
-export function PagesSection({ rows }: { rows: { id: string; slug: string; title: string; updatedAt: Date }[] }) {
-  const columns: Column<{ id: string; slug: string; title: string; updatedAt: Date }>[] = [
-    { key: "title", label: "Trang", value: (r) => r.title, render: (r) => <b>{r.title}</b> },
-    { key: "slug", label: "Slug", render: (r) => <code className="text-[12px] text-ink-500">/{r.slug}</code> },
-    { key: "updatedAt", label: "Cập nhật", sortable: true, value: (r) => r.updatedAt.getTime(), render: (r) => formatDate(r.updatedAt) },
-  ];
-  return <AdminTable columns={columns} rows={rows} onRowClick={(r) => (window.location.href = `/admin/pages/${r.id}`)} />;
-}
-
-export function PageForm({ initial }: { initial: PageForm & { id?: string } }) {
-  const [f, setF] = useState<PageForm>(initial);
-  const { saving, run } = useSave();
-  const set = <K extends keyof PageForm>(k: K, v: PageForm[K]) => setF((p) => ({ ...p, [k]: v }));
-  return (
-    <div className="page-builder-form grid w-full gap-4">
-      <div className="flex items-center justify-between rounded-xl border border-line bg-white px-5 py-3 shadow-sm">
-        <div className="flex items-center gap-3">
-          <span className="flex h-9 w-9 items-center justify-center rounded-md bg-brand-50 text-brand-700"><Icon name="grid" className="h-5 w-5" /></span>
-          <h2 className="text-lg font-bold text-ink-950">Thêm trang</h2>
-        </div>
-        <button type="button" onClick={() => run(() => savePageAction(f), "/admin/pages", "Đã lưu trang.")} disabled={saving} className="btn-primary h-10 px-5">
-          {saving && <Spinner />} Lưu trang
-        </button>
-      </div>
-      <div className="card grid gap-4 rounded-xl p-4 sm:grid-cols-2">
-        <Field label="Tiêu đề" required><input value={f.title} onChange={(e) => set("title", e.target.value)} className="input" /></Field>
-        <Field label="Slug"><input value={f.slug} onChange={(e) => set("slug", e.target.value)} className="input" /></Field>
-        <div className="sm:col-span-2">
-          <Field label="Nội dung trang">
-            <GrapesPageEditor value={f.content} onChange={(v) => set("content", v)} />
-          </Field>
-        </div>
-        <Field label="SEO Title"><input value={f.seoTitle} onChange={(e) => set("seoTitle", e.target.value)} className="input" /></Field>
-        <Field label="SEO Description"><input value={f.seoDescription} onChange={(e) => set("seoDescription", e.target.value)} className="input" /></Field>
-      </div>
-      {initial.id && <div className="card border-sale-500/30 p-4"><DeleteRow action={deletePageAction} id={initial.id} back="/admin/pages" label="Xoá trang" /></div>}
-      <SaveBar saving={saving} onSave={() => run(() => savePageAction(f), "/admin/pages", "Đã lưu trang.")} backHref="/admin/pages" />
     </div>
   );
 }

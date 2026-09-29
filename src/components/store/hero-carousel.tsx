@@ -22,7 +22,7 @@ export function HeroCarousel({ banners }: { banners: Banner[] }) {
   }, [items.length]);
 
   const slide = items[active];
-  const image = <Image src={slide.src} alt={slide.title} fill priority={active === 0} sizes="(min-width:1536px) 1200px, 100vw" className="object-cover" />;
+  const image = <Image src={slide.src} alt={slide.title} fill priority={active === 0} sizes="(min-width:1536px) 1200px, 100vw" className="object-contain bg-white" />;
 
   return (
     <div className="hero-carousel group relative overflow-hidden rounded-md">

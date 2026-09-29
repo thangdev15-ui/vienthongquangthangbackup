@@ -2,13 +2,13 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { asc, desc, eq } from "drizzle-orm";
 import { db } from "@/db";
-import { articles, banners, brands, categories, mediaAssets, pages, promotions } from "@/db/schema";
+import { articles, banners, brands, categories, mediaAssets, promotions } from "@/db/schema";
 import { requireAdmin } from "@/lib/auth";
 import { getAdminProducts, getCustomers, getMediaAssets, getOrders, getSettings } from "@/lib/data";
 import { AdminShell } from "@/components/admin/shell";
 import {
   ArticlesSection, BannersSection, BrandsSection, CategoriesSection, CustomersSection,
-  MediaSection, OrdersSection, PagesSection, ProductsSection, PromotionsSection,
+  MediaSection, OrdersSection, ProductsSection, PromotionsSection,
   ReviewsSection, SettingsForm,
 } from "@/components/admin/sections";
 import { Icon } from "@/components/ui";
@@ -25,7 +25,6 @@ const TITLES: Record<string, string> = {
   articles: "Bài viết",
   promotions: "Khuyến mãi",
   banners: "Banner",
-  pages: "Trang nội dung",
   reviews: "Đánh giá",
   media: "Media",
   settings: "Cài đặt",
@@ -143,15 +142,6 @@ export default async function AdminSectionPage({ params }: { params: Promise<{ s
         <PromotionsSection
           rows={rows.map((p) => ({ id: p.id, title: p.title, badge: p.badge, active: p.active, startDate: p.startDate, endDate: p.endDate }))}
         />
-      </AdminShell>
-    );
-  }
-
-  if (section === "pages") {
-    const rows = await db.select().from(pages).orderBy(asc(pages.slug));
-    return (
-      <AdminShell title={title} action={<AddButton href="/admin/pages/new" label="Thêm trang" />}>
-        <PagesSection rows={rows.map((p) => ({ id: p.id, slug: p.slug, title: p.title, updatedAt: p.updatedAt }))} />
       </AdminShell>
     );
   }
