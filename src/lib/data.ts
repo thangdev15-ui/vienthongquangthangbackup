@@ -38,6 +38,7 @@ import type {
   Address,
 } from "./types";
 import { BUSINESS } from "./types";
+import { parseCompanyProfile } from "./company-profile";
 
 const STORE_CACHE_SECONDS = 600;
 
@@ -490,6 +491,15 @@ async function loadSettings(): Promise<Record<string, string>> {
 
 export async function getSettings() {
   return unstable_cache(loadSettings, ["store-v2-settings"], { revalidate: STORE_CACHE_SECONDS, tags: ["store-v2-settings"] })();
+}
+
+async function loadCompanyProfile() {
+  const rows = await db.select({ value: adminSettings.value }).from(adminSettings).where(eq(adminSettings.key, "company_profile")).limit(1);
+  return parseCompanyProfile(rows[0]?.value);
+}
+
+export async function getCompanyProfile() {
+  return unstable_cache(loadCompanyProfile, ["store-company-profile"], { revalidate: STORE_CACHE_SECONDS, tags: ["company-profile"] })();
 }
 export async function getWishlistProducts(profileId: string): Promise<ProductRow[]> {
   const rows = await db.select({ productId: wishlists.productId }).from(wishlists).where(eq(wishlists.profileId, profileId));

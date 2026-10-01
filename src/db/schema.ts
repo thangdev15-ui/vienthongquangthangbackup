@@ -110,6 +110,7 @@ export const products = pgTable(
     description: text("description"),
     price: integer("price"), // VND, null when priceType = contact
     salePrice: integer("sale_price"),
+    markupPercent: real("markup_percent"), // null = legacy price; otherwise web price is calculated from base price
     priceType: text("price_type").notNull().default("contact"), // fixed | contact
     stock: integer("stock").notNull().default(0),
     brandId: uuid("brand_id").references(() => brands.id, { onDelete: "set null" }),

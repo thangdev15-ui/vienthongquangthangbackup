@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath, revalidateTag } from "next/cache";
+import type { CompanyProfile } from "./company-profile";
 import { eq, inArray, and, asc } from "drizzle-orm";
 import { db } from "@/db";
 import {
@@ -352,6 +353,7 @@ export type ProductForm = {
   priceType: "fixed" | "contact";
   price?: string;
   salePrice?: string;
+  markupPercent?: string;
   stock?: string;
   brandId?: string;
   categoryId?: string;
@@ -367,9 +369,10 @@ export type ProductForm = {
   specs: { name: string; value: string }[];
 };
 
-function roundedWebPriceFromBase(value: string | undefined): number {
+function roundedWebPriceFromBase(value: string | undefined, markupPercent: string | undefined): number {
   const base = Math.max(0, Number(value) || 0);
-  return Math.round((base * 1.2) / 1000) * 1000;
+  const markup = Math.max(0, Number(markupPercent) || 0);
+  return Math.round((base * (1 + markup / 100)) / 1000) * 1000;
 }
 
 async function uniqueSlug(table: "products" | "categories" | "brands" | "articles", base: string, excludeId?: string): Promise<string> {
@@ -389,8 +392,15 @@ export async function saveProductAction(form: ProductForm): Promise<ActionResult
   if (!admin) return { ok: false, error: "Không có quyền." };
   if (!form.name.trim()) return { ok: false, error: "Tên sản phẩm bắt buộc." };
 
-  const price = form.priceType === "fixed" ? roundedWebPriceFromBase(form.price) : null;
-  const salePrice = form.priceType === "fixed" && form.salePrice ? roundedWebPriceFromBase(form.salePrice) || null : null;
+  const hasMarkup = form.markupPercent !== undefined && form.markupPercent.trim() !== "";
+  const markupPercent = form.priceType === "fixed" && hasMarkup ? Math.max(0, Number(form.markupPercent) || 0) : null;
+  // Legacy products have no markup value. Preserve their stored web price exactly when edited.
+  const price = form.priceType === "fixed"
+    ? (hasMarkup ? roundedWebPriceFromBase(form.price, form.markupPercent) : Math.max(0, Math.floor(Number(form.price) || 0)))
+    : null;
+  const salePrice = form.priceType === "fixed" && form.salePrice
+    ? (hasMarkup ? roundedWebPriceFromBase(form.salePrice, form.markupPercent) : Math.max(0, Math.floor(Number(form.salePrice) || 0))) || null
+    : null;
   const stock = Math.max(0, Math.floor(Number(form.stock) || 0));
   const slug = form.slug.trim() ? await uniqueSlug("products", form.slug.trim(), form.id) : await uniqueSlug("products", form.name, form.id);
 
@@ -402,6 +412,7 @@ export async function saveProductAction(form: ProductForm): Promise<ActionResult
     description: form.description || null,
     price,
     salePrice,
+    markupPercent,
     priceType: form.priceType,
     stock,
     brandId: form.brandId || null,
@@ -811,6 +822,29 @@ export async function saveSettingsAction(settings: Record<string, string>): Prom
   }
   revalidatePath("/");
   revalidatePath("/admin/settings");
+  return { ok: true };
+}
+
+export async function saveCompanyProfileAction(profile: CompanyProfile): Promise<ActionResult> {
+  const admin = await getAdminOrThrow();
+  if (!admin) return { ok: false, error: "Không có quyền." };
+  if (!profile.heroTitle.trim() || !profile.introTitle.trim()) return { ok: false, error: "Tiêu đề chính và giới thiệu không được để trống." };
+  const cleanList = (items: CompanyProfile["solutions"]) => items.slice(0, 8).map((item) => ({ title: item.title.trim().slice(0, 120), description: item.description.trim().slice(0, 600) })).filter((item) => item.title);
+  const clean: CompanyProfile = {
+    ...profile,
+    heroEyebrow: profile.heroEyebrow.trim().slice(0, 140), heroTitle: profile.heroTitle.trim().slice(0, 220),
+    heroDescription: profile.heroDescription.trim().slice(0, 1200), heroImage: profile.heroImage.trim().slice(0, 600),
+    introTitle: profile.introTitle.trim().slice(0, 180), introDescription: profile.introDescription.trim().slice(0, 1600), introImage: profile.introImage.trim().slice(0, 600),
+    solutionsTitle: profile.solutionsTitle.trim().slice(0, 180), solutionsDescription: profile.solutionsDescription.trim().slice(0, 1000),
+    solutions: cleanList(profile.solutions), processTitle: profile.processTitle.trim().slice(0, 180), process: cleanList(profile.process),
+    closingTitle: profile.closingTitle.trim().slice(0, 180), closingDescription: profile.closingDescription.trim().slice(0, 1000),
+  };
+  const value = JSON.stringify(clean);
+  if (value.length > 50000) return { ok: false, error: "Nội dung quá dài." };
+  await db.insert(adminSettings).values({ key: "company_profile", value, updatedAt: new Date() }).onConflictDoUpdate({ target: adminSettings.key, set: { value, updatedAt: new Date() } });
+  revalidateTag("company-profile", "max");
+  revalidatePath("/ho-so-nang-luc");
+  revalidatePath("/admin/company-profile");
   return { ok: true };
 }
 

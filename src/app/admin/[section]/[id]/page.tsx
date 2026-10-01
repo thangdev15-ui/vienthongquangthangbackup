@@ -29,9 +29,10 @@ import {
 
 export const dynamic = "force-dynamic";
 
-function toBasePriceInput(value: number | null): string {
+function toBasePriceInput(value: number | null, markupPercent: number | null): string {
   if (value == null) return "";
-  return String(Math.round(value / 1.2));
+  if (markupPercent == null || markupPercent === 0) return String(value);
+  return String(Math.round(value / (1 + markupPercent / 100)));
 }
 
 export default async function AdminEntityPage({ params }: { params: Promise<{ section: string; id: string }> }) {
@@ -84,8 +85,9 @@ export default async function AdminEntityPage({ params }: { params: Promise<{ se
         shortDescription: p.shortDescription ?? "",
         description: p.description ?? "",
         priceType: (p.priceType === "fixed" ? "fixed" : "contact") as "fixed" | "contact",
-        price: toBasePriceInput(p.price),
-        salePrice: toBasePriceInput(p.salePrice),
+        price: toBasePriceInput(p.price, p.markupPercent),
+        salePrice: toBasePriceInput(p.salePrice, p.markupPercent),
+        markupPercent: p.markupPercent == null ? "" : String(p.markupPercent),
         stock: String(p.stock),
         brandId: p.brandId ?? "",
         categoryId: p.categoryId ?? "",
@@ -103,7 +105,7 @@ export default async function AdminEntityPage({ params }: { params: Promise<{ se
     } else {
       initial = {
         name: "", slug: "", sku: "", shortDescription: "", description: "", priceType: "contact" as const,
-        price: "", salePrice: "", stock: "0", brandId: "", categoryId: "", categoryIds: [] as string[],
+        price: "", salePrice: "", markupPercent: "0", stock: "0", brandId: "", categoryId: "", categoryIds: [] as string[],
         status: "draft", featured: false, bestseller: false, sale: false, warranty: "", seoTitle: "",
         seoDescription: "", images: [{ url: "", isMain: true }], specs: [{ name: "", value: "" }],
       };

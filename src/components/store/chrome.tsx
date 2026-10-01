@@ -708,6 +708,7 @@ export function Footer({ categories, settings }: { categories: NavCategory[]; se
               ["/chinh-sach-giao-nhan", "Chính sách giao nhận", "truck"],
               ["/chinh-sach-bao-mat", "Chính sách bảo mật", "shield"],
               ["/khuyen-mai", "Khuyến mãi", "zap"],
+              ["/ho-so-nang-luc", "Hồ sơ năng lực", "file-text"],
             ].map(([href, label, icon]) => (
               <li key={href}>
                 <Link href={href} className="group flex items-center gap-2 hover:text-accent-100">

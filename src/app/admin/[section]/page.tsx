@@ -2,9 +2,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { asc, desc, eq } from "drizzle-orm";
 import { db } from "@/db";
-import { articles, banners, brands, categories, mediaAssets, promotions } from "@/db/schema";
+import { articles, banners, brands, categories, mediaAssets, promotions, adminSettings } from "@/db/schema";
 import { requireAdmin } from "@/lib/auth";
 import { getAdminProducts, getCustomers, getMediaAssets, getOrders, getSettings } from "@/lib/data";
+import { DEFAULT_COMPANY_PROFILE, parseCompanyProfile } from "@/lib/company-profile";
+import { CompanyProfileForm } from "@/components/admin/company-profile-form";
 import { AdminShell } from "@/components/admin/shell";
 import {
   ArticlesSection, BannersSection, BrandsSection, CategoriesSection, CustomersSection,
@@ -25,6 +27,7 @@ const TITLES: Record<string, string> = {
   articles: "Bài viết",
   promotions: "Khuyến mãi",
   banners: "Banner",
+  "company-profile": "Hồ sơ năng lực",
   reviews: "Đánh giá",
   media: "Media",
   settings: "Cài đặt",
@@ -144,6 +147,12 @@ export default async function AdminSectionPage({ params }: { params: Promise<{ s
         />
       </AdminShell>
     );
+  }
+
+  if (section === "company-profile") {
+    const rows = await db.select({ value: adminSettings.value }).from(adminSettings).where(eq(adminSettings.key, "company_profile")).limit(1);
+    const profile = rows[0]?.value ? parseCompanyProfile(rows[0].value) : DEFAULT_COMPANY_PROFILE;
+    return <AdminShell title={title}><CompanyProfileForm initial={profile} /></AdminShell>;
   }
 
   if (section === "reviews") {

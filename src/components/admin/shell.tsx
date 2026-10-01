@@ -16,6 +16,7 @@ const NAV: { href: string; label: string; icon: IconName }[] = [
   { href: "/admin/articles", label: "Bài viết", icon: "file-text" },
   { href: "/admin/promotions", label: "Khuyến mãi", icon: "zap" },
   { href: "/admin/banners", label: "Banner", icon: "image" },
+  { href: "/admin/company-profile", label: "Hồ sơ năng lực", icon: "file-text" },
   { href: "/admin/reviews", label: "Đánh giá", icon: "star" },
   { href: "/admin/media", label: "Media", icon: "image" },
   { href: "/admin/settings", label: "Cài đặt", icon: "settings" },

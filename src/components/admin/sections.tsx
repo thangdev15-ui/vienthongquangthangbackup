@@ -423,10 +423,13 @@ export function ProductForm({
           </div>
           {f.priceType === "fixed" && (
             <div className="grid gap-4 sm:grid-cols-3">
-              <Field label="Giá gốc chưa VAT (VNĐ)" hint="Web tự cộng 20% và làm tròn đến 1.000đ khi lưu." required>
+              <Field label="Giá gốc / giá hiện tại (VNĐ)" hint="Sản phẩm mới: nhập giá gốc. Sản phẩm cũ: đây là giá đang lưu trên web." required>
                 <input type="number" min={0} value={f.price ?? ""} onChange={(e) => set("price", e.target.value)} className="input" />
               </Field>
-              <Field label="Giá khuyến mãi chưa VAT (VNĐ)" hint="Nếu nhập, giá web cũng được cộng 20% và làm tròn.">
+              <Field label="Tăng giá (%)" hint="Ví dụ 15, 18 hoặc 20. Sản phẩm cũ để trống để giữ nguyên giá hiện tại.">
+                <input type="number" min={0} step="0.01" value={f.markupPercent ?? ""} onChange={(e) => set("markupPercent", e.target.value)} className="input" placeholder="0" />
+              </Field>
+              <Field label="Giá khuyến mãi gốc (VNĐ)" hint="Nếu nhập, cùng phần trăm tăng giá sẽ được áp dụng.">
                 <input type="number" min={0} value={f.salePrice ?? ""} onChange={(e) => set("salePrice", e.target.value)} className="input" />
               </Field>
               <Field label="Tồn kho">

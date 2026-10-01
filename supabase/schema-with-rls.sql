@@ -52,7 +52,7 @@ create table if not exists products (
   id uuid primary key default gen_random_uuid(),
   name text not null, slug text not null unique, sku text,
   short_description text, description text,
-  price int, sale_price int, price_type text not null default 'contact',
+  price int, sale_price int, markup_percent real, price_type text not null default 'contact',
   stock int not null default 0,
   brand_id uuid references brands(id) on delete set null,
   category_id uuid references categories(id) on delete set null,
