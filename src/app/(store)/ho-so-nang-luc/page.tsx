@@ -30,6 +30,15 @@ const commitments = [
   ["headset", "Hỗ trợ kỹ thuật", "Tư vấn sau bán hàng khi cần kiểm tra hoặc thay thế."],
 ] as const;
 
+const businessAreas = [
+  ["cable", "Cáp mạng & cáp quang", "Vật tư kết nối, dây nhảy, phụ kiện và giải pháp đấu nối."],
+  ["server", "Thiết bị mạng", "Switch, router, Wi-Fi, tủ rack và thiết bị mạng cho doanh nghiệp."],
+  ["eye", "Camera quan sát", "Camera, đầu ghi, lưu trữ và phụ kiện cho hệ thống an ninh."],
+  ["zap", "Thiết bị quang", "Thiết bị truyền dẫn quang và phụ kiện phục vụ hạ tầng viễn thông."],
+  ["sun", "Đèn năng lượng mặt trời", "Thiết bị chiếu sáng tiết kiệm năng lượng cho nhiều nhu cầu sử dụng."],
+  ["box", "Phụ kiện viễn thông", "Tủ mạng, vật tư thi công và phụ kiện hoàn thiện hệ thống."],
+] as const;
+
 export default async function CompanyProfilePage() {
   const [profile, brands, settings] = await Promise.all([getCompanyProfile(), getActiveBrands(), getSettings()]);
   const phoneHref = `tel:${settings.phone.replace(/\D/g, "")}`;
@@ -66,19 +75,21 @@ export default async function CompanyProfilePage() {
 
       <section className="relative overflow-hidden bg-brand-950 py-16 text-white sm:py-20"><div className="absolute inset-0 opacity-15"><Image src="/backgroundne.png" alt="" fill sizes="100vw" className="object-cover object-center" /></div><div className="wrap relative"><div className="max-w-2xl"><p className="text-xs font-bold uppercase tracking-[.18em] text-accent-200">Giải pháp viễn thông toàn diện</p><h2 className="mt-3 text-3xl font-extrabold text-white sm:text-4xl">{profile.solutionsTitle}</h2><p className="mt-4 text-sm leading-7 text-white/70 sm:text-base">{profile.solutionsDescription}</p></div><div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{profile.solutions.map(({ title, description: body }, index) => <article key={title} className="rounded-md border border-white/15 bg-white/[.06] p-5 backdrop-blur-sm transition-colors hover:border-accent-300/70 hover:bg-white/10"><Icon name={(["wifi", "eye", "cable", "box", "zap", "settings"] as IconName[])[index % 6]} className="h-6 w-6 text-accent-200" /><h3 className="mt-5 font-bold text-white">{title}</h3><p className="mt-2 text-sm leading-6 text-white/65">{body}</p></article>)}</div></div></section>
 
+      <section className="wrap py-16 sm:py-20" aria-labelledby="business-areas-title"><div className="flex flex-wrap items-end justify-between gap-4"><div><p className="section-eyebrow">Lĩnh vực hoạt động</p><h2 id="business-areas-title" className="section-title mt-3">Ngành hàng thương mại</h2><p className="mt-4 max-w-2xl text-sm leading-7 text-ink-600">Danh mục thiết bị và vật tư phục vụ hạ tầng viễn thông, mạng, camera và các công trình cần kết nối ổn định.</p></div><Link href="/san-pham" className="text-sm font-bold text-accent-600">Xem sản phẩm <Icon name="arrow-right" className="inline h-4 w-4" /></Link></div><div className="mt-9 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">{businessAreas.map(([icon, title, body]) => <article key={title} className="rounded-lg border border-line bg-white p-4 transition-all hover:-translate-y-1 hover:border-brand-400 hover:shadow-sm"><Icon name={icon as IconName} className="h-6 w-6 text-brand-700" /><h3 className="mt-4 text-sm font-extrabold leading-5 text-ink-950">{title}</h3><p className="mt-2 text-xs leading-5 text-ink-600">{body}</p></article>)}</div></section>
+
       <section id="du-an-hoat-dong" className="wrap py-16 sm:py-24" aria-labelledby="projects-title">
         <div className="flex flex-wrap items-end justify-between gap-5">
           <div><p className="section-eyebrow">Dấu ấn thực tế</p><h2 id="projects-title" className="section-title mt-3">Dự án & hoạt động kết nối</h2><p className="mt-4 max-w-2xl text-sm leading-7 text-ink-600">Từ hạ tầng mạng, hệ thống an ninh đến những hoạt động gắn kết đối tác. Khám phá hình ảnh thực tế của Quang Thắng qua từng công trình và sự kiện.</p></div>
           <Link href="/lien-he" className="text-sm font-bold text-accent-600 hover:text-accent-700">Trao đổi dự án <Icon name="arrow-right" className="inline h-4 w-4" /></Link>
         </div>
-        <div className="mt-10 grid gap-8 lg:grid-cols-2">
-          {COMPANY_PROFILE_PROJECTS.map((project, index) => <article id={project.id} key={project.id} className="overflow-hidden rounded-xl border border-line bg-white shadow-sm">
-            <div className="flex items-start gap-4 p-6 sm:p-8"><span className="text-3xl font-extrabold text-brand-200">0{index + 1}</span><div><p className="text-xs font-bold uppercase tracking-wide text-accent-600">{project.category}</p><h3 className="mt-2 text-xl font-extrabold leading-snug text-ink-950">{project.title}</h3><p className="mt-3 text-sm leading-6 text-ink-600">{project.description}</p></div></div>
-            <div className="px-4 pb-5 sm:px-6">
-              <div className="grid grid-cols-6 gap-2">
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          {COMPANY_PROFILE_PROJECTS.map((project, index) => <article id={project.id} key={project.id} className="overflow-hidden rounded-lg border border-line bg-white shadow-sm">
+            <div className="flex items-start gap-3 p-4"><span className="text-2xl font-extrabold text-brand-200">0{index + 1}</span><div><p className="text-[10px] font-bold uppercase tracking-wide text-accent-600">{project.category}</p><h3 className="mt-1.5 text-base font-extrabold leading-snug text-ink-950">{project.title}</h3><p className="mt-2 line-clamp-3 text-xs leading-5 text-ink-600">{project.description}</p></div></div>
+            <div className="px-3 pb-3">
+              <div className="grid grid-cols-6 gap-1.5">
                 {project.images.map((photo, photoIndex) => <a key={photo.src} href={photo.src} target="_blank" rel="noreferrer" aria-label={`Xem ảnh: ${photo.caption} (mở tab mới)`} className={`group relative block overflow-hidden rounded-md bg-ink-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700 ${photoIndex === 0 ? "col-span-6 aspect-[16/10]" : `aspect-[4/3] ${project.images.length === 3 ? "col-span-3" : "col-span-2"}`}`}>
                   <Image src={photo.src} alt={photo.caption} fill sizes={photoIndex === 0 ? "(min-width:1024px) 45vw, 100vw" : "(min-width:1024px) 22vw, 50vw"} className={`${photoIndex === 0 && project.id !== "bai-xe" && project.id !== "ket-noi" ? "object-contain" : "object-cover"} transition-transform duration-500 group-hover:scale-105`} />
-                  {photoIndex === 0 && <span className="absolute bottom-3 right-3 rounded bg-brand-950/85 px-3 py-1.5 text-xs font-semibold text-white">{project.images.length} ảnh · Xem ảnh lớn ↗</span>}
+                  {photoIndex === 0 && <span className="absolute bottom-2 right-2 rounded bg-brand-950/85 px-2 py-1 text-[10px] font-semibold text-white">{project.images.length} ảnh · Xem lớn ↗</span>}
                 </a>)}
               </div>
             </div>
