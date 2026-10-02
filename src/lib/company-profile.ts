@@ -13,8 +13,8 @@ export const DEFAULT_COMPANY_PROFILE: CompanyProfile = {
   heroTitle: "Hạ tầng kết nối vững chắc, bắt đầu từ giải pháp đúng.",
   heroDescription: "Đồng hành cùng doanh nghiệp, nhà thầu và đơn vị thi công trong việc lựa chọn thiết bị, xây dựng hạ tầng mạng và triển khai hệ thống viễn thông phù hợp thực tế.",
   heroImage: "/quangthangshop.jpg",
-  introTitle: "Năng lực được xây dựng từ từng nhu cầu thực tế",
-  introDescription: "Viễn Thông Quang Thắng cung cấp thiết bị viễn thông, cáp mạng, cáp quang, thiết bị mạng và camera giám sát. Đội ngũ hỗ trợ từ khâu tư vấn chủng loại, kiểm tra tính tương thích đến phối hợp giao hàng cho công trình.",
+  introTitle: "Công ty Cổ phần Viễn thông Quang Thắng",
+  introDescription: "Hoạt động từ ngày 12/10/2018, Công ty Cổ phần Viễn thông Quang Thắng chuyên cung cấp thiết bị và linh kiện điện tử – viễn thông, phục vụ xây dựng, nâng cấp và vận hành hạ tầng mạng, hệ thống truyền dẫn và an ninh công nghệ.\n\nDanh mục gồm cáp mạng, cáp quang, thiết bị mạng, thiết bị quang, tủ mạng, camera, đèn năng lượng mặt trời và phụ kiện. Quang Thắng kết hợp nguồn hàng ổn định với tư vấn kỹ thuật cho khách hàng cá nhân, doanh nghiệp và đơn vị thi công, đặc biệt tại TP. Hồ Chí Minh và các tỉnh lân cận.",
   introImage: "/quanngthangnhanvien.jpeg",
   solutionsTitle: "Giải pháp cho hạ tầng kết nối",
   solutionsDescription: "Danh mục thiết bị và tư vấn được lựa chọn theo quy mô, môi trường lắp đặt và yêu cầu vận hành của từng dự án.",
@@ -23,6 +23,8 @@ export const DEFAULT_COMPANY_PROFILE: CompanyProfile = {
     { title: "Hệ thống camera", description: "Thiết bị camera, đầu ghi, lưu trữ và phụ kiện phục vụ nhu cầu giám sát." },
     { title: "Hạ tầng cáp quang", description: "Cáp quang, thiết bị quang và phụ kiện kết nối cho hệ thống truyền dẫn." },
     { title: "Vật tư công trình", description: "Thiết bị và vật tư viễn thông được tư vấn theo danh mục, số lượng và tiến độ dự án." },
+    { title: "Đèn năng lượng mặt trời", description: "Giải pháp chiếu sáng tiết kiệm năng lượng phục vụ nhu cầu sử dụng thực tế." },
+    { title: "Tủ mạng & phụ kiện", description: "Tủ rack, phụ kiện quang và phụ kiện camera phục vụ kết nối, lắp đặt và bảo vệ hệ thống." },
   ],
   processTitle: "Một đầu mối đồng hành xuyên suốt",
   process: [
@@ -39,6 +41,16 @@ export function parseCompanyProfile(raw: string | null | undefined): CompanyProf
   if (!raw) return DEFAULT_COMPANY_PROFILE;
   try {
     const value = JSON.parse(raw) as Partial<CompanyProfile>;
+    // Upgrade the previously seeded copy without replacing custom admin edits.
+    if (value.introTitle === "Năng lực được xây dựng từ từng nhu cầu thực tế") {
+      value.introTitle = DEFAULT_COMPANY_PROFILE.introTitle;
+    }
+    if (value.introDescription === "Viễn Thông Quang Thắng cung cấp thiết bị viễn thông, cáp mạng, cáp quang, thiết bị mạng và camera giám sát. Đội ngũ hỗ trợ từ khâu tư vấn chủng loại, kiểm tra tính tương thích đến phối hợp giao hàng cho công trình.") {
+      value.introDescription = DEFAULT_COMPANY_PROFILE.introDescription;
+    }
+    if (Array.isArray(value.solutions) && value.solutions.length === 4 && value.solutions.every((item, index) => item.title === DEFAULT_COMPANY_PROFILE.solutions[index].title && item.description === DEFAULT_COMPANY_PROFILE.solutions[index].description)) {
+      value.solutions = DEFAULT_COMPANY_PROFILE.solutions;
+    }
     return { ...DEFAULT_COMPANY_PROFILE, ...value,
       solutions: Array.isArray(value.solutions) ? value.solutions : DEFAULT_COMPANY_PROFILE.solutions,
       process: Array.isArray(value.process) ? value.process : DEFAULT_COMPANY_PROFILE.process,

@@ -508,7 +508,7 @@ async function loadCompanyProfile() {
 }
 
 export async function getCompanyProfile() {
-  return unstable_cache(loadCompanyProfile, ["store-company-profile"], { revalidate: STORE_CACHE_SECONDS, tags: ["company-profile"] })();
+  return unstable_cache(loadCompanyProfile, ["store-company-profile-v2"], { revalidate: STORE_CACHE_SECONDS, tags: ["company-profile"] })();
 }
 export async function getWishlistProducts(profileId: string): Promise<ProductRow[]> {
   const rows = await db.select({ productId: wishlists.productId }).from(wishlists).where(eq(wishlists.profileId, profileId));
