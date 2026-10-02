@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function KhuyenMaiPage() {
-  const [promotions, sale] = await Promise.all([getActivePromotions(), queryProducts({ only: "sale", limit: 12, sort: "newest" })]);
+  const [promotions, sale] = await Promise.all([getActivePromotions(), queryProducts({ only: "sale", limit: 12, sort: "newest", includeTotal: false })]);
 
   return (
     <div className="wrap py-6">

@@ -32,7 +32,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
   const settings = await getSettings();
   const [related, relatedProducts] = await Promise.all([
     getArticles({ limit: 3, excludeId: a.id }),
-    queryProducts({ q: a.tags?.split(",")[0]?.trim() ?? "", limit: 4 }),
+    queryProducts({ q: a.tags?.split(",")[0]?.trim() ?? "", limit: 4, includeTotal: false }),
   ]);
   const relatedItems = related.items.filter((x) => x.id !== a.id);
 

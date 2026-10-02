@@ -10,9 +10,9 @@ export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
   const [bestsellers, cameraProducts, networkCableProducts, brands, banners, articles] = await Promise.all([
-    queryProducts({ only: "bestseller", limit: 8 }),
-    queryProducts({ categorySlug: "camera-quan-sat", limit: 8 }),
-    queryProducts({ categorySlug: "day-cap-mang", limit: 8 }),
+    queryProducts({ only: "bestseller", limit: 8, includeTotal: false }),
+    queryProducts({ categorySlug: "camera-quan-sat", limit: 8, includeTotal: false }),
+    queryProducts({ categorySlug: "day-cap-mang", limit: 8, includeTotal: false }),
     getActiveBrands(),
     getActiveBanners(),
     getArticles({ limit: 4 }),

@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { Icon, Spinner, StatusBadge, type IconName } from "@/components/ui";
 import { useShop } from "@/components/store/shops";
+import { RouteProgress } from "@/components/route-progress";
 
 const NAV: { href: string; label: string; icon: IconName }[] = [
   { href: "/admin", label: "Dashboard", icon: "dashboard" },
@@ -40,6 +41,7 @@ export function AdminShell({ title, action, children }: { title: string; action?
 
   return (
     <div className="flex min-h-screen bg-paper">
+      <RouteProgress />
       {/* Sidebar */}
       <aside className={`fixed inset-y-0 left-0 z-50 transform border-r border-line bg-ink-950 transition-all lg:static lg:translate-x-0 ${collapsed ? "lg:w-[72px]" : "lg:w-60"} ${open ? "translate-x-0" : "-translate-x-full"}`}>
         <div className={`flex h-14 items-center border-b border-white/10 px-4 ${collapsed ? "justify-center" : "gap-2.5"}`}>

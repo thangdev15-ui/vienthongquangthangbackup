@@ -1,6 +1,6 @@
 import "server-only";
 import { unstable_cache } from "next/cache";
-import { and, asc, count, desc, eq, gte, ilike, inArray, isNotNull, or, sql, type SQL } from "drizzle-orm";
+import { and, asc, count, desc, eq, gte, ilike, inArray, isNotNull, isNull, lte, or, sql, type SQL } from "drizzle-orm";
 import { db } from "@/db";
 import {
   products,
@@ -184,6 +184,7 @@ export type ProductFilters = {
   brandId?: string;
   excludeId?: string;
   limit?: number;
+  includeTotal?: boolean;
 };
 
 async function queryProductsUncached(f: ProductFilters): Promise<{ items: ProductRow[]; total: number; pages: number }> {
@@ -250,8 +251,10 @@ async function queryProductsUncached(f: ProductFilters): Promise<{ items: Produc
       orderBy = [desc(products.createdAt)];
   }
 
-  const items = await fetchRows(where, orderBy, pageSize, (page - 1) * pageSize);
-  const total = await fetchCount(where);
+  const [items, total] = await Promise.all([
+    fetchRows(where, orderBy, pageSize, (page - 1) * pageSize),
+    f.includeTotal === false ? Promise.resolve(0) : fetchCount(where),
+  ]);
   return { items, total, pages: Math.max(1, Math.ceil(total / pageSize)) };
 }
 
@@ -433,8 +436,11 @@ export async function getArticleBySlug(slug: string): Promise<Article | null> {
 
 async function loadActiveBanners(): Promise<Banner[]> {
   const today = new Date().toISOString().slice(0, 10);
-  const rows = await db.select().from(banners).orderBy(asc(banners.sortOrder));
-  return rows.filter((b) => b.active && (!b.startDate || b.startDate <= today) && (!b.endDate || b.endDate >= today));
+  return db.select().from(banners).where(and(
+    eq(banners.active, true),
+    or(isNull(banners.startDate), lte(banners.startDate, today)),
+    or(isNull(banners.endDate), gte(banners.endDate, today)),
+  )).orderBy(asc(banners.sortOrder));
 }
 
 
@@ -443,8 +449,11 @@ export async function getActiveBanners() {
 }
 async function loadActivePromotions(): Promise<Promotion[]> {
   const today = new Date().toISOString().slice(0, 10);
-  const rows = await db.select().from(promotions).orderBy(asc(promotions.sortOrder));
-  return rows.filter((p) => p.active && (!p.startDate || p.startDate <= today) && (!p.endDate || p.endDate >= today));
+  return db.select().from(promotions).where(and(
+    eq(promotions.active, true),
+    or(isNull(promotions.startDate), lte(promotions.startDate, today)),
+    or(isNull(promotions.endDate), gte(promotions.endDate, today)),
+  )).orderBy(asc(promotions.sortOrder));
 }
 
 
