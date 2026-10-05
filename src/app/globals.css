@@ -444,6 +444,12 @@
   font-size: 1rem;
   line-height: 1.75rem;
 }
+#company-profile-page .section-title {
+  max-width: none;
+  font-size: clamp(2rem, 3.2vw, 3rem);
+  line-height: 1.08;
+  letter-spacing: 0;
+}
 
 .brand-marquee {
   overflow: hidden;
