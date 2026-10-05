@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 type ProjectImage = { src: string; caption: string };
 
-export function ProjectGallery({ images, projectTitle }: { images: readonly ProjectImage[]; projectTitle: string }) {
+export function ProjectGallery({ images, projectTitle, className = "aspect-[16/10]" }: { images: readonly ProjectImage[]; projectTitle: string; className?: string }) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const activeImage = activeIndex === null ? null : images[activeIndex];
 
@@ -28,7 +28,7 @@ export function ProjectGallery({ images, projectTitle }: { images: readonly Proj
 
   return (
     <>
-      <button type="button" onClick={() => setActiveIndex(0)} aria-label={`Xem ${images.length} ảnh: ${projectTitle}`} className="group relative block w-full aspect-[16/10] overflow-hidden rounded-md bg-ink-100 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700">
+      <button type="button" onClick={() => setActiveIndex(0)} aria-label={`Xem ${images.length} ảnh: ${projectTitle}`} className={`group relative block w-full overflow-hidden bg-ink-100 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700 ${className}`}>
         <Image src={images[0].src} alt={images[0].caption} fill sizes="(min-width:1280px) 45vw, 100vw" className="object-cover transition-transform duration-500 group-hover:scale-105" />
         <span className="absolute bottom-2 right-2 rounded bg-brand-950/85 px-3 py-1.5 text-xs font-semibold text-white">{images.length} ảnh · Xem bộ ảnh ↗</span>
       </button>

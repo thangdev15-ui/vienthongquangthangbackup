@@ -59,6 +59,7 @@ export default async function CompanyProfilePage() {
   const phoneHref = `tel:${settings.phone.replace(/\D/g, "")}`;
   const profileEmail = COMPANY_PROFILE_FACTS.find(([label]) => label === "Email trong hồ sơ")?.[1] ?? "quangthangtelecom@gmail.com";
   const profileAddress = COMPANY_PROFILE_FACTS.find(([label]) => label === "Địa chỉ")?.[1] ?? "435/26 Thống Nhất, Phường Thông Tây Hội, TP. Hồ Chí Minh";
+  const directorName = COMPANY_PROFILE_FACTS.find(([label]) => label === "Người đại diện")?.[1] ?? "Võ Quốc Thắng";
   const directionsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(profileAddress)}`;
   return (
     <div id="company-profile-page" className="bg-white text-ink-900">
@@ -87,16 +88,28 @@ export default async function CompanyProfilePage() {
 
       <section id="thong-tin-phap-ly" className="bg-brand-950 py-10 sm:py-14" aria-labelledby="company-facts-title">
         <div className="wrap">
-          <div className="relative overflow-hidden border-y border-white/20 bg-white px-5 py-6 sm:px-8 sm:py-8 lg:px-10">
+          <div className="relative overflow-hidden border border-line bg-white px-5 py-6 sm:px-8 sm:py-8 lg:px-10">
             <div className="absolute inset-y-0 left-0 w-2 bg-accent-500" />
-            <div className="flex flex-wrap items-end justify-between gap-4 border-b border-line pb-5">
-              <div><p className="section-eyebrow">Thông tin pháp lý doanh nghiệp</p><h2 id="company-facts-title" className="section-title mt-3">Công ty Cổ phần Viễn thông Quang Thắng</h2></div>
-              <span className="inline-flex items-center gap-2 border border-brand-200 bg-brand-50 px-4 py-2 text-sm font-bold text-brand-800"><Icon name="file-text" className="h-4 w-4" />Hồ sơ doanh nghiệp</span>
+            <div className="grid gap-7 lg:grid-cols-[minmax(0,1fr)_16rem] lg:gap-10">
+              <div className="min-w-0">
+                <div className="border-b border-line pb-4">
+                  <p className="section-eyebrow">Thông tin pháp lý doanh nghiệp</p>
+                  <h2 id="company-facts-title" className="section-title mt-2">Công ty Cổ phần Viễn thông Quang Thắng</h2>
+                </div>
+                <dl className="grid gap-x-8 sm:grid-cols-2">
+                  {COMPANY_PROFILE_FACTS.map(([label, value]) => <div key={label} className="border-b border-line py-3"><dt className="text-xs font-bold uppercase tracking-wide text-ink-500">{label}</dt><dd className="mt-1 break-words text-sm font-semibold leading-6 text-ink-900">{label === "Email trong hồ sơ" ? <a href={`mailto:${value}`} className="text-brand-700 hover:underline">{value}</a> : label === "Hotline" ? <a href="tel:0941746161" className="text-brand-700 hover:underline">{value}</a> : value}</dd></div>)}
+                </dl>
+                <p className="mt-4 text-xs leading-5 text-ink-500">Thông tin theo hồ sơ năng lực doanh nghiệp Quang Thắng cung cấp.</p>
+              </div>
+              <aside className="order-first flex flex-col items-center justify-center border-b border-line pb-6 text-center lg:order-last lg:border-b-0 lg:border-l lg:pb-0 lg:pl-8">
+                <div className="relative h-40 w-40 overflow-hidden rounded-full border-4 border-brand-50 bg-ink-100 sm:h-48 sm:w-48">
+                  <Image src="/giamdoc.jpeg" alt={`Giám đốc ${directorName} tại văn phòng Quang Thắng`} fill sizes="192px" className="object-cover object-[50%_38%]" />
+                </div>
+                <p className="mt-4 text-xs font-extrabold uppercase tracking-[.16em] text-brand-700">Giám đốc</p>
+                <p className="mt-1 text-lg font-extrabold text-ink-950">{directorName}</p>
+                <p className="mt-1 text-sm text-ink-500">Người đại diện doanh nghiệp</p>
+              </aside>
             </div>
-            <dl className="grid gap-x-8 sm:grid-cols-2 lg:grid-cols-3">
-              {COMPANY_PROFILE_FACTS.map(([label, value]) => <div key={label} className="border-b border-line py-3"><dt className="text-xs font-bold uppercase tracking-wide text-ink-500">{label}</dt><dd className="mt-1 break-words text-sm font-semibold leading-6 text-ink-900">{label === "Email trong hồ sơ" ? <a href={`mailto:${value}`} className="text-brand-700 hover:underline">{value}</a> : label === "Hotline" ? <a href="tel:0941746161" className="text-brand-700 hover:underline">{value}</a> : value}</dd></div>)}
-            </dl>
-            <p className="mt-6 text-xs leading-5 text-ink-500">Thông tin theo hồ sơ năng lực doanh nghiệp Quang Thắng cung cấp.</p>
           </div>
         </div>
       </section>
@@ -122,12 +135,28 @@ export default async function CompanyProfilePage() {
           <Link href="/lien-he" className="text-sm font-bold text-accent-600 hover:text-accent-700">Trao đổi dự án <Icon name="arrow-right" className="inline h-4 w-4" /></Link>
         </div>
         <div className="mt-7 grid gap-5 lg:grid-cols-12">
-          {COMPANY_PROFILE_PROJECTS.map((project, index) => <article id={project.id} key={project.id} className={`min-w-0 overflow-hidden border border-line bg-white ${index === 0 ? "lg:col-span-12" : "lg:col-span-4"}`}>
-            <div className={index === 0 ? "grid items-center lg:grid-cols-[.75fr_1.25fr]" : ""}>
-              <div className={`flex items-start gap-4 p-5 sm:p-6 ${index > 0 ? "lg:min-h-[10.5rem]" : ""}`}><span className="text-3xl font-extrabold text-brand-200">0{index + 1}</span><div className="min-w-0"><p className="truncate text-xs font-bold uppercase tracking-wide text-accent-600" title={project.category}>{project.category}</p><h3 className="mt-1.5 truncate text-lg font-extrabold leading-snug text-ink-950" title={project.title}>{project.title}</h3><p className="mt-2 line-clamp-2 text-sm leading-6 text-ink-600" title={project.description}>{project.description}</p></div></div>
-              <div className="px-3 pb-3 lg:p-3"><ProjectGallery images={project.images} projectTitle={project.title} /></div>
-            </div>
-          </article>)}
+          {COMPANY_PROFILE_PROJECTS.map((project, index) => index === 0 ? (
+            <article id={project.id} key={project.id} className="min-w-0 overflow-hidden border border-line bg-white lg:col-span-12">
+              <div className="grid lg:grid-cols-[.78fr_1.22fr]">
+                <div className="flex flex-col justify-center px-6 py-7 sm:px-9 sm:py-9 lg:px-12">
+                  <div className="flex items-center gap-3"><span className="text-4xl font-extrabold tabular-nums text-brand-200">01</span><span className="h-px w-8 bg-accent-500" /><p className="text-xs font-extrabold uppercase tracking-[.14em] text-accent-600">{project.category}</p></div>
+                  <h3 className="mt-5 max-w-xl text-2xl font-extrabold leading-tight text-ink-950 sm:text-3xl">{project.title}</h3>
+                  <p className="mt-4 max-w-xl text-sm leading-7 text-ink-600 sm:text-base">{project.description}</p>
+                  <p className="mt-6 text-xs font-bold uppercase tracking-wide text-brand-700">Dự án tiêu biểu · Quang Thắng</p>
+                </div>
+                <div className="min-w-0 p-3 sm:p-4"><ProjectGallery images={project.images} projectTitle={project.title} className="h-64 rounded-sm sm:h-80 lg:h-[25rem]" /></div>
+              </div>
+            </article>
+          ) : (
+            <article id={project.id} key={project.id} className="group min-w-0 overflow-hidden border border-line bg-white transition-colors hover:border-brand-300 lg:col-span-4">
+              <ProjectGallery images={project.images} projectTitle={project.title} className="aspect-[16/10]" />
+              <div className="p-5 sm:p-6">
+                <div className="flex items-center gap-2"><span className="text-sm font-extrabold tabular-nums text-brand-300">0{index + 1}</span><span className="h-px w-5 bg-accent-500" /><p className="truncate text-[11px] font-extrabold uppercase tracking-[.12em] text-accent-600" title={project.category}>{project.category}</p></div>
+                <h3 className="mt-3 truncate text-lg font-extrabold leading-snug text-ink-950" title={project.title}>{project.title}</h3>
+                <p className="mt-2 line-clamp-2 min-h-12 text-sm leading-6 text-ink-600" title={project.description}>{project.description}</p>
+              </div>
+            </article>
+          ))}
         </div>
       </section>
 
