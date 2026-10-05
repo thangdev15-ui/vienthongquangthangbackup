@@ -140,11 +140,23 @@ export default async function CompanyProfilePage() {
         </div>
       </section>
 
-      <section className="wrap py-16 sm:py-24">
-        <header className="mb-9"><p className="section-eyebrow">Chứng nhận & giấy phép</p><h2 className="section-title mt-3 lg:whitespace-nowrap">Nền tảng cho sự tin cậy</h2></header>
-        <div className="grid items-center gap-10 lg:grid-cols-[.8fr_1.2fr] lg:gap-16">
-        <div><p className="text-sm leading-7 text-ink-600">Hồ sơ doanh nghiệp tập hợp giấy chứng nhận, chứng nhận đại lý và các ghi nhận từ đối tác trong quá trình hoạt động.</p><p className="mt-4 text-sm leading-7 text-ink-600">Liên hệ Quang Thắng để nhận bản chi tiết và xác nhận phạm vi, thời hạn của chứng nhận phù hợp với sản phẩm hoặc dự án cần tư vấn.</p><Link href="/lien-he" className="btn-outline mt-7">Yêu cầu hồ sơ chi tiết <Icon name="arrow-right" className="h-4 w-4" /></Link></div>
-        <figure><a href="/imported/company-profile/web/chung-nhan.webp" target="_blank" rel="noreferrer" className="block overflow-hidden rounded-lg border border-line bg-ink-50" aria-label="Xem ảnh chứng nhận và giấy phép trong hồ sơ (mở tab mới)"><Image src="/imported/company-profile/web/chung-nhan.webp" alt="Trang chứng nhận, giấy phép và chứng nhận đại lý trong hồ sơ năng lực Quang Thắng" width={1786} height={2526} sizes="(min-width:1024px) 50vw, 100vw" className="h-auto w-full" /></a><figcaption className="mt-3 text-xs text-ink-500">Trích trang “Chứng nhận, giấy phép” trong hồ sơ doanh nghiệp · Nhấn để xem ảnh lớn.</figcaption></figure>
+      <section className="border-y border-line bg-ink-50 py-16 sm:py-24">
+        <div className="wrap">
+          <header className="mb-9"><p className="section-eyebrow">Chứng nhận & giấy phép</p><h2 className="section-title mt-3 lg:whitespace-nowrap">Nền tảng cho sự tin cậy</h2></header>
+          <div className="grid items-stretch gap-6 lg:grid-cols-[.85fr_1.15fr] lg:gap-8">
+            <div className="flex flex-col justify-between rounded-lg border border-line border-l-4 border-l-brand-700 bg-white p-7 shadow-sm sm:p-9 lg:min-h-[700px]">
+              <div><p className="text-xs font-extrabold uppercase tracking-[.16em] text-accent-600">Hồ sơ doanh nghiệp</p><p className="mt-4 text-base leading-7 text-ink-700">Tài liệu trong hồ sơ thể hiện thông tin pháp lý, chứng nhận đại lý và các ghi nhận từ đối tác trong quá trình hoạt động.</p>
+                <ul className="mt-8 divide-y divide-line border-y border-line">
+                  {[["01", "Thông tin pháp lý doanh nghiệp"], ["02", "Chứng nhận đại lý"], ["03", "Chứng nhận và ghi nhận từ đối tác"]].map(([number, label]) => <li key={number} className="flex items-center gap-4 py-5"><span className="text-sm font-extrabold tabular-nums text-brand-700">{number}</span><span className="text-sm font-bold leading-6 text-ink-900">{label}</span></li>)}
+                </ul>
+              </div>
+              <div className="mt-8 border-t border-line pt-6"><p className="text-sm leading-6 text-ink-600">Cần kiểm tra phạm vi hoặc thời hạn của một chứng nhận? Liên hệ để nhận thông tin chi tiết phù hợp với sản phẩm và dự án.</p><Link href="/lien-he" className="btn-primary mt-5">Yêu cầu hồ sơ chi tiết <Icon name="arrow-right" className="h-4 w-4" /></Link></div>
+            </div>
+            <figure className="min-w-0">
+              <a href="/imported/company-profile/web/chung-nhan.webp" target="_blank" rel="noreferrer" className="group relative block overflow-hidden rounded-lg border border-line bg-white p-3 shadow-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700" aria-label="Mở ảnh chứng nhận và giấy phép kích thước đầy đủ trong tab mới"><Image src="/imported/company-profile/web/chung-nhan.webp" alt="Trang chứng nhận, giấy phép và chứng nhận đại lý trong hồ sơ năng lực Quang Thắng" width={1786} height={2526} sizes="(min-width:1024px) 55vw, 100vw" className="mx-auto h-auto max-h-[760px] w-full object-contain" /><span className="absolute bottom-5 right-5 bg-brand-950 px-4 py-2 text-xs font-bold text-white">Mở ảnh đầy đủ ↗</span></a>
+              <figcaption className="mt-3 text-sm leading-6 text-ink-500">Trang trích từ hồ sơ năng lực doanh nghiệp Quang Thắng.</figcaption>
+            </figure>
+          </div>
         </div>
       </section>
 
