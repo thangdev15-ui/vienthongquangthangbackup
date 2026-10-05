@@ -58,6 +58,8 @@ export default async function CompanyProfilePage() {
   const [profile, brands, settings] = await Promise.all([getCompanyProfile(), getActiveBrands(), getSettings()]);
   const phoneHref = `tel:${settings.phone.replace(/\D/g, "")}`;
   const profileEmail = COMPANY_PROFILE_FACTS.find(([label]) => label === "Email trong hồ sơ")?.[1] ?? "quangthangtelecom@gmail.com";
+  const profileAddress = COMPANY_PROFILE_FACTS.find(([label]) => label === "Địa chỉ")?.[1] ?? "435/26 Thống Nhất, Phường Thông Tây Hội, TP. Hồ Chí Minh";
+  const directionsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(profileAddress)}`;
   return (
     <div id="company-profile-page" className="bg-white text-ink-900">
       <section className="relative isolate overflow-hidden bg-brand-950 text-white">
@@ -71,6 +73,7 @@ export default async function CompanyProfilePage() {
           <span className="shrink-0 text-xs font-extrabold uppercase tracking-wide text-brand-800">Trong hồ sơ</span>
           {[["Giới thiệu", "#gioi-thieu-nang-luc"], ["Pháp lý", "#thong-tin-phap-ly"], ["Khách hàng", "#nhom-khach-hang"], ["Lĩnh vực", "#business-areas-title"], ["Dự án", "#du-an-hoat-dong"], ["Quy trình", "#quy-trinh-hop-tac"], ["Liên hệ", "#chuan-bi-tu-van"]].map(([label, href]) => <a key={href} href={href} className="shrink-0 border-b-2 border-transparent py-1 transition-colors hover:border-accent-500 hover:text-brand-800">{label}</a>)}
           <a href="#yeu-cau-ho-so-pdf" className="shrink-0 border-b-2 border-transparent py-1 transition-colors hover:border-accent-500 hover:text-brand-800">Yêu cầu hồ sơ PDF</a>
+          <a href="#van-phong-quang-thang" className="shrink-0 border-b-2 border-transparent py-1 transition-colors hover:border-accent-500 hover:text-brand-800">Văn phòng</a>
         </div>
       </nav>
 
@@ -171,6 +174,27 @@ export default async function CompanyProfilePage() {
           <div className="grid gap-10 lg:grid-cols-[.9fr_1.1fr] lg:gap-16"><div><p className="max-w-xl text-sm leading-7 text-ink-600">Có sẵn một vài thông tin dưới đây sẽ giúp đội ngũ trao đổi đúng cấu hình, số lượng và phương án giao nhận hơn.</p><Link href="/lien-he" className="btn-primary mt-7">Gửi yêu cầu tư vấn <Icon name="arrow-right" className="h-4 w-4" /></Link></div>
             <ul className="grid gap-3 sm:grid-cols-2">{consultationChecklist.map((item, index) => <li key={item} className="flex items-start gap-4 border border-line bg-white p-5"><span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-50 text-sm font-extrabold text-brand-800">{index + 1}</span><span className="pt-1 text-sm font-semibold leading-6 text-ink-800">{item}</span></li>)}</ul>
           </div>
+        </div>
+      </section>
+
+      <section id="van-phong-quang-thang" className="border-y border-line bg-ink-50 py-10 sm:py-14">
+        <div className="wrap grid items-center gap-7 lg:grid-cols-[1fr_1fr] lg:gap-12">
+          <div>
+            <p className="section-eyebrow">Văn phòng Quang Thắng</p>
+            <h2 className="section-title mt-3">Ghé thăm và trao đổi trực tiếp</h2>
+            <div className="mt-5 flex items-start gap-3">
+              <Icon name="pin" className="mt-1 h-5 w-5 shrink-0 text-brand-700" />
+              <div><p className="text-sm font-semibold leading-6 text-ink-800">{profileAddress}</p><a href={directionsHref} target="_blank" rel="noreferrer" className="mt-2 inline-flex items-center gap-2 text-sm font-bold text-brand-800 underline decoration-brand-300 underline-offset-4 hover:text-accent-600">Xem chỉ đường <Icon name="external" className="h-4 w-4" /></a></div>
+            </div>
+            <div className="mt-6 flex flex-wrap gap-x-7 gap-y-3 border-t border-line pt-5 text-sm font-bold">
+              <a href={phoneHref} className="inline-flex items-center gap-2 text-ink-800 hover:text-brand-700"><Icon name="phone" className="h-4 w-4 text-brand-700" />{settings.phone}</a>
+              <a href={`mailto:${profileEmail}`} className="inline-flex items-center gap-2 text-ink-800 hover:text-brand-700"><Icon name="mail" className="h-4 w-4 text-brand-700" />{profileEmail}</a>
+            </div>
+          </div>
+          <figure className="relative aspect-[16/10] overflow-hidden bg-ink-100">
+            <Image src="/quangthangshop.jpg" alt="Cửa hàng Viễn Thông Quang Thắng tại TP. Hồ Chí Minh" fill sizes="(min-width:1024px) 50vw, 100vw" className="object-cover" />
+            <figcaption className="absolute bottom-0 left-0 bg-brand-950/85 px-4 py-2 text-xs font-semibold text-white">Viễn Thông Quang Thắng · TP. Hồ Chí Minh</figcaption>
+          </figure>
         </div>
       </section>
 
