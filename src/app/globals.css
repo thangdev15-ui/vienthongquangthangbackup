@@ -436,6 +436,15 @@
   animation: qt-slide-in 0.25s ease both;
 }
 
+#company-profile-page .text-xs {
+  font-size: 0.8125rem;
+  line-height: 1.5rem;
+}
+#company-profile-page .text-sm {
+  font-size: 1rem;
+  line-height: 1.75rem;
+}
+
 .brand-marquee {
   overflow: hidden;
   mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);

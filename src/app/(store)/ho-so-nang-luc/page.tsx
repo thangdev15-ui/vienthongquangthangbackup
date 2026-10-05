@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Icon, type IconName } from "@/components/ui";
 import { COMPANY_PROFILE_FACTS, COMPANY_PROFILE_PROJECTS } from "@/lib/company-profile-evidence";
 import { getActiveBrands, getCompanyProfile, getSettings } from "@/lib/data";
+import { ProjectGallery } from "./project-gallery";
 
 export const metadata: Metadata = {
   title: "Hồ sơ năng lực | Viễn Thông Quang Thắng",
@@ -43,7 +44,7 @@ export default async function CompanyProfilePage() {
   const [profile, brands, settings] = await Promise.all([getCompanyProfile(), getActiveBrands(), getSettings()]);
   const phoneHref = `tel:${settings.phone.replace(/\D/g, "")}`;
   return (
-    <div className="bg-white text-ink-900">
+    <div id="company-profile-page" className="bg-white text-ink-900">
       <section className="relative isolate overflow-hidden bg-brand-950 text-white">
         <div className="absolute inset-0 -z-10"><Image src={profile.heroImage || "/quangthangshop.jpg"} alt="Hạ tầng viễn thông Quang Thắng" fill priority sizes="100vw" className="object-cover object-center opacity-45" /><div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(3,27,54,.98)_0%,rgba(3,27,54,.86)_43%,rgba(3,27,54,.35)_100%)]" /></div>
         <div className="wrap py-16 sm:py-20 lg:py-28"><div className="max-w-3xl"><div className="mb-6 flex items-center gap-2 text-xs font-semibold text-white/65"><Link href="/">Trang chủ</Link><span>/</span><span className="text-white">Hồ sơ năng lực</span></div><p className="flex items-center gap-3 text-xs font-extrabold uppercase tracking-[.2em] text-accent-200"><span className="h-px w-9 bg-accent-500" />{profile.heroEyebrow || "Hồ sơ năng lực"}</p><h1 className="mt-5 max-w-2xl text-4xl font-extrabold uppercase leading-[1.05] tracking-tight text-white sm:text-6xl">{profile.heroTitle || "Hồ sơ năng lực"}</h1><p className="mt-5 max-w-2xl text-lg font-semibold text-white/90 sm:text-xl">Giải pháp hạ tầng viễn thông - mạng lưới đáng tin cậy</p><p className="mt-4 max-w-2xl text-sm leading-7 text-white/70 sm:text-base">{profile.heroDescription}</p><div className="mt-8 flex flex-wrap gap-3"><Link href="/lien-he" className="btn-accent"><Icon name="message" className="h-4 w-4" />Liên hệ tư vấn</Link><a href={phoneHref} className="inline-flex h-10 items-center gap-2 rounded border border-white/35 px-4 text-sm font-bold text-white hover:bg-white/10"><Icon name="phone" className="h-4 w-4" />{settings.phone}</a></div></div></div>
@@ -82,14 +83,11 @@ export default async function CompanyProfilePage() {
           <div><p className="section-eyebrow">Dấu ấn thực tế</p><h2 id="projects-title" className="section-title mt-3">Dự án & hoạt động kết nối</h2><p className="mt-4 max-w-2xl text-sm leading-7 text-ink-600">Từ hạ tầng mạng, hệ thống an ninh đến những hoạt động gắn kết đối tác. Khám phá hình ảnh thực tế của Quang Thắng qua từng công trình và sự kiện.</p></div>
           <Link href="/lien-he" className="text-sm font-bold text-accent-600 hover:text-accent-700">Trao đổi dự án <Icon name="arrow-right" className="inline h-4 w-4" /></Link>
         </div>
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-8 grid gap-5 sm:grid-cols-2 xl:grid-cols-2">
           {COMPANY_PROFILE_PROJECTS.map((project, index) => <article id={project.id} key={project.id} className="overflow-hidden rounded-lg border border-line bg-white shadow-sm">
-            <div className="flex items-start gap-3 p-4"><span className="text-2xl font-extrabold text-brand-200">0{index + 1}</span><div><p className="text-[10px] font-bold uppercase tracking-wide text-accent-600">{project.category}</p><h3 className="mt-1.5 text-base font-extrabold leading-snug text-ink-950">{project.title}</h3><p className="mt-2 line-clamp-3 text-xs leading-5 text-ink-600">{project.description}</p></div></div>
+            <div className="flex items-start gap-4 p-5 sm:p-6"><span className="text-3xl font-extrabold text-brand-200">0{index + 1}</span><div className="min-w-0"><p className="text-xs font-bold uppercase tracking-wide text-accent-600">{project.category}</p><h3 className="mt-1.5 text-lg font-extrabold leading-snug text-ink-950 lg:whitespace-nowrap">{project.title}</h3><p className="mt-2 line-clamp-3 text-sm leading-6 text-ink-600">{project.description}</p></div></div>
             <div className="px-3 pb-3">
-              {project.images[0] && <a href={project.images[0].src} target="_blank" rel="noreferrer" aria-label={`Xem ảnh: ${project.images[0].caption} (mở tab mới)`} className="group relative block aspect-[16/10] overflow-hidden rounded-md bg-ink-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700">
-                <Image src={project.images[0].src} alt={project.images[0].caption} fill sizes="(min-width:1280px) 22vw, (min-width:640px) 45vw, 100vw" className={`${project.id !== "bai-xe" && project.id !== "ket-noi" ? "object-contain" : "object-cover"} transition-transform duration-500 group-hover:scale-105`} />
-                <span className="absolute bottom-2 right-2 rounded bg-brand-950/85 px-2 py-1 text-[10px] font-semibold text-white">Xem ảnh lớn ↗</span>
-              </a>}
+              <ProjectGallery images={project.images} projectTitle={project.title} />
             </div>
           </article>)}
         </div>
@@ -97,7 +95,7 @@ export default async function CompanyProfilePage() {
 
       <section className="border-y border-line bg-ink-50 py-16 sm:py-20"><div className="wrap"><div className="max-w-2xl"><p className="section-eyebrow">Quy trình hợp tác</p><h2 className="section-title mt-3">{profile.processTitle}</h2><p className="mt-4 text-sm leading-7 text-ink-600">Quy trình rõ ràng giúp hai bên thống nhất kỳ vọng và chủ động tiến độ từ lúc tư vấn đến sau bàn giao.</p></div><ol className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{profile.process.map(({ title, description: body }, index) => <li key={title} className="relative rounded-lg border border-line bg-white p-5"><span className="text-xs font-extrabold tracking-[.18em] text-accent-600">{String(index + 1).padStart(2, "0")}</span><h3 className="mt-4 font-extrabold text-ink-950">{title}</h3><p className="mt-2 text-sm leading-6 text-ink-600">{body}</p></li>)}</ol></div></section>
 
-      {brands.length > 0 && <section className="overflow-hidden border-y border-line bg-white py-12 sm:py-16"><div className="wrap flex flex-wrap items-end justify-between gap-4"><div><p className="section-eyebrow">Đối tác thương hiệu</p><h2 className="section-title mt-3">Đồng hành cùng những thương hiệu uy tín</h2></div><Link href="/thuong-hieu" className="text-sm font-bold text-accent-600">Xem tất cả <Icon name="arrow-right" className="inline h-4 w-4" /></Link></div><div className="brand-marquee mt-8" role="region" aria-label="Thương hiệu đối tác"><div className="brand-marquee-track">{[0, 1].map((copy) => <div key={copy} className="brand-marquee-group" aria-hidden={copy === 1}>{brands.slice(0, 12).map((brand) => <div key={brand.id} className="brand-marquee-logo">{brand.logo ? <img src={brand.logo} alt={copy === 0 ? brand.name : ""} /> : <span>{brand.name}</span>}</div>)}</div>)}</div></div></section>}
+      {brands.length > 0 && <section className="overflow-hidden border-y border-line bg-white py-12 sm:py-16"><div className="wrap flex flex-wrap items-end justify-between gap-4"><div><p className="section-eyebrow">Đối tác thương hiệu</p><h2 className="section-title mt-3 lg:whitespace-nowrap">Đồng hành cùng những thương hiệu uy tín</h2></div><Link href="/thuong-hieu" className="text-sm font-bold text-accent-600">Xem tất cả <Icon name="arrow-right" className="inline h-4 w-4" /></Link></div><div className="brand-marquee mt-8" role="region" aria-label="Thương hiệu đối tác"><div className="brand-marquee-track">{[0, 1].map((copy) => <div key={copy} className="brand-marquee-group" aria-hidden={copy === 1}>{brands.slice(0, 12).map((brand) => <div key={brand.id} className="brand-marquee-logo">{brand.logo ? <img src={brand.logo} alt={copy === 0 ? brand.name : ""} /> : <span>{brand.name}</span>}</div>)}</div>)}</div></div></section>}
 
       <section className="bg-brand-950 py-16 text-white sm:py-20">
         <div className="wrap grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
