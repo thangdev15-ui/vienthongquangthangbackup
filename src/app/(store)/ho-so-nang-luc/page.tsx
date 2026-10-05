@@ -40,6 +40,20 @@ const businessAreas = [
   ["box", "Phụ kiện viễn thông", "Tủ mạng, vật tư thi công và phụ kiện hoàn thiện hệ thống."],
 ] as const;
 
+const customerGroups = [
+  ["01", "Doanh nghiệp & văn phòng", "Thiết bị mạng, Wi-Fi, tủ rack và camera theo quy mô không gian và nhu cầu vận hành."],
+  ["02", "Nhà thầu & đơn vị thi công", "Danh mục cáp, vật tư và thiết bị đồng bộ; phối hợp theo số lượng và tiến độ công trình."],
+  ["03", "Nhà xưởng & công trình", "Tư vấn hạ tầng kết nối, truyền dẫn và giám sát phù hợp với môi trường lắp đặt."],
+  ["04", "Cửa hàng & khách hàng cá nhân", "Lựa chọn thiết bị và phụ kiện thiết thực, dễ sử dụng và thuận tiện bảo trì."],
+] as const;
+
+const consultationChecklist = [
+  "Tên thiết bị, mã hàng hoặc bản vẽ nếu đã có",
+  "Số lượng dự kiến và phạm vi khu vực cần triển khai",
+  "Địa điểm giao hàng hoặc lắp đặt",
+  "Thời gian cần hàng và yêu cầu chứng từ",
+] as const;
+
 export default async function CompanyProfilePage() {
   const [profile, brands, settings] = await Promise.all([getCompanyProfile(), getActiveBrands(), getSettings()]);
   const phoneHref = `tel:${settings.phone.replace(/\D/g, "")}`;
@@ -51,15 +65,22 @@ export default async function CompanyProfilePage() {
         <div className="border-t border-white/10 bg-brand-950/45"><div className="wrap grid grid-cols-2 gap-4 py-5 text-xs font-semibold text-white/75 sm:grid-cols-4"><span className="flex items-center gap-2"><Icon name="shield" className="h-5 w-5 text-accent-200" />Chính hãng</span><span className="flex items-center gap-2"><Icon name="settings" className="h-5 w-5 text-accent-200" />Tư vấn chuyên sâu</span><span className="flex items-center gap-2"><Icon name="file-text" className="h-5 w-5 text-accent-200" />Hỗ trợ CO/CQ</span><span className="flex items-center gap-2"><Icon name="truck" className="h-5 w-5 text-accent-200" />Giao hàng toàn quốc</span></div></div>
       </section>
 
+      <nav aria-label="Mục lục hồ sơ năng lực" className="border-b border-line bg-white">
+        <div className="wrap flex items-center gap-6 overflow-x-auto py-4 text-sm font-bold text-ink-600">
+          <span className="shrink-0 text-xs font-extrabold uppercase tracking-wide text-brand-800">Trong hồ sơ</span>
+          {[["Giới thiệu", "#gioi-thieu-nang-luc"], ["Pháp lý", "#thong-tin-phap-ly"], ["Khách hàng", "#nhom-khach-hang"], ["Lĩnh vực", "#business-areas-title"], ["Dự án", "#du-an-hoat-dong"], ["Quy trình", "#quy-trinh-hop-tac"], ["Liên hệ", "#chuan-bi-tu-van"]].map(([label, href]) => <a key={href} href={href} className="shrink-0 border-b-2 border-transparent py-1 transition-colors hover:border-accent-500 hover:text-brand-800">{label}</a>)}
+        </div>
+      </nav>
+
       <section className="border-b border-line bg-white">
         <div className="wrap grid grid-cols-2 gap-y-6 py-7 sm:grid-cols-4">
           {[["2018", "Hoạt động từ 12/10/2018"], ["Thiết bị", "Điện tử & viễn thông"], ["Giải pháp", "Mạng, camera & kết nối"], ["Đồng hành", "Tư vấn & hỗ trợ kỹ thuật"]].map(([value, label]) => <div key={value} className="border-l border-line px-4 text-center"><p className="text-2xl font-extrabold text-brand-900 sm:text-3xl">{value}</p><p className="mt-2 text-xs font-semibold text-ink-500">{label}</p></div>)}
         </div>
       </section>
 
-      <section className="wrap py-16 sm:py-24"><header className="mb-9"><p className="section-eyebrow">Giới thiệu công ty</p><h2 className="section-title mt-3 lg:whitespace-nowrap">{profile.introTitle || "Công ty Cổ phần Viễn thông Quang Thắng"}</h2></header><div className="grid items-center gap-10 lg:grid-cols-[.9fr_1.1fr] lg:gap-16"><div className="relative order-2 aspect-[4/3] overflow-hidden rounded-lg bg-ink-100 lg:order-1"><Image src={profile.introImage || "/quangthangshop.jpg"} alt="Không gian Viễn Thông Quang Thắng" fill sizes="(min-width:1024px) 45vw, 100vw" className="object-cover" /><div className="absolute bottom-4 right-4 bg-brand-900 px-5 py-4 text-white shadow-xl"><p className="text-xs text-white/60">Đồng hành cùng khách hàng</p><p className="mt-1 font-bold">Chuyên nghiệp · Uy tín</p></div></div><div className="order-1 lg:order-2"><p className="whitespace-pre-line text-sm leading-7 text-ink-600 sm:text-base">{profile.introDescription}</p><div className="mt-7 grid gap-4 sm:grid-cols-2">{[["shield", "Sản phẩm chính hãng"], ["settings", "Tư vấn giải pháp"], ["file-text", "Chính sách rõ ràng"], ["headset", "Đội ngũ hỗ trợ"]].map(([icon, text]) => <div key={text} className="flex items-center gap-3 text-sm font-bold text-ink-800"><span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-700"><Icon name={icon as IconName} className="h-4 w-4" /></span>{text}</div>)}</div><Link href="/gioi-thieu" className="btn-primary mt-8">Xem chi tiết về công ty <Icon name="arrow-right" className="h-4 w-4" /></Link></div></div></section>
+      <section id="gioi-thieu-nang-luc" className="wrap py-16 sm:py-24"><header className="mb-9"><p className="section-eyebrow">Giới thiệu công ty</p><h2 className="section-title mt-3 lg:whitespace-nowrap">{profile.introTitle || "Công ty Cổ phần Viễn thông Quang Thắng"}</h2></header><div className="grid items-center gap-10 lg:grid-cols-[.9fr_1.1fr] lg:gap-16"><div className="relative order-2 aspect-[4/3] overflow-hidden rounded-lg bg-ink-100 lg:order-1"><Image src={profile.introImage || "/quangthangshop.jpg"} alt="Không gian Viễn Thông Quang Thắng" fill sizes="(min-width:1024px) 45vw, 100vw" className="object-cover" /><div className="absolute bottom-4 right-4 bg-brand-900 px-5 py-4 text-white shadow-xl"><p className="text-xs text-white/60">Đồng hành cùng khách hàng</p><p className="mt-1 font-bold">Chuyên nghiệp · Uy tín</p></div></div><div className="order-1 lg:order-2"><p className="whitespace-pre-line text-sm leading-7 text-ink-600 sm:text-base">{profile.introDescription}</p><div className="mt-7 grid gap-4 sm:grid-cols-2">{[["shield", "Sản phẩm chính hãng"], ["settings", "Tư vấn giải pháp"], ["file-text", "Chính sách rõ ràng"], ["headset", "Đội ngũ hỗ trợ"]].map(([icon, text]) => <div key={text} className="flex items-center gap-3 text-sm font-bold text-ink-800"><span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-700"><Icon name={icon as IconName} className="h-4 w-4" /></span>{text}</div>)}</div><Link href="/gioi-thieu" className="btn-primary mt-8">Xem chi tiết về công ty <Icon name="arrow-right" className="h-4 w-4" /></Link></div></div></section>
 
-      <section className="bg-brand-950 py-16 sm:py-24" aria-labelledby="company-facts-title">
+      <section id="thong-tin-phap-ly" className="bg-brand-950 py-16 sm:py-24" aria-labelledby="company-facts-title">
         <div className="wrap">
           <div className="relative overflow-hidden rounded-lg border border-white/20 bg-white px-6 py-8 shadow-xl sm:px-10 sm:py-12 lg:px-14">
             <div className="absolute inset-y-0 left-0 w-2 bg-accent-500" />
@@ -76,6 +97,13 @@ export default async function CompanyProfilePage() {
       </section>
 
       <section className="border-y border-line bg-ink-50 py-16 sm:py-24"><div className="wrap"><header className="mb-10 max-w-none"><p className="section-eyebrow">Đồng hành cùng sự phát triển</p><h2 className="section-title mt-3 lg:whitespace-nowrap">Một đối tác đáng tin cậy cho mỗi công trình</h2></header><div className="grid gap-10 lg:grid-cols-[.8fr_1.2fr] lg:gap-20"><div className="max-w-xl"><p className="text-base leading-7 text-ink-600">Từ một sản phẩm đơn lẻ đến kế hoạch cung ứng dài hạn, Quang Thắng tập trung vào tính phù hợp, khả năng triển khai và hiệu quả sử dụng.</p><Link href="/lien-he" className="btn-primary mt-7">Trao đổi nhu cầu <Icon name="arrow-right" className="h-4 w-4" /></Link></div><div className="divide-y divide-line border-y border-brand-900/20">{values.map((item) => <article key={item.number} className="grid gap-3 py-6 sm:grid-cols-[3.5rem_1fr] sm:gap-5"><span className="pt-1 text-sm font-extrabold tabular-nums text-accent-600">{item.number}</span><div><h3 className="text-xl font-bold text-ink-950">{item.title}</h3><p className="mt-2 max-w-2xl text-sm leading-6 text-ink-600">{item.body}</p></div></article>)}</div></div></div></section>
+
+      <section id="nhom-khach-hang" className="wrap py-16 sm:py-24">
+        <header className="mb-9"><p className="section-eyebrow">Đối tượng phục vụ</p><h2 className="section-title mt-3 lg:whitespace-nowrap">Phục vụ nhiều mô hình, tư vấn theo nhu cầu</h2><p className="mt-4 max-w-3xl text-sm leading-7 text-ink-600">Từ khách hàng cá nhân đến doanh nghiệp và đơn vị thi công, danh mục và phương án được trao đổi theo quy mô, môi trường sử dụng và tiến độ thực tế.</p></header>
+        <div className="grid gap-px overflow-hidden border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
+          {customerGroups.map(([number, title, description]) => <article key={number} className="min-h-56 bg-white p-6 transition-colors hover:bg-brand-50 sm:p-7"><span className="text-sm font-extrabold tabular-nums text-accent-600">{number}</span><h3 className="mt-6 text-xl font-extrabold leading-7 text-ink-950">{title}</h3><p className="mt-3 text-sm leading-6 text-ink-600">{description}</p></article>)}
+        </div>
+      </section>
 
       <section className="wrap grid gap-10 py-16 sm:py-24 lg:grid-cols-[.7fr_1.3fr] lg:gap-16"><div><p className="section-eyebrow">Năng lực thế mạnh</p><h2 className="section-title mt-3">Năng lực cốt lõi</h2><p className="mt-5 text-sm leading-7 text-ink-600 sm:text-base">Kết hợp danh mục sản phẩm, kinh nghiệm tư vấn và khả năng phối hợp giao hàng để giúp khách hàng triển khai nhanh, đúng và dễ mở rộng.</p><Link href="/lien-he" className="btn-outline mt-7">Xem chi tiết năng lực <Icon name="arrow-right" className="h-4 w-4" /></Link></div><div className="grid gap-4 sm:grid-cols-2">{capabilities.map(([icon, title, body]) => <article key={title} className="rounded-lg border border-line p-5 transition-colors hover:border-brand-400"><Icon name={icon as IconName} className="h-7 w-7 text-brand-700" /><h3 className="mt-5 font-extrabold text-ink-950">{title}</h3><p className="mt-2 text-sm leading-6 text-ink-600">{body}</p></article>)}</div></section>
 
@@ -98,7 +126,7 @@ export default async function CompanyProfilePage() {
         </div>
       </section>
 
-      <section className="border-y border-line bg-ink-50 py-16 sm:py-20"><div className="wrap"><div><p className="section-eyebrow">Quy trình hợp tác</p><h2 className="section-title mt-3 max-w-none lg:whitespace-nowrap">{profile.processTitle}</h2><p className="mt-4 max-w-2xl text-sm leading-7 text-ink-600">Quy trình rõ ràng giúp hai bên thống nhất kỳ vọng và chủ động tiến độ từ lúc tư vấn đến sau bàn giao.</p></div><ol className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{profile.process.map(({ title, description: body }, index) => <li key={title} className="relative rounded-lg border border-line bg-white p-5"><span className="text-xs font-extrabold tracking-[.18em] text-accent-600">{String(index + 1).padStart(2, "0")}</span><h3 className="mt-4 font-extrabold text-ink-950">{title}</h3><p className="mt-2 text-sm leading-6 text-ink-600">{body}</p></li>)}</ol></div></section>
+      <section id="quy-trinh-hop-tac" className="border-y border-line bg-ink-50 py-16 sm:py-20"><div className="wrap"><div><p className="section-eyebrow">Quy trình hợp tác</p><h2 className="section-title mt-3 max-w-none lg:whitespace-nowrap">{profile.processTitle}</h2><p className="mt-4 max-w-2xl text-sm leading-7 text-ink-600">Quy trình rõ ràng giúp hai bên thống nhất kỳ vọng và chủ động tiến độ từ lúc tư vấn đến sau bàn giao.</p></div><ol className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{profile.process.map(({ title, description: body }, index) => <li key={title} className="relative rounded-lg border border-line bg-white p-5"><span className="text-xs font-extrabold tracking-[.18em] text-accent-600">{String(index + 1).padStart(2, "0")}</span><h3 className="mt-4 font-extrabold text-ink-950">{title}</h3><p className="mt-2 text-sm leading-6 text-ink-600">{body}</p></li>)}</ol></div></section>
 
       {brands.length > 0 && <section className="overflow-hidden border-y border-line bg-white py-12 sm:py-16"><div className="wrap flex flex-wrap items-end justify-between gap-4"><div><p className="section-eyebrow">Đối tác thương hiệu</p><h2 className="section-title mt-3 lg:whitespace-nowrap">Đồng hành cùng những thương hiệu uy tín</h2></div><Link href="/thuong-hieu" className="text-sm font-bold text-accent-600">Xem tất cả <Icon name="arrow-right" className="inline h-4 w-4" /></Link></div><div className="brand-marquee mt-8" role="region" aria-label="Thương hiệu đối tác"><div className="brand-marquee-track">{[0, 1].map((copy) => <div key={copy} className="brand-marquee-group" aria-hidden={copy === 1}>{brands.slice(0, 12).map((brand) => <div key={brand.id} className="brand-marquee-logo">{brand.logo ? <img src={brand.logo} alt={copy === 0 ? brand.name : ""} /> : <span>{brand.name}</span>}</div>)}</div>)}</div></div></section>}
 
@@ -124,7 +152,14 @@ export default async function CompanyProfilePage() {
 
       <section className="border-y border-line bg-ink-50 py-16 sm:py-20"><div className="wrap"><div><p className="section-eyebrow">Cam kết dịch vụ</p><h2 className="section-title mt-3 lg:whitespace-nowrap">Giá trị được thể hiện trong từng lần phục vụ</h2></div><div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{commitments.map(([icon, title, body]) => <article key={title} className="rounded-lg border border-line bg-white p-5"><Icon name={icon as IconName} className="h-6 w-6 text-brand-700" /><h3 className="mt-5 font-extrabold text-ink-950">{title}</h3><p className="mt-2 text-sm leading-6 text-ink-600">{body}</p></article>)}</div></div></section>
 
-
+      <section id="chuan-bi-tu-van" className="wrap py-16 sm:py-24">
+        <div className="border-y border-line py-9 lg:py-12">
+          <header className="mb-9"><p className="section-eyebrow">Chuẩn bị yêu cầu</p><h2 className="section-title mt-3 lg:whitespace-nowrap">Thông tin giúp tư vấn sát nhu cầu</h2></header>
+          <div className="grid gap-10 lg:grid-cols-[.9fr_1.1fr] lg:gap-16"><div><p className="max-w-xl text-sm leading-7 text-ink-600">Có sẵn một vài thông tin dưới đây sẽ giúp đội ngũ trao đổi đúng cấu hình, số lượng và phương án giao nhận hơn.</p><Link href="/lien-he" className="btn-primary mt-7">Gửi yêu cầu tư vấn <Icon name="arrow-right" className="h-4 w-4" /></Link></div>
+            <ul className="grid gap-3 sm:grid-cols-2">{consultationChecklist.map((item, index) => <li key={item} className="flex min-h-24 items-start gap-4 border border-line bg-white p-5"><span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-50 text-sm font-extrabold text-brand-800">{index + 1}</span><span className="pt-1 text-sm font-semibold leading-6 text-ink-800">{item}</span></li>)}</ul>
+          </div>
+        </div>
+      </section>
 
       <section className="wrap py-10 sm:py-16"><div className="relative isolate overflow-hidden rounded-xl bg-brand-950 px-6 py-12 text-center text-white sm:px-12 sm:py-16"><div className="absolute inset-0 -z-10 opacity-35"><Image src="/banner1.png" alt="" fill sizes="100vw" className="object-cover" /></div><div className="absolute inset-0 -z-10 bg-brand-950/65" /><p className="text-xs font-bold uppercase tracking-[.18em] text-accent-200">Sẵn sàng đồng hành</p><h2 className="mx-auto mt-3 max-w-none text-3xl font-extrabold text-white sm:text-5xl lg:whitespace-nowrap">{profile.closingTitle}</h2><p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-white/75 sm:text-base">{profile.closingDescription}</p><div className="mt-8 flex flex-wrap justify-center gap-3"><Link href="/lien-he" className="btn-accent">Liên hệ ngay <Icon name="arrow-right" className="h-4 w-4" /></Link><a href={phoneHref} className="inline-flex h-10 items-center gap-2 rounded border border-white/35 px-4 text-sm font-bold text-white hover:bg-white/10"><Icon name="phone" className="h-4 w-4" />Gọi {settings.phone}</a></div></div></section>
     </div>
