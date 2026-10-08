@@ -84,7 +84,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
               <EmptyState
                 icon="search"
                 title={`Không tìm thấy sản phẩm cho "${q}"`}
-                description="Gọi hotline 0947.106.161 — kho hàng thực tế nhiều hơn website, chúng tôi sẽ kiểm tra và báo giá cho bạn."
+                description="Gọi hotline 094.710.6161 — kho hàng thực tế nhiều hơn website, chúng tôi sẽ kiểm tra và báo giá cho bạn."
               />
             ) : (
               <ProductGrid products={res.products} />

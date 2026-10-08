@@ -654,9 +654,9 @@ export function NewsletterForm({ compact = false }: { compact?: boolean }) {
 
 export function Footer({ categories: _categories, settings }: { categories: NavCategory[]; settings: Settings }) {
   return (
-    <footer className="relative mt-14 flex min-h-[min(100svh,52rem)] overflow-hidden bg-[#1f100d] pb-20 text-white lg:pb-0">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_14%_76%,#ffb000_0%,#ff6700_24%,#ee3c0a_48%,#25110e_76%)]" />
-      <div className="absolute bottom-0 right-0 h-[52%] w-[45%] opacity-25 [background-image:linear-gradient(30deg,transparent_47%,rgba(255,255,255,.55)_48%,transparent_49%),linear-gradient(150deg,transparent_47%,rgba(255,255,255,.55)_48%,transparent_49%)] [background-size:56px_96px]" />
+    <footer className="relative mt-14 flex min-h-[min(100svh,52rem)] overflow-hidden bg-brand-950 pb-20 text-white lg:pb-0">
+      <div className="absolute inset-0"><Image src="/imported/company-profile/nenfooter.jpeg" alt="" fill sizes="100vw" className="object-cover" /></div>
+      <div className="absolute inset-0 bg-brand-950/85" />
       <div className="wrap relative z-10 flex w-full flex-col py-12 sm:py-16 lg:py-20">
         <div className="max-w-6xl">
           <p className="text-xs font-extrabold uppercase tracking-[.2em] text-white/75">Quang Thắng Telecom</p>

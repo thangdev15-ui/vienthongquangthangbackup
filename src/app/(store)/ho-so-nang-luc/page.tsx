@@ -52,6 +52,7 @@ export default async function CompanyProfilePage() {
   const phoneHref = `tel:${settings.phone.replace(/\D/g, "")}`;
   const profileEmail = COMPANY_PROFILE_FACTS.find(([label]) => label === "Email trong hồ sơ")?.[1] ?? "quangthangtelecom@gmail.com";
   const profileAddress = COMPANY_PROFILE_FACTS.find(([label]) => label === "Địa chỉ")?.[1] ?? "435/26 Thống Nhất, Phường Thông Tây Hội, TP. Hồ Chí Minh";
+  const mapEmbedHref = `https://www.google.com/maps?q=${encodeURIComponent(profileAddress)}&output=embed`;
   const directorName = COMPANY_PROFILE_FACTS.find(([label]) => label === "Người đại diện")?.[1] ?? "Võ Quốc Thắng";
   const directionsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(profileAddress)}`;
   return (
@@ -178,6 +179,9 @@ export default async function CompanyProfilePage() {
           </div>
           <figure className="relative aspect-[4/3] overflow-hidden bg-ink-100">
             <Image src="/imported/company-profile/hinhvanphongmoi.jpeg" alt="Phòng họp tại văn phòng Viễn Thông Quang Thắng" fill sizes="(min-width:1024px) 50vw, 100vw" className="object-cover object-center" />
+            <div className="absolute right-3 top-3 h-28 w-44 overflow-hidden border-2 border-white bg-white shadow-lg sm:h-32 sm:w-52">
+              <iframe title="Bản đồ vị trí Viễn Thông Quang Thắng" src={mapEmbedHref} className="h-full w-full border-0" loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
+            </div>
             <figcaption className="absolute bottom-0 left-0 bg-brand-950/85 px-4 py-2 text-xs font-semibold text-white">Văn phòng Viễn Thông Quang Thắng · TP. Hồ Chí Minh</figcaption>
           </figure>
         </div>

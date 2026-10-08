@@ -5,7 +5,7 @@ import { ContactForm } from "@/components/store/contact";
 
 export const metadata: Metadata = {
   title: "Liên hệ",
-  description: "Liên hệ Viễn Thông Quang Thắng — 435/26 Thống Nhất, P. Thông Tây Hội, TP.HCM. Hotline 0947.106.161 (tư vấn), Zalo báo giá nhanh.",
+  description: "Liên hệ Viễn Thông Quang Thắng — 435/26 Thống Nhất, P. Thông Tây Hội, TP.HCM. Hotline 094.710.6161 (tư vấn), Zalo báo giá nhanh.",
 };
 export const dynamic = "force-dynamic";
 
@@ -26,7 +26,7 @@ export default async function LienHePage() {
               ["pin", "Địa chỉ cửa hàng", settings.address],
               ["clock", "Giờ làm việc", settings.hours],
               ["phone", "Điện thoại tư vấn", settings.phone],
-              ["message", "Zalo báo giá", `0947.106.161 (${settings.zaloLabel ?? "Quang Thắng"})`],
+              ["message", "Zalo báo giá", `094.710.6161 (${settings.zaloLabel ?? "Quang Thắng"})`],
               ["mail", "Email", settings.email],
             ] as [React.ComponentProps<typeof Icon>["name"], string, string][]
           ).map(([icon, t, d]) => (

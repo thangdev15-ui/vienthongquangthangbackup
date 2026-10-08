@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!b) return { title: "Thương hiệu không tồn tại" };
   return {
     title: b.seoTitle || `Thiết bị ${b.name}`,
-    description: b.seoDescription ?? b.description ?? `Sản phẩm ${b.name} chính hãng tại Viễn Thông Quang Thắng. Liên hệ 0947.106.161 để nhận báo giá.`,
+    description: b.seoDescription ?? b.description ?? `Sản phẩm ${b.name} chính hãng tại Viễn Thông Quang Thắng. Liên hệ 094.710.6161 để nhận báo giá.`,
     alternates: { canonical: `/thuong-hieu/${b.slug}` },
   };
 }
@@ -64,7 +64,7 @@ export default async function BrandPage({
         <EmptyState
           icon="box"
           title={`Chưa có sản phẩm ${b.name} được đăng tải`}
-          description="Vui lòng quay lại sau hoặc gọi 0947.106.161 để đặt hàng trực tiếp."
+          description="Vui lòng quay lại sau hoặc gọi 094.710.6161 để đặt hàng trực tiếp."
           action={<Link href="/san-pham" className="btn-primary">Xem tất cả sản phẩm</Link>}
         />
       ) : (

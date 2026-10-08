@@ -688,7 +688,7 @@ const PAGES: { slug: string; title: string; content: string }[] = [
     slug: "huong-dan-mua-hang",
     title: "Hướng dẫn mua hàng online",
     content: `<h2>Bước 1 — Chọn sản phẩm</h2>
-<p>Truy cập danh mục hoặc dùng thanh tìm kiếm (hỗ trợ tìm theo tên sản phẩm, mã SKU, thương hiệu). Sản phẩm có giá hiển thị rõ; sản phẩm giá "Liên hệ" vui lòng gọi 0947.106.161 hoặc nhắn Zalo để được báo giá.</p>
+<p>Truy cập danh mục hoặc dùng thanh tìm kiếm (hỗ trợ tìm theo tên sản phẩm, mã SKU, thương hiệu). Sản phẩm có giá hiển thị rõ; sản phẩm giá "Liên hệ" vui lòng gọi 094.710.6161 hoặc nhắn Zalo để được báo giá.</p>
 <h2>Bước 2 — Thêm vào giỏ hàng</h2>
 <p>Bấm "Thêm vào giỏ" trên thẻ sản phẩm hoặc trang chi tiết. Bạn có thể điều chỉnh số lượng, xoá sản phẩm trực tiếp trong giỏ hàng.</p>
 <h2>Bước 3 — Thanh toán</h2>
@@ -715,7 +715,7 @@ const PAGES: { slug: string; title: string; content: string }[] = [
 <h2>Các trường hợp không bảo hành</h2>
 <p>Hết thời hạn bảo hành; hư hỏng do sử dụng sai kỹ thuật, chập điện, ngập nước, rơi vỡ; tem bảo hành bị mất hoặc can thiệp; sản phẩm đã qua sửa chữa bởi đơn vị không được ủy quyền.</p>
 <h2>Khiếu nại bảo hành</h2>
-<p>Vui lòng liên hệ hotline 0947.106.161 (Quang Thắng) kèm mã đơn hàng hoặc phiếu bảo hành để được hỗ trợ nhanh nhất.</p>`,
+<p>Vui lòng liên hệ hotline 094.710.6161 (Quang Thắng) kèm mã đơn hàng hoặc phiếu bảo hành để được hỗ trợ nhanh nhất.</p>`,
   },
   {
     slug: "chinh-sach-doi-tra",
@@ -745,13 +745,13 @@ const PAGES: { slug: string; title: string; content: string }[] = [
 <h2>Mục đích sử dụng</h2>
 <p>Xác nhận đơn hàng, giao hàng, bảo hành và (khi bạn đồng ý) gửi thông tin khuyến mãi. Thông tin không được bán hoặc chia sẻ cho bên thứ ba vì mục đích thương mại.</p>
 <h2>An toàn thông tin</h2>
-<p>Dữ liệu khách hàng được lưu trữ trên hệ thống có kiểm soát truy cập. Quý khách có quyền yêu cầu cập nhật hoặc xoá thông tin cá nhân bằng cách liên hệ hotline 0947.106.161.</p>`,
+<p>Dữ liệu khách hàng được lưu trữ trên hệ thống có kiểm soát truy cập. Quý khách có quyền yêu cầu cập nhật hoặc xoá thông tin cá nhân bằng cách liên hệ hotline 094.710.6161.</p>`,
   },
   {
     slug: "doi-tac-chien-luoc",
     title: "Đối tác chiến lược",
     content: `<p>Viễn Thông Quang Thắng hợp tác với các nhà sản xuất và nhà phân phối cấp 1 trong lĩnh vực cáp mạng, cáp quang, thiết bị mạng và camera quan sát để mang tới giá tốt nhất cho khách hàng công trình.</p>
-<p>Quý đại lý, nhà thầu, đơn vị thi công có nhu cầu hợp tác dài hạn vui lòng liên hệ hotline <strong>0947.106.161</strong> (Quang Thắng) để được báo giá theo chính sách đại lý.</p>`,
+<p>Quý đại lý, nhà thầu, đơn vị thi công có nhu cầu hợp tác dài hạn vui lòng liên hệ hotline <strong>094.710.6161</strong> (Quang Thắng) để được báo giá theo chính sách đại lý.</p>`,
   },
 ];
 
@@ -866,7 +866,7 @@ async function main() {
   });
   await db.insert(promotions).values({
     title: "Ưu đãi đơn hàng công trình",
-    description: "Báo giá đặc biệt cho đơn hàng số lượng lớn (cáp cuộn 305m, tủ rack, thiết bị số lượng). Gọi 0947.106.161 để nhận giá công trình.",
+    description: "Báo giá đặc biệt cho đơn hàng số lượng lớn (cáp cuộn 305m, tủ rack, thiết bị số lượng). Gọi 094.710.6161 để nhận giá công trình.",
     badge: "ĐƠN LỚN",
     url: "/lien-he",
     active: true,

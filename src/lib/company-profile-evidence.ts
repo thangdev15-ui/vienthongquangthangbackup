@@ -8,7 +8,7 @@ export const COMPANY_PROFILE_FACTS = [
   ["Ngày hoạt động", "12/10/2018"],
   ["Người đại diện", "Võ Quốc Thắng"],
   ["Địa chỉ", "435/26 Thống Nhất, Phường Thông Tây Hội, TP. Hồ Chí Minh"],
-  ["Hotline", "0947 106 161"],
+  ["Hotline", "094.710.6161"],
   ["Email trong hồ sơ", "quangthangtelecom@gmail.com"],
   ["Website", "vienthongquangthang.com"],
 ] as const;

@@ -10,7 +10,7 @@ export default function StoreError({ error, reset }: { error: Error & { digest?:
       </span>
       <h1 className="text-2xl font-extrabold text-ink-950">Đã có lỗi xảy ra</h1>
       <p className="mt-3 max-w-md text-sm leading-6 text-ink-500">
-        Chúng tôi đã ghi nhận sự cố. Vui lòng thử lại, hoặc liên hệ hotline 0947.106.161 nếu vấn đề vẫn tiếp diễn.
+        Chúng tôi đã ghi nhận sự cố. Vui lòng thử lại, hoặc liên hệ hotline 094.710.6161 nếu vấn đề vẫn tiếp diễn.
       </p>
       <button onClick={reset} className="btn-primary mt-6">
         Thử lại

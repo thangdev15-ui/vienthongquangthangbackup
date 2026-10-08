@@ -10,7 +10,7 @@ export default function NotFound() {
       <h1 className="text-3xl font-extrabold text-ink-950">404 — Không tìm thấy trang</h1>
       <p className="mt-3 max-w-md text-sm leading-6 text-ink-500">
         Trang hoặc sản phẩm bạn tìm kiếm không tồn tại hoặc đã bị di chuyển. Hãy quay lại trang chủ, tìm kiếm sản phẩm,
-        hoặc gọi <a href="tel:0947106161" className="font-bold text-brand-700">0947.106.161</a> để được hỗ trợ.
+        hoặc gọi <a href="tel:0947106161" className="font-bold text-brand-700">094.710.6161</a> để được hỗ trợ.
       </p>
       <div className="mt-6 flex flex-wrap justify-center gap-3">
         <Link href="/" className="btn-primary">
