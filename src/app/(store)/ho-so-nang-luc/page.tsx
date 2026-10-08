@@ -32,9 +32,9 @@ const customerGroups = [
 ] as const;
 
 const processImages = [
-  "/imported/company-profile/web/giaiphaphotram3.webp",
+  "/imported/company-profile/tiepnhannhucau.jpeg",
   "/imported/company-profile/web/cameragiamsatcanho3.webp",
-  "/imported/company-profile/web/logistics.webp",
+  "/imported/company-profile/chuanbigiaohang.jpeg",
   "/quanngthangnhanvien.jpeg",
 ] as const;
 
