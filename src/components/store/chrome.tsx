@@ -655,7 +655,7 @@ export function NewsletterForm({ compact = false }: { compact?: boolean }) {
 export function Footer({ categories, settings }: { categories: NavCategory[]; settings: Settings }) {
   return (
     <footer className="mt-14 overflow-hidden bg-brand-950 pb-20 text-white lg:pb-0">
-      <div className="border-b border-white/15 bg-brand-900">
+      <div className="border-b border-white/15 bg-[#f15a24] text-white">
         <div className="wrap grid gap-6 py-9 sm:py-11 lg:grid-cols-[1.15fr_.85fr] lg:items-center">
           <div><p className="text-xs font-extrabold uppercase tracking-[.2em] text-accent-200">Quang Thắng Telecom</p><h2 className="mt-3 text-3xl font-extrabold sm:text-4xl">Liên hệ với chúng tôi</h2><p className="mt-3 max-w-xl text-sm leading-6 text-white/75">Tư vấn thiết bị, báo giá công trình và hỗ trợ kỹ thuật theo nhu cầu thực tế.</p></div>
           <div className="flex flex-wrap gap-3 lg:justify-end"><a href={`tel:${settings.phone.replace(/\D/g, "")}`} className="inline-flex h-11 items-center gap-2 bg-accent-500 px-5 text-sm font-extrabold text-white hover:bg-accent-600"><Icon name="phone" className="h-4 w-4" />{settings.phone}</a><a href={settings.zalo} target="_blank" rel="noopener" className="inline-flex h-11 items-center gap-2 border border-white/35 px-5 text-sm font-bold hover:bg-white/10"><Icon name="message" className="h-4 w-4" />Nhắn Zalo</a></div>

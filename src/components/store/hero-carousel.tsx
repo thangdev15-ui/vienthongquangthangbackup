@@ -22,10 +22,10 @@ export function HeroCarousel({ banners }: { banners: Banner[] }) {
   }, [items.length]);
 
   const slide = items[active];
-  const image = <Image src={slide.src} alt={slide.title} fill priority={active === 0} sizes="(min-width:1536px) 1200px, 100vw" className="object-contain bg-white" />;
+  const image = <Image src={slide.src} alt={slide.title} fill priority={active === 0} sizes="100vw" className="object-contain bg-white" />;
 
   return (
-    <div className="hero-carousel group relative overflow-hidden rounded-md">
+    <div className="hero-carousel group relative overflow-hidden">
       {slide.href ? <Link href={slide.href} className="absolute inset-0 block" aria-label="Xem nội dung banner">{image}</Link> : image}
       <button type="button" onClick={() => setActive((active - 1 + items.length) % items.length)} aria-label="Banner trước" className="absolute left-3 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-ink-800 opacity-0 shadow-md transition-opacity group-hover:opacity-100 focus:opacity-100">
         <span aria-hidden="true" className="text-xl leading-none">‹</span>

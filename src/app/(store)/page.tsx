@@ -20,10 +20,8 @@ export default async function HomePage() {
   return (
     <div>
       {/* ============ HERO ============ */}
-      <section className="bg-ink-50 py-3">
-        <div className="wrap">
-          <HeroCarousel banners={banners} />
-        </div>
+      <section className="bg-ink-50">
+        <HeroCarousel banners={banners} />
       </section>
 
       <section className="border-b border-line bg-white py-5">
