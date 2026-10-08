@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   },
   icons: { icon: "/logoqt.png", shortcut: "/logoqt.png", apple: "/logoqt.png" },
   description:
-    "Kho thiết bị viễn thông chính hãng: cáp mạng, cáp quang, switch PoE, camera quan sát, thiết bị quang, tủ rack, thang máng cáp. Tư vấn kỹ thuật, giao hàng toàn quốc. Hotline 0941.74.6161.",
+    "Kho thiết bị viễn thông chính hãng: cáp mạng, cáp quang, switch PoE, camera quan sát, thiết bị quang, tủ rack, thang máng cáp. Tư vấn kỹ thuật, giao hàng toàn quốc. Hotline 0947.106.161.",
   openGraph: {
     type: "website",
     locale: "vi_VN",

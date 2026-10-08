@@ -22,7 +22,7 @@ function toCart(p: ProductRow) {
   };
 }
 
-const ZALO_BASE = "https://zalo.me/0941746161?text=";
+const ZALO_BASE = "https://zalo.me/0947106161?text=";
 
 /* --------------------------------- ProductCard -------------------------------- */
 

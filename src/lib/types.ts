@@ -59,12 +59,12 @@ export type ProductRow = {
 // Nguồn: website hiện tại vienthongquangthang.com — chỉnh sửa trong Admin → Cài đặt
 export const BUSINESS = {
   name: "Viễn Thông Quang Thắng",
-  phone: "0941.74.6161",
-  salesPhones: "(028) 3760.4760\n0941.59.6161\n0949.09.6161\n0941.74.6161\n0941.80.6161",
-  phoneHref: "tel:0941746161",
-  csKh: "0941.80.6161",
-  zalo: "https://zalo.me/0941746161",
-  zaloLabel: "Zalo 0941.74.6161 — Quang Thắng",
+  phone: "0947.106.161",
+  salesPhones: "0947.106.161",
+  phoneHref: "tel:0947106161",
+  csKh: "0947.106.161",
+  zalo: "https://zalo.me/0947106161",
+  zaloLabel: "Zalo 0947.106.161 — Quang Thắng",
   email: "vienthongquangthang@gmail.com",
   address: "435/26 Thống Nhất, P. Thông Tây Hội, TP. Hồ Chí Minh",
   hours: "08:00 - 17:00 (Thứ 2 - Thứ 7)",

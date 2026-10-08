@@ -492,6 +492,11 @@ async function loadSettings(): Promise<Record<string, string>> {
     track_stock: "0",
   };
   for (const r of rows) if (r.value != null) out[r.key] = r.value;
+  // Preserve editable settings, but replace the retired support number stored in older installations.
+  if (out.phone.replace(/\D/g, "") === "0941746161") out.phone = BUSINESS.phone;
+  if (out.sales_phones.includes("0941.74.6161")) out.sales_phones = BUSINESS.salesPhones;
+  if (out.cs_kh.replace(/\D/g, "") === "0941746161") out.cs_kh = BUSINESS.csKh;
+  if (out.zalo.includes("0941746161")) out.zalo = BUSINESS.zalo;
   return out;
 }
 

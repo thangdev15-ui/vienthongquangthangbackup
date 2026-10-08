@@ -17,7 +17,7 @@ export function CartPageView({ shippingFee, zalo }: { shippingFee: number; zalo:
       <EmptyState
         icon="cart"
         title="Giỏ hàng của bạn đang trống"
-        description="Khám phá kho thiết bị viễn thông chính hãng hoặc liên hệ hotline 0941.74.6161 để đặt hàng theo yêu cầu."
+        description="Khám phá kho thiết bị viễn thông chính hãng hoặc liên hệ hotline 0947.106.161 để đặt hàng theo yêu cầu."
         action={
           <div className="flex flex-wrap justify-center gap-2">
             <Link href="/san-pham" className="btn-primary">

@@ -104,7 +104,7 @@ export default async function CategoryPage({
             <EmptyState
               icon="box"
               title="Danh mục đang cập nhật"
-              description={`Danh mục "${cat.name}" đang được bổ sung sản phẩm. Vui lòng quay lại sau hoặc liên hệ hotline 0941.74.6161 để đặt hàng trực tiếp.`}
+              description={`Danh mục "${cat.name}" đang được bổ sung sản phẩm. Vui lòng quay lại sau hoặc liên hệ hotline 0947.106.161 để đặt hàng trực tiếp.`}
               action={<Link href="/san-pham" className="btn-primary">Xem tất cả sản phẩm</Link>}
             />
           ) : (

@@ -233,7 +233,7 @@ export async function placeOrderAction(input: PlaceOrderInput): Promise<ActionRe
     return { ok: true, code: orderCode };
   } catch (e) {
     console.error("placeOrder failed", e);
-    return { ok: false, error: "Đặt hàng thất bại. Vui lòng thử lại hoặc gọi hotline 0941.74.6161." };
+    return { ok: false, error: "Đặt hàng thất bại. Vui lòng thử lại hoặc gọi hotline 0947.106.161." };
   }
 }
 

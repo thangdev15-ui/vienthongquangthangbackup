@@ -10,7 +10,7 @@ export default function NotFound() {
       <h1 className="text-3xl font-extrabold text-ink-950">404 — Không tìm thấy trang</h1>
       <p className="mt-3 max-w-md text-sm leading-6 text-ink-500">
         Trang hoặc sản phẩm bạn tìm kiếm không tồn tại hoặc đã bị di chuyển. Hãy quay lại trang chủ, tìm kiếm sản phẩm,
-        hoặc gọi <a href="tel:0941746161" className="font-bold text-brand-700">0941.74.6161</a> để được hỗ trợ.
+        hoặc gọi <a href="tel:0947106161" className="font-bold text-brand-700">0947.106.161</a> để được hỗ trợ.
       </p>
       <div className="mt-6 flex flex-wrap justify-center gap-3">
         <Link href="/" className="btn-primary">
@@ -20,7 +20,7 @@ export default function NotFound() {
         <Link href="/san-pham" className="btn-outline">
           Xem sản phẩm
         </Link>
-        <a href="https://zalo.me/0941746161" target="_blank" rel="noopener" className="btn-zalo">
+        <a href="https://zalo.me/0947106161" target="_blank" rel="noopener" className="btn-zalo">
           <Icon name="message" className="h-4 w-4" />
           Chat Zalo
         </a>

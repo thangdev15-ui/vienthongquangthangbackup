@@ -67,7 +67,7 @@ export default async function KhuyenMaiPage() {
         <EmptyState
           icon="tag"
           title="Không có chương trình đang chạy"
-          description="Khuyến mãi mới sẽ xuất hiện tại đây. Gọi 0941.74.6161 để nhận giá ưu đãi cho đơn hàng số lượng lớn."
+          description="Khuyến mãi mới sẽ xuất hiện tại đây. Gọi 0947.106.161 để nhận giá ưu đãi cho đơn hàng số lượng lớn."
           action={<Link href="/san-pham" className="btn-primary">Xem tất cả sản phẩm</Link>}
         />
       ) : (

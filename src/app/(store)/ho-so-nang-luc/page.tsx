@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Icon, type IconName } from "@/components/ui";
-import { COMPANY_PROFILE_FACTS, COMPANY_PROFILE_PROJECTS } from "@/lib/company-profile-evidence";
+import { COMPANY_PROFILE_CERTIFICATES, COMPANY_PROFILE_FACTS, COMPANY_PROFILE_PROJECTS } from "@/lib/company-profile-evidence";
 import { getActiveBrands, getCompanyProfile, getSettings } from "@/lib/data";
 import { ProjectGallery } from "./project-gallery";
 
@@ -24,22 +24,6 @@ const capabilities = [
   ["check-circle", "Dịch vụ hậu mãi", "Bảo hành, đổi trả và hỗ trợ kỹ thuật rõ ràng, đồng hành sau khi bàn giao."],
 ] as const;
 
-const commitments = [
-  ["shield", "Chất lượng sản phẩm", "Nguồn gốc rõ ràng, tư vấn đúng cấu hình và nhu cầu."],
-  ["clock", "Tiến độ triển khai", "Phản hồi nhanh, phối hợp giao hàng theo kế hoạch."],
-  ["file-text", "Chính sách bảo hành", "Thông tin bảo hành, đổi trả và hỗ trợ minh bạch."],
-  ["headset", "Hỗ trợ kỹ thuật", "Tư vấn sau bán hàng khi cần kiểm tra hoặc thay thế."],
-] as const;
-
-const businessAreas = [
-  ["cable", "Cáp mạng & cáp quang", "Vật tư kết nối, dây nhảy, phụ kiện và giải pháp đấu nối."],
-  ["server", "Thiết bị mạng", "Switch, router, Wi-Fi, tủ rack và thiết bị mạng cho doanh nghiệp."],
-  ["eye", "Camera quan sát", "Camera, đầu ghi, lưu trữ và phụ kiện cho hệ thống an ninh."],
-  ["zap", "Thiết bị quang", "Thiết bị truyền dẫn quang và phụ kiện phục vụ hạ tầng viễn thông."],
-  ["sun", "Đèn năng lượng mặt trời", "Thiết bị chiếu sáng tiết kiệm năng lượng cho nhiều nhu cầu sử dụng."],
-  ["box", "Phụ kiện viễn thông", "Tủ mạng, vật tư thi công và phụ kiện hoàn thiện hệ thống."],
-] as const;
-
 const customerGroups = [
   ["01", "Doanh nghiệp & văn phòng", "Thiết bị mạng, Wi-Fi, tủ rack và camera theo quy mô không gian và nhu cầu vận hành."],
   ["02", "Nhà thầu & đơn vị thi công", "Danh mục cáp, vật tư và thiết bị đồng bộ; phối hợp theo số lượng và tiến độ công trình."],
@@ -47,11 +31,11 @@ const customerGroups = [
   ["04", "Cửa hàng & khách hàng cá nhân", "Lựa chọn thiết bị và phụ kiện thiết thực, dễ sử dụng và thuận tiện bảo trì."],
 ] as const;
 
-const consultationChecklist = [
-  "Tên thiết bị, mã hàng hoặc bản vẽ nếu đã có",
-  "Số lượng dự kiến và phạm vi khu vực cần triển khai",
-  "Địa điểm giao hàng hoặc lắp đặt",
-  "Thời gian cần hàng và yêu cầu chứng từ",
+const processImages = [
+  "/imported/company-profile/web/giaiphaphotram3.webp",
+  "/imported/company-profile/web/kiemsoatbaixe1.webp",
+  "/imported/company-profile/web/cameragiamsatcanho2.webp",
+  "/imported/company-profile/web/ketnoi3.webp",
 ] as const;
 
 export default async function CompanyProfilePage() {
@@ -72,9 +56,8 @@ export default async function CompanyProfilePage() {
       <nav aria-label="Mục lục hồ sơ năng lực" className="border-b border-line bg-white">
         <div className="wrap flex items-center gap-6 overflow-x-auto py-4 text-sm font-bold text-ink-600">
           <span className="shrink-0 text-xs font-extrabold uppercase tracking-wide text-brand-800">Trong hồ sơ</span>
-          {[["Giới thiệu", "#gioi-thieu-nang-luc"], ["Pháp lý", "#thong-tin-phap-ly"], ["Khách hàng", "#nhom-khach-hang"], ["Lĩnh vực", "#business-areas-title"], ["Dự án", "#du-an-hoat-dong"], ["Quy trình", "#quy-trinh-hop-tac"], ["Liên hệ", "#chuan-bi-tu-van"]].map(([label, href]) => <a key={href} href={href} className="shrink-0 border-b-2 border-transparent py-1 transition-colors hover:border-accent-500 hover:text-brand-800">{label}</a>)}
+          {[["Giới thiệu", "#gioi-thieu-nang-luc"], ["Pháp lý", "#thong-tin-phap-ly"], ["Khách hàng", "#nhom-khach-hang"], ["Dự án", "#du-an-hoat-dong"], ["Quy trình", "#quy-trinh-hop-tac"], ["Liên hệ", "#van-phong-quang-thang"]].map(([label, href]) => <a key={href} href={href} className="shrink-0 border-b-2 border-transparent py-1 transition-colors hover:border-accent-500 hover:text-brand-800">{label}</a>)}
           <a href="#yeu-cau-ho-so-pdf" className="shrink-0 border-b-2 border-transparent py-1 transition-colors hover:border-accent-500 hover:text-brand-800">Yêu cầu hồ sơ PDF</a>
-          <a href="#van-phong-quang-thang" className="shrink-0 border-b-2 border-transparent py-1 transition-colors hover:border-accent-500 hover:text-brand-800">Văn phòng</a>
         </div>
       </nav>
 
@@ -90,24 +73,26 @@ export default async function CompanyProfilePage() {
         <div className="wrap">
           <div className="relative overflow-hidden border border-line bg-white px-5 py-6 sm:px-8 sm:py-8 lg:px-10">
             <div className="absolute inset-y-0 left-0 w-2 bg-accent-500" />
-            <div className="grid gap-7 lg:grid-cols-[minmax(0,1fr)_16rem] lg:gap-10">
+            <div className="grid gap-7 lg:grid-cols-[minmax(0,1fr)_minmax(22rem,.72fr)] lg:gap-12">
               <div className="min-w-0">
                 <div className="border-b border-line pb-4">
                   <p className="section-eyebrow">Thông tin pháp lý doanh nghiệp</p>
                   <h2 id="company-facts-title" className="section-title mt-2">Công ty Cổ phần Viễn thông Quang Thắng</h2>
                 </div>
                 <dl className="grid gap-x-8 sm:grid-cols-2">
-                  {COMPANY_PROFILE_FACTS.map(([label, value]) => <div key={label} className="border-b border-line py-3"><dt className="text-xs font-bold uppercase tracking-wide text-ink-500">{label}</dt><dd className="mt-1 break-words text-sm font-semibold leading-6 text-ink-900">{label === "Email trong hồ sơ" ? <a href={`mailto:${value}`} className="text-brand-700 hover:underline">{value}</a> : label === "Hotline" ? <a href="tel:0941746161" className="text-brand-700 hover:underline">{value}</a> : value}</dd></div>)}
+                  {COMPANY_PROFILE_FACTS.map(([label, value]) => <div key={label} className="border-b border-line py-3"><dt className="text-xs font-bold uppercase tracking-wide text-ink-500">{label}</dt><dd className="mt-1 break-words text-sm font-semibold leading-6 text-ink-900">{label === "Email trong hồ sơ" ? <a href={`mailto:${value}`} className="text-brand-700 hover:underline">{value}</a> : label === "Hotline" ? <a href="tel:0947106161" className="text-brand-700 hover:underline">{value}</a> : value}</dd></div>)}
                 </dl>
                 <p className="mt-4 text-xs leading-5 text-ink-500">Thông tin theo hồ sơ năng lực doanh nghiệp Quang Thắng cung cấp.</p>
               </div>
-              <aside className="order-first flex flex-col items-center justify-center border-b border-line pb-6 text-center lg:order-last lg:border-b-0 lg:border-l lg:pb-0 lg:pl-8">
-                <div className="relative h-40 w-40 overflow-hidden rounded-full border-4 border-brand-50 bg-ink-100 sm:h-48 sm:w-48">
-                  <Image src="/giamdoc.jpeg" alt={`Giám đốc ${directorName} tại văn phòng Quang Thắng`} fill sizes="192px" className="object-cover object-[50%_38%]" />
+              <aside className="order-first overflow-hidden border-b border-line bg-brand-950 text-center text-white lg:order-last lg:border-b-0 lg:border-l lg:pl-0">
+                <div className="relative h-80 w-full sm:h-[28rem] lg:h-full lg:min-h-[35rem]">
+                  <Image src="/CEO.jpeg" alt={`CEO ${directorName} tại Quang Thắng`} fill sizes="(min-width:1024px) 32vw, 100vw" className="object-cover object-center" />
+                  <div className="absolute inset-x-0 bottom-0 bg-brand-950/90 px-6 py-6">
+                    <p className="text-xs font-extrabold uppercase tracking-[.16em] text-accent-200">CEO · Người đại diện</p>
+                    <p className="mt-2 text-2xl font-extrabold text-white">{directorName}</p>
+                    <p className="mt-1 text-sm text-white/70">Công ty Cổ phần Viễn thông Quang Thắng</p>
+                  </div>
                 </div>
-                <p className="mt-4 text-xs font-extrabold uppercase tracking-[.16em] text-brand-700">Giám đốc</p>
-                <p className="mt-1 text-lg font-extrabold text-ink-950">{directorName}</p>
-                <p className="mt-1 text-sm text-ink-500">Người đại diện doanh nghiệp</p>
               </aside>
             </div>
           </div>
@@ -127,40 +112,24 @@ export default async function CompanyProfilePage() {
 
       <section className="relative overflow-hidden bg-brand-950 py-10 text-white sm:py-14"><div className="absolute inset-0 opacity-15"><Image src="/backgroundne.png" alt="" fill sizes="100vw" className="object-cover object-center" /></div><div className="wrap relative"><div className="max-w-2xl"><p className="text-xs font-bold uppercase tracking-[.18em] text-accent-200">Giải pháp viễn thông toàn diện</p><h2 className="mt-3 text-3xl font-extrabold text-white sm:text-4xl">{profile.solutionsTitle}</h2><p className="mt-4 text-sm leading-7 text-white/70 sm:text-base">{profile.solutionsDescription}</p></div><div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{profile.solutions.map(({ title, description: body }, index) => <article key={title} className="rounded-md border border-white/15 bg-white/[.06] p-5 backdrop-blur-sm transition-colors hover:border-accent-300/70 hover:bg-white/10"><Icon name={(["wifi", "eye", "cable", "box", "zap", "settings"] as IconName[])[index % 6]} className="h-6 w-6 text-accent-200" /><h3 className="mt-5 font-bold text-white">{title}</h3><p className="mt-2 text-sm leading-6 text-white/65">{body}</p></article>)}</div></div></section>
 
-      <section className="wrap py-10 sm:py-14" aria-labelledby="business-areas-title"><div className="flex flex-wrap items-end justify-between gap-4"><div><p className="section-eyebrow">Lĩnh vực hoạt động</p><h2 id="business-areas-title" className="section-title mt-3">Ngành hàng thương mại</h2><p className="mt-4 max-w-2xl text-sm leading-7 text-ink-600">Danh mục thiết bị và vật tư phục vụ hạ tầng viễn thông, mạng, camera và các công trình cần kết nối ổn định.</p></div><Link href="/san-pham" className="text-sm font-bold text-accent-600">Xem sản phẩm <Icon name="arrow-right" className="inline h-4 w-4" /></Link></div><div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{businessAreas.map(([, title, body], index) => <article key={title} className="border-t-2 border-brand-700 bg-ink-50 p-6 transition-colors hover:bg-brand-50 sm:p-7"><span className="text-xs font-bold uppercase tracking-[.16em] text-accent-600">0{index + 1} / Lĩnh vực</span><h3 className="mt-5 text-lg font-extrabold leading-6 text-ink-950 sm:text-xl">{title}</h3><p className="mt-3 max-w-sm text-sm leading-6 text-ink-600">{body}</p></article>)}</div></section>
-
       <section id="du-an-hoat-dong" className="wrap py-10 sm:py-14" aria-labelledby="projects-title">
         <div className="flex flex-wrap items-end justify-between gap-5">
           <div><p className="section-eyebrow">Dấu ấn thực tế</p><h2 id="projects-title" className="section-title mt-3">Dự án & hoạt động kết nối</h2><p className="mt-4 max-w-2xl text-sm leading-7 text-ink-600">Từ hạ tầng mạng, hệ thống an ninh đến những hoạt động gắn kết đối tác. Khám phá hình ảnh thực tế của Quang Thắng qua từng công trình và sự kiện.</p></div>
           <Link href="/lien-he" className="text-sm font-bold text-accent-600 hover:text-accent-700">Trao đổi dự án <Icon name="arrow-right" className="inline h-4 w-4" /></Link>
         </div>
-        <div className="mt-7 grid gap-5 lg:grid-cols-12">
-          {COMPANY_PROFILE_PROJECTS.map((project, index) => index === 0 ? (
-            <article id={project.id} key={project.id} className="min-w-0 overflow-hidden border border-line bg-white lg:col-span-12">
-              <div className="grid lg:grid-cols-[.78fr_1.22fr]">
-                <div className="flex flex-col justify-center px-6 py-7 sm:px-9 sm:py-9 lg:px-12">
-                  <div className="flex items-center gap-3"><span className="text-4xl font-extrabold tabular-nums text-brand-200">01</span><span className="h-px w-8 bg-accent-500" /><p className="text-xs font-extrabold uppercase tracking-[.14em] text-accent-600">{project.category}</p></div>
-                  <h3 className="mt-5 max-w-xl text-2xl font-extrabold leading-tight text-ink-950 sm:text-3xl">{project.title}</h3>
-                  <p className="mt-4 max-w-xl text-sm leading-7 text-ink-600 sm:text-base">{project.description}</p>
-                  <p className="mt-6 text-xs font-bold uppercase tracking-wide text-brand-700">Dự án tiêu biểu · Quang Thắng</p>
-                </div>
-                <div className="min-w-0 p-3 sm:p-4"><ProjectGallery images={project.images} projectTitle={project.title} className="h-64 rounded-sm sm:h-80 lg:h-[25rem]" /></div>
-              </div>
-            </article>
-          ) : (
-            <article id={project.id} key={project.id} className="group min-w-0 overflow-hidden border border-line bg-white transition-colors hover:border-brand-300 lg:col-span-4">
-              <ProjectGallery images={project.images} projectTitle={project.title} className="aspect-[16/10]" />
-              <div className="p-5 sm:p-6">
-                <div className="flex items-center gap-2"><span className="text-sm font-extrabold tabular-nums text-brand-300">0{index + 1}</span><span className="h-px w-5 bg-accent-500" /><p className="truncate text-[11px] font-extrabold uppercase tracking-[.12em] text-accent-600" title={project.category}>{project.category}</p></div>
-                <h3 className="mt-3 truncate text-lg font-extrabold leading-snug text-ink-950" title={project.title}>{project.title}</h3>
-                <p className="mt-2 line-clamp-2 min-h-12 text-sm leading-6 text-ink-600" title={project.description}>{project.description}</p>
-              </div>
-            </article>
-          ))}
+        <div className="mt-7 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          {COMPANY_PROFILE_PROJECTS.map((project, index) => <article id={project.id} key={project.id} className="group min-w-0 overflow-hidden border border-line bg-white transition-colors hover:border-brand-300">
+            <ProjectGallery images={project.images} projectTitle={project.title} className="aspect-[4/3]" />
+            <div className="p-5">
+              <div className="flex items-center gap-2"><span className="text-sm font-extrabold tabular-nums text-brand-300">0{index + 1}</span><span className="h-px w-5 bg-accent-500" /><p className="truncate text-[11px] font-extrabold uppercase tracking-[.12em] text-accent-600" title={project.category}>{project.category}</p></div>
+              <h3 className="mt-3 truncate text-lg font-extrabold leading-snug text-ink-950" title={project.title}>{project.title}</h3>
+              <p className="mt-2 line-clamp-2 min-h-12 text-sm leading-6 text-ink-600" title={project.description}>{project.description}</p>
+            </div>
+          </article>)}
         </div>
       </section>
 
-      <section id="quy-trinh-hop-tac" className="border-y border-line bg-ink-50 py-10 sm:py-14"><div className="wrap"><div><p className="section-eyebrow">Quy trình hợp tác</p><h2 className="section-title mt-3 max-w-none">{profile.processTitle}</h2><p className="mt-4 max-w-2xl text-sm leading-7 text-ink-600">Quy trình rõ ràng giúp hai bên thống nhất kỳ vọng và chủ động tiến độ từ lúc tư vấn đến sau bàn giao.</p></div><ol className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{profile.process.map(({ title, description: body }, index) => <li key={title} className="relative rounded-lg border border-line bg-white p-5"><span className="text-xs font-extrabold tracking-[.18em] text-accent-600">{String(index + 1).padStart(2, "0")}</span><h3 className="mt-4 font-extrabold text-ink-950">{title}</h3><p className="mt-2 text-sm leading-6 text-ink-600">{body}</p></li>)}</ol></div></section>
+      <section id="quy-trinh-hop-tac" className="border-y border-line bg-ink-50 py-10 sm:py-14"><div className="wrap"><div><p className="section-eyebrow">Quy trình hợp tác</p><h2 className="section-title mt-3 max-w-none">{profile.processTitle}</h2><p className="mt-4 max-w-2xl text-sm leading-7 text-ink-600">Quy trình rõ ràng giúp hai bên thống nhất kỳ vọng và chủ động tiến độ từ lúc tư vấn đến sau bàn giao.</p></div><ol className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{profile.process.map(({ title, description: body }, index) => <li key={title} className="overflow-hidden border border-line bg-white"><div className="relative aspect-[16/9] bg-ink-100"><Image src={processImages[index % processImages.length]} alt="" fill sizes="(min-width:1024px) 25vw, 50vw" className="object-cover" /><span className="absolute left-4 top-4 bg-white/95 px-3 py-1.5 text-xs font-extrabold tracking-[.18em] text-brand-800">{String(index + 1).padStart(2, "0")}</span></div><div className="p-5"><h3 className="font-extrabold text-ink-950">{title}</h3><p className="mt-2 text-sm leading-6 text-ink-600">{body}</p></div></li>)}</ol></div></section>
 
       {brands.length > 0 && <section className="overflow-hidden border-y border-line bg-white py-8 sm:py-10"><div className="wrap flex flex-wrap items-end justify-between gap-4"><div><p className="section-eyebrow">Đối tác thương hiệu</p><h2 className="section-title mt-3">Đồng hành cùng những thương hiệu uy tín</h2></div><Link href="/thuong-hieu" className="text-sm font-bold text-accent-600">Xem tất cả <Icon name="arrow-right" className="inline h-4 w-4" /></Link></div><div className="brand-marquee mt-8" role="region" aria-label="Thương hiệu đối tác"><div className="brand-marquee-track">{[0, 1].map((copy) => <div key={copy} className="brand-marquee-group" aria-hidden={copy === 1}>{brands.slice(0, 12).map((brand) => <div key={brand.id} className="brand-marquee-logo">{brand.logo ? <img src={brand.logo} alt={copy === 0 ? brand.name : ""} /> : <span>{brand.name}</span>}</div>)}</div>)}</div></div></section>}
 
@@ -175,36 +144,14 @@ export default async function CompanyProfilePage() {
 
       <section className="border-y border-line bg-ink-50 py-10 sm:py-14">
         <div className="wrap">
-          <div className="grid items-center gap-6 lg:grid-cols-[.85fr_1.15fr] lg:gap-10">
-            <div className="min-w-0">
-              <p className="section-eyebrow">Chứng nhận & giấy phép</p><h2 className="section-title mt-3">Nền tảng cho sự tin cậy</h2>
-              <p className="mt-4 text-xs font-extrabold uppercase tracking-[.16em] text-accent-600">Hồ sơ doanh nghiệp</p>
-              <p className="mt-2 text-base leading-7 text-ink-700">Tài liệu trong hồ sơ thể hiện thông tin pháp lý, chứng nhận đại lý và các ghi nhận từ đối tác trong quá trình hoạt động.</p>
-              <ul className="mt-6 divide-y divide-line border-y border-line">
-                {[["01", "Thông tin pháp lý doanh nghiệp"], ["02", "Chứng nhận đại lý"], ["03", "Chứng nhận và ghi nhận từ đối tác"]].map(([number, label]) => <li key={number} className="flex items-center gap-4 py-4"><span className="text-sm font-extrabold tabular-nums text-brand-700">{number}</span><span className="text-sm font-bold leading-6 text-ink-900">{label}</span></li>)}
-              </ul>
-              <div className="mt-5"><p className="text-sm leading-6 text-ink-700">Cần kiểm tra phạm vi hoặc thời hạn chứng nhận? Liên hệ để nhận thông tin theo sản phẩm và dự án.</p><Link href="/lien-he" className="btn-primary mt-4">Yêu cầu hồ sơ chi tiết <Icon name="arrow-right" className="h-4 w-4" /></Link></div>
-            </div>
-            <figure className="min-w-0">
-              <a href="/imported/company-profile/web/chung-nhan.webp" target="_blank" rel="noreferrer" className="group relative block overflow-hidden border border-line bg-white p-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700" aria-label="Mở ảnh chứng nhận và giấy phép kích thước đầy đủ trong tab mới"><Image src="/imported/company-profile/web/chung-nhan.webp" alt="Trang chứng nhận, giấy phép và chứng nhận đại lý trong hồ sơ năng lực Quang Thắng" width={1786} height={2526} sizes="(min-width:1024px) 55vw, 100vw" className="mx-auto h-auto max-h-[460px] w-full object-contain" /><span className="absolute bottom-4 right-4 bg-brand-950 px-4 py-2 text-xs font-bold text-white">Mở ảnh đầy đủ ↗</span></a>
-              <figcaption className="mt-3 text-sm leading-6 text-ink-500">Trang trích từ hồ sơ năng lực doanh nghiệp Quang Thắng.</figcaption>
-            </figure>
+          <header className="max-w-3xl"><p className="section-eyebrow">Chứng nhận & giấy phép</p><h2 className="section-title mt-3">Nền tảng cho sự tin cậy</h2><p className="mt-4 text-sm leading-7 text-ink-600 sm:text-base">Hồ sơ pháp lý, chứng nhận đại lý và những ghi nhận từ đối tác trong quá trình hoạt động của Quang Thắng.</p></header>
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+            {COMPANY_PROFILE_CERTIFICATES.map((certificate) => <a key={certificate.src} href={certificate.src} target="_blank" rel="noreferrer" className="group flex min-h-[23rem] flex-col border border-line bg-white p-4 transition-all hover:-translate-y-1 hover:border-brand-300 hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700" aria-label={`Mở ${certificate.title} kích thước đầy đủ`}><h3 className="min-h-12 text-sm font-extrabold leading-5 text-ink-950">{certificate.title}</h3><div className="relative mt-3 h-52 w-full"><Image src={certificate.src} alt={certificate.title} fill sizes="(min-width:1280px) 16vw, (min-width:1024px) 25vw, 50vw" className="object-contain" /></div><p className="mt-auto pt-4 text-xs leading-5 text-ink-600">{certificate.description}</p><span className="mt-3 text-xs font-bold text-brand-700">Xem ảnh đầy đủ <Icon name="external" className="inline h-3.5 w-3.5" /></span></a>)}
           </div>
         </div>
       </section>
 
-      <section className="wrap py-10 sm:py-14"><div className="grid items-center gap-7 lg:grid-cols-[.8fr_1.2fr] lg:gap-12"><div className="order-2 lg:order-1"><div className="relative aspect-[1.65] overflow-hidden bg-ink-100"><Image src="/quanngthangnhanvien.jpeg" alt="Đội ngũ nhân viên Quang Thắng" fill sizes="(min-width:1024px) 56vw, 100vw" className="object-cover object-center" /></div><p className="mt-2 text-xs text-ink-500">Đội ngũ Quang Thắng trong hoạt động nội bộ tại công ty.</p></div><div className="order-1 lg:order-2"><p className="section-eyebrow">Con người Quang Thắng</p><h2 className="section-title mt-3">Đội ngũ là tài sản quý giá nhất</h2><p className="mt-4 text-sm leading-7 text-ink-600 sm:text-base">Đội ngũ gồm ban lãnh đạo, bộ phận kinh doanh và kỹ thuật, phối hợp từ tư vấn giải pháp, cung ứng sản phẩm đến triển khai hệ thống. Ban lãnh đạo định hướng và quản lý chất lượng; bộ phận kinh doanh chăm sóc khách hàng; đội ngũ kỹ thuật triển khai, giám sát và hỗ trợ vận hành.</p><Link href="/lien-he" className="btn-primary mt-6">Trao đổi với đội ngũ <Icon name="arrow-right" className="h-4 w-4" /></Link></div></div></section>
-
-      <section className="border-y border-line bg-ink-50 py-10 sm:py-14"><div className="wrap grid gap-7 lg:grid-cols-[.8fr_1.2fr] lg:gap-12"><div><p className="section-eyebrow">Cam kết dịch vụ</p><h2 className="section-title mt-3">Giá trị được thể hiện trong từng lần phục vụ</h2></div><div className="grid gap-x-7 sm:grid-cols-2">{commitments.map(([icon, title, body]) => <article key={title} className="border-t border-line py-4"><div className="flex items-center gap-3"><Icon name={icon as IconName} className="h-5 w-5 text-brand-700" /><h3 className="font-extrabold text-ink-950">{title}</h3></div><p className="mt-2 pl-8 text-sm leading-6 text-ink-600">{body}</p></article>)}</div></div></section>
-
-      <section id="chuan-bi-tu-van" className="wrap py-10 sm:py-14">
-        <div className="border-y border-line py-9 lg:py-12">
-          <header className="mb-9"><p className="section-eyebrow">Chuẩn bị yêu cầu</p><h2 className="section-title mt-3">Thông tin giúp tư vấn sát nhu cầu</h2></header>
-          <div className="grid gap-10 lg:grid-cols-[.9fr_1.1fr] lg:gap-16"><div><p className="max-w-xl text-sm leading-7 text-ink-600">Có sẵn một vài thông tin dưới đây sẽ giúp đội ngũ trao đổi đúng cấu hình, số lượng và phương án giao nhận hơn.</p><Link href="/lien-he" className="btn-primary mt-7">Gửi yêu cầu tư vấn <Icon name="arrow-right" className="h-4 w-4" /></Link></div>
-            <ul className="grid gap-3 sm:grid-cols-2">{consultationChecklist.map((item, index) => <li key={item} className="flex items-start gap-4 border border-line bg-white p-5"><span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-50 text-sm font-extrabold text-brand-800">{index + 1}</span><span className="pt-1 text-sm font-semibold leading-6 text-ink-800">{item}</span></li>)}</ul>
-          </div>
-        </div>
-      </section>
+      <section className="wrap py-12 sm:py-16 lg:py-20"><div className="grid items-center gap-9 lg:grid-cols-[1.15fr_.85fr] lg:gap-16"><div className="order-2 lg:order-1"><div className="relative aspect-[16/10] overflow-hidden bg-ink-100 shadow-xl"><Image src="/quanngthangnhanvien.jpeg" alt="Đội ngũ nhân viên Quang Thắng" fill sizes="(min-width:1024px) 58vw, 100vw" className="object-cover object-center" /></div><p className="mt-3 text-sm text-ink-500">Đội ngũ Quang Thắng trong hoạt động nội bộ tại công ty.</p></div><div className="order-1 lg:order-2"><p className="section-eyebrow">Con người Quang Thắng</p><h2 className="mt-4 text-4xl font-extrabold leading-[1.08] text-ink-950 sm:text-5xl lg:text-6xl">Đội ngũ là tài sản quý giá nhất</h2><p className="mt-6 text-base leading-8 text-ink-600 sm:text-lg">Đội ngũ gồm ban lãnh đạo, bộ phận kinh doanh và kỹ thuật, phối hợp từ tư vấn giải pháp, cung ứng sản phẩm đến triển khai hệ thống. Ban lãnh đạo định hướng và quản lý chất lượng; bộ phận kinh doanh chăm sóc khách hàng; đội ngũ kỹ thuật triển khai, giám sát và hỗ trợ vận hành.</p><Link href="/lien-he" className="btn-primary mt-8">Trao đổi với đội ngũ <Icon name="arrow-right" className="h-4 w-4" /></Link></div></div></section>
 
       <section id="van-phong-quang-thang" className="border-y border-line bg-ink-50 py-10 sm:py-14">
         <div className="wrap grid items-center gap-7 lg:grid-cols-[1fr_1fr] lg:gap-12">

@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Tất cả sản phẩm",
-  description: "Kho thiết bị viễn thông chính hãng: cáp mạng, cáp quang, switch, camera, thiết bị quang, tủ rack, phụ kiện mạng. Liên hệ 0941.74.6161 để nhận báo giá công trình.",
+  description: "Kho thiết bị viễn thông chính hãng: cáp mạng, cáp quang, switch, camera, thiết bị quang, tủ rack, phụ kiện mạng. Liên hệ 0947.106.161 để nhận báo giá công trình.",
 };
 export const dynamic = "force-dynamic";
 
