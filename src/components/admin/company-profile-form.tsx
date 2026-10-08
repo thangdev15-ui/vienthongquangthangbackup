@@ -6,7 +6,7 @@ import { Field, SaveBar } from "@/components/admin/shell";
 import { useShop } from "@/components/store/shops";
 import { Icon, Spinner } from "@/components/ui";
 import { saveCompanyProfileAction } from "@/lib/actions";
-import type { CompanyProfile, ProfileFeature } from "@/lib/company-profile";
+import type { CompanyProfile, ProfileCertificate, ProfileFeature } from "@/lib/company-profile";
 
 function ProfileImage({ label, value, onChange }: { label: string; value: string; onChange: (value: string) => void }) {
   const [uploading, setUploading] = useState(false);
@@ -47,6 +47,11 @@ function FeatureEditor({ title, rows, onChange }: { title: string; rows: Profile
   </section>;
 }
 
+function CertificateEditor({ rows, onChange }: { rows: ProfileCertificate[]; onChange: (rows: ProfileCertificate[]) => void }) {
+  function update(index: number, key: keyof ProfileCertificate, value: string) { onChange(rows.map((row, i) => i === index ? { ...row, [key]: value } : row)); }
+  return <section className="card space-y-4 p-4"><div className="flex items-center justify-between gap-3"><div><h2 className="text-sm font-bold text-ink-950">Chứng chỉ & giấy phép</h2><p className="mt-1 text-xs text-ink-500">Tải ảnh lên, đặt tiêu đề và mô tả cho từng chứng chỉ.</p></div><button type="button" className="btn-outline h-8 px-2 text-xs" onClick={() => onChange([...rows, { title: "", description: "", image: "" }])}><Icon name="plus" className="h-4 w-4" />Thêm chứng chỉ</button></div>{rows.map((row, index) => <div key={index} className="grid gap-3 border-t border-line pt-4 md:grid-cols-[11rem_1fr_auto]"><ProfileImage label={`Ảnh chứng chỉ ${index + 1}`} value={row.image} onChange={(value) => update(index, "image", value)} /><div className="space-y-3"><Field label="Tiêu đề"><input className="input" value={row.title} onChange={(e) => update(index, "title", e.target.value)} /></Field><Field label="Mô tả"><textarea className="textarea" rows={3} value={row.description} onChange={(e) => update(index, "description", e.target.value)} /></Field></div><button type="button" className="btn-ghost h-10 px-2 text-sale-600" aria-label="Xoá chứng chỉ" onClick={() => onChange(rows.filter((_, i) => i !== index))}><Icon name="trash" className="h-4 w-4" /></button></div>)}</section>;
+}
+
 export function CompanyProfileForm({ initial }: { initial: CompanyProfile }) {
   const [profile, setProfile] = useState(initial);
   const [saving, setSaving] = useState(false);
@@ -67,6 +72,7 @@ export function CompanyProfileForm({ initial }: { initial: CompanyProfile }) {
     <section className="card grid gap-4 p-4 sm:grid-cols-2"><h2 className="sm:col-span-2 text-sm font-bold text-ink-950">Mở đầu</h2><Field label="Nhãn nhỏ"><input className="input" value={profile.heroEyebrow} onChange={(e) => set("heroEyebrow", e.target.value)} /></Field><Field label="Tiêu đề"><textarea className="textarea" rows={2} value={profile.heroTitle} onChange={(e) => set("heroTitle", e.target.value)} /></Field><div className="sm:col-span-2"><Field label="Mô tả"><textarea className="textarea" rows={3} value={profile.heroDescription} onChange={(e) => set("heroDescription", e.target.value)} /></Field></div><ProfileImage label="Ảnh mở đầu" value={profile.heroImage} onChange={(v) => set("heroImage", v)} /></section>
     <section className="card grid gap-4 p-4 sm:grid-cols-2"><h2 className="sm:col-span-2 text-sm font-bold text-ink-950">Giới thiệu doanh nghiệp</h2><Field label="Tiêu đề"><input className="input" value={profile.introTitle} onChange={(e) => set("introTitle", e.target.value)} /></Field><ProfileImage label="Ảnh giới thiệu" value={profile.introImage} onChange={(v) => set("introImage", v)} /><div className="sm:col-span-2"><Field label="Nội dung"><textarea className="textarea" rows={5} value={profile.introDescription} onChange={(e) => set("introDescription", e.target.value)} /></Field></div></section>
     <section className="card space-y-4 p-4"><Field label="Tiêu đề phần giải pháp"><input className="input" value={profile.solutionsTitle} onChange={(e) => set("solutionsTitle", e.target.value)} /></Field><Field label="Mô tả"><textarea className="textarea" rows={2} value={profile.solutionsDescription} onChange={(e) => set("solutionsDescription", e.target.value)} /></Field><FeatureEditor title="Các giải pháp" rows={profile.solutions} onChange={(v) => set("solutions", v)} /></section>
+    <CertificateEditor rows={profile.certificates} onChange={(v) => set("certificates", v)} />
     <section className="card space-y-4 p-4"><Field label="Tiêu đề quy trình"><input className="input" value={profile.processTitle} onChange={(e) => set("processTitle", e.target.value)} /></Field><FeatureEditor title="Các bước triển khai" rows={profile.process} onChange={(v) => set("process", v)} /></section>
     <section className="card grid gap-4 p-4 sm:grid-cols-2"><h2 className="sm:col-span-2 text-sm font-bold text-ink-950">Liên hệ cuối trang</h2><Field label="Tiêu đề"><input className="input" value={profile.closingTitle} onChange={(e) => set("closingTitle", e.target.value)} /></Field><Field label="Mô tả"><textarea className="textarea" rows={2} value={profile.closingDescription} onChange={(e) => set("closingDescription", e.target.value)} /></Field></section>
     <SaveBar saving={saving} onSave={() => void save()} backHref="/admin" backLabel="Quản trị" />

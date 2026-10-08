@@ -40,12 +40,3 @@ export const COMPANY_PROFILE_PROJECTS = [
     images: [photo("ketnoi3", "Giải tennis Quang Thắng Telecom Open lần 2"), photo("ketnoi1", "Giao lưu và hoạt động tập thể cùng đối tác"), photo("ketnoi2", "Chuyến du lịch kết nối đối tác")],
   },
 ];
-
-export const COMPANY_PROFILE_CERTIFICATES = [
-  { src: "/imported/certerficate/cer1.jpeg", title: "Chứng nhận đại lý", description: "Giấy chứng nhận hợp tác và phân phối sản phẩm." },
-  { src: "/imported/certerficate/cer2.jpeg", title: "Chứng nhận chất lượng", description: "Hồ sơ xác nhận tiêu chuẩn và chất lượng sản phẩm." },
-  { src: "/imported/certerficate/cer3.jpeg", title: "Chứng nhận đối tác", description: "Ghi nhận hợp tác từ các thương hiệu đồng hành." },
-  { src: "/imported/certerficate/cer4.jpeg", title: "Giấy phép & xác nhận", description: "Tài liệu pháp lý và chứng nhận chuyên môn." },
-  { src: "/imported/certerficate/cer5.jpeg", title: "Chứng nhận phân phối", description: "Giấy chứng nhận đại lý phân phối chính thức." },
-  { src: "/imported/certerficate/cer6.jpeg", title: "Chứng nhận năng lực", description: "Chứng nhận và ghi nhận trong quá trình hoạt động." },
-] as const;

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Icon, type IconName } from "@/components/ui";
-import { COMPANY_PROFILE_CERTIFICATES, COMPANY_PROFILE_FACTS, COMPANY_PROFILE_PROJECTS } from "@/lib/company-profile-evidence";
+import { COMPANY_PROFILE_FACTS, COMPANY_PROFILE_PROJECTS } from "@/lib/company-profile-evidence";
 import { getActiveBrands, getCompanyProfile, getSettings } from "@/lib/data";
 import { ProjectGallery } from "./project-gallery";
 
@@ -154,9 +154,9 @@ export default async function CompanyProfilePage() {
 
       <section className="border-y border-line bg-ink-50 py-10 sm:py-14">
         <div className="wrap">
-          <header className="max-w-3xl"><p className="section-eyebrow">Chứng nhận & giấy phép</p><h2 className="section-title mt-3">Nền tảng cho sự tin cậy</h2><p className="mt-4 text-sm leading-7 text-ink-600 sm:text-base">Hồ sơ pháp lý, chứng nhận đại lý và những ghi nhận từ đối tác trong quá trình hoạt động của Quang Thắng.</p></header>
-          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-            {COMPANY_PROFILE_CERTIFICATES.map((certificate) => <a key={certificate.src} href={certificate.src} target="_blank" rel="noreferrer" className="group flex min-h-[23rem] flex-col border border-line bg-white p-4 transition-all hover:-translate-y-1 hover:border-brand-300 hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700" aria-label={`Mở ${certificate.title} kích thước đầy đủ`}><h3 className="min-h-12 text-sm font-extrabold leading-5 text-ink-950">{certificate.title}</h3><div className="relative mt-3 h-52 w-full"><Image src={certificate.src} alt={certificate.title} fill sizes="(min-width:1280px) 16vw, (min-width:1024px) 25vw, 50vw" className="object-contain" /></div><p className="mt-auto pt-4 text-xs leading-5 text-ink-600">{certificate.description}</p><span className="mt-3 text-xs font-bold text-brand-700">Xem ảnh đầy đủ <Icon name="external" className="inline h-3.5 w-3.5" /></span></a>)}
+          <header><p className="section-eyebrow">Chứng nhận & giấy phép</p><h2 className="section-title mt-3">Nền tảng cho sự tin cậy</h2><p className="mt-4 text-sm leading-7 text-ink-600 sm:text-base lg:whitespace-nowrap">Hồ sơ pháp lý, chứng nhận đại lý và những ghi nhận từ đối tác trong quá trình hoạt động của Quang Thắng.</p></header>
+          <div className="mt-8 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4 [scrollbar-width:thin]">
+            {profile.certificates.map((certificate) => <a key={`${certificate.image}-${certificate.title}`} href={certificate.image} target="_blank" rel="noreferrer" className="group flex min-h-[27rem] w-[78vw] shrink-0 snap-start flex-col border border-line bg-white p-5 transition-all hover:-translate-y-1 hover:border-brand-300 hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700 sm:w-[22rem] lg:w-[calc((100%_-_4rem)_/_5)]" aria-label={`Mở ${certificate.title} kích thước đầy đủ`}><h3 className="truncate whitespace-nowrap text-base font-extrabold leading-6 text-ink-950" title={certificate.title}>{certificate.title}</h3><div className="relative mt-4 h-60 w-full"><Image src={certificate.image} alt={certificate.title} fill sizes="(min-width:1024px) 20vw, 22rem" className="object-contain" /></div><p className="mt-auto line-clamp-2 pt-5 text-sm leading-6 text-ink-600">{certificate.description}</p><span className="mt-3 text-sm font-bold text-brand-700">Xem ảnh đầy đủ <Icon name="external" className="inline h-4 w-4" /></span></a>)}
           </div>
         </div>
       </section>

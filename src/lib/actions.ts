@@ -830,13 +830,14 @@ export async function saveCompanyProfileAction(profile: CompanyProfile): Promise
   if (!admin) return { ok: false, error: "Không có quyền." };
   if (!profile.heroTitle.trim() || !profile.introTitle.trim()) return { ok: false, error: "Tiêu đề chính và giới thiệu không được để trống." };
   const cleanList = (items: CompanyProfile["solutions"]) => items.slice(0, 8).map((item) => ({ title: item.title.trim().slice(0, 120), description: item.description.trim().slice(0, 600) })).filter((item) => item.title);
+  const certificates = profile.certificates.slice(0, 30).map((item) => ({ title: item.title.trim().slice(0, 120), description: item.description.trim().slice(0, 400), image: item.image.trim().slice(0, 600) })).filter((item) => item.title && item.image);
   const clean: CompanyProfile = {
     ...profile,
     heroEyebrow: profile.heroEyebrow.trim().slice(0, 140), heroTitle: profile.heroTitle.trim().slice(0, 220),
     heroDescription: profile.heroDescription.trim().slice(0, 1200), heroImage: profile.heroImage.trim().slice(0, 600),
     introTitle: profile.introTitle.trim().slice(0, 180), introDescription: profile.introDescription.trim().slice(0, 1600), introImage: profile.introImage.trim().slice(0, 600),
     solutionsTitle: profile.solutionsTitle.trim().slice(0, 180), solutionsDescription: profile.solutionsDescription.trim().slice(0, 1000),
-    solutions: cleanList(profile.solutions), processTitle: profile.processTitle.trim().slice(0, 180), process: cleanList(profile.process),
+    solutions: cleanList(profile.solutions), certificates, processTitle: profile.processTitle.trim().slice(0, 180), process: cleanList(profile.process),
     closingTitle: profile.closingTitle.trim().slice(0, 180), closingDescription: profile.closingDescription.trim().slice(0, 1000),
   };
   const value = JSON.stringify(clean);

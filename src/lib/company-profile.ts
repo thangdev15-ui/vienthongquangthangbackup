@@ -1,9 +1,11 @@
 export type ProfileFeature = { title: string; description: string };
+export type ProfileCertificate = { title: string; description: string; image: string };
 
 export type CompanyProfile = {
   heroEyebrow: string; heroTitle: string; heroDescription: string; heroImage: string;
   introTitle: string; introDescription: string; introImage: string;
   solutionsTitle: string; solutionsDescription: string; solutions: ProfileFeature[];
+  certificates: ProfileCertificate[];
   processTitle: string; process: ProfileFeature[];
   closingTitle: string; closingDescription: string;
 };
@@ -25,6 +27,14 @@ export const DEFAULT_COMPANY_PROFILE: CompanyProfile = {
     { title: "Vật tư công trình", description: "Thiết bị và vật tư viễn thông được tư vấn theo danh mục, số lượng và tiến độ dự án." },
     { title: "Đèn năng lượng mặt trời", description: "Giải pháp chiếu sáng tiết kiệm năng lượng phục vụ nhu cầu sử dụng thực tế." },
     { title: "Tủ mạng & phụ kiện", description: "Tủ rack, phụ kiện quang và phụ kiện camera phục vụ kết nối, lắp đặt và bảo vệ hệ thống." },
+  ],
+  certificates: [
+    { title: "Chứng nhận đại lý", description: "Giấy chứng nhận hợp tác và phân phối sản phẩm.", image: "/imported/certerficate/cer1.jpeg" },
+    { title: "Chứng nhận chất lượng", description: "Hồ sơ xác nhận tiêu chuẩn và chất lượng sản phẩm.", image: "/imported/certerficate/cer2.jpeg" },
+    { title: "Chứng nhận đối tác", description: "Ghi nhận hợp tác từ các thương hiệu đồng hành.", image: "/imported/certerficate/cer3.jpeg" },
+    { title: "Giấy phép & xác nhận", description: "Tài liệu pháp lý và chứng nhận chuyên môn.", image: "/imported/certerficate/cer4.jpeg" },
+    { title: "Chứng nhận phân phối", description: "Giấy chứng nhận đại lý phân phối chính thức.", image: "/imported/certerficate/cer5.jpeg" },
+    { title: "Chứng nhận năng lực", description: "Chứng nhận và ghi nhận trong quá trình hoạt động.", image: "/imported/certerficate/cer6.jpeg" },
   ],
   processTitle: "Một đầu mối đồng hành xuyên suốt",
   process: [
@@ -53,6 +63,7 @@ export function parseCompanyProfile(raw: string | null | undefined): CompanyProf
     }
     return { ...DEFAULT_COMPANY_PROFILE, ...value,
       solutions: Array.isArray(value.solutions) ? value.solutions : DEFAULT_COMPANY_PROFILE.solutions,
+      certificates: Array.isArray(value.certificates) ? value.certificates : DEFAULT_COMPANY_PROFILE.certificates,
       process: Array.isArray(value.process) ? value.process : DEFAULT_COMPANY_PROFILE.process,
     };
   } catch { return DEFAULT_COMPANY_PROFILE; }
