@@ -652,21 +652,35 @@ export function NewsletterForm({ compact = false }: { compact?: boolean }) {
   );
 }
 
-export function Footer({ categories, settings }: { categories: NavCategory[]; settings: Settings }) {
+export function Footer({ categories: _categories, settings }: { categories: NavCategory[]; settings: Settings }) {
   return (
-    <footer className="mt-14 overflow-hidden bg-brand-950 pb-20 text-white lg:pb-0">
-      <div className="border-b border-white/15 bg-brand-900 text-white">
-        <div className="wrap grid gap-6 py-9 sm:py-11 lg:grid-cols-[1.15fr_.85fr] lg:items-center">
-          <div><p className="text-xs font-extrabold uppercase tracking-[.2em] text-accent-200">Quang Thắng Telecom</p><h2 className="mt-3 text-3xl font-extrabold text-accent-500 sm:text-4xl">Liên hệ với chúng tôi</h2><p className="mt-3 max-w-xl text-sm leading-6 text-white/75">Tư vấn thiết bị, báo giá công trình và hỗ trợ kỹ thuật theo nhu cầu thực tế.</p></div>
-          <div className="flex flex-wrap gap-3 lg:justify-end"><a href={`tel:${settings.phone.replace(/\D/g, "")}`} className="inline-flex h-11 items-center gap-2 bg-accent-500 px-5 text-sm font-extrabold text-white hover:bg-accent-600"><Icon name="phone" className="h-4 w-4" />{settings.phone}</a><a href={settings.zalo} target="_blank" rel="noopener" className="inline-flex h-11 items-center gap-2 border border-white/35 px-5 text-sm font-bold hover:bg-white/10"><Icon name="message" className="h-4 w-4" />Nhắn Zalo</a></div>
+    <footer className="relative mt-14 flex min-h-[min(100svh,52rem)] overflow-hidden bg-[#1f100d] pb-20 text-white lg:pb-0">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_14%_76%,#ffb000_0%,#ff6700_24%,#ee3c0a_48%,#25110e_76%)]" />
+      <div className="absolute bottom-0 right-0 h-[52%] w-[45%] opacity-25 [background-image:linear-gradient(30deg,transparent_47%,rgba(255,255,255,.55)_48%,transparent_49%),linear-gradient(150deg,transparent_47%,rgba(255,255,255,.55)_48%,transparent_49%)] [background-size:56px_96px]" />
+      <div className="wrap relative z-10 flex w-full flex-col py-12 sm:py-16 lg:py-20">
+        <div className="max-w-6xl">
+          <p className="text-xs font-extrabold uppercase tracking-[.2em] text-white/75">Quang Thắng Telecom</p>
+          <h2 className="mt-4 text-4xl font-extrabold tracking-normal text-white sm:text-5xl">Liên hệ với chúng tôi</h2>
         </div>
+        <div className="mt-7 grid gap-10 border-t border-white/35 pt-7 text-sm leading-7 sm:grid-cols-2 lg:mt-10 lg:grid-cols-[1fr_1.15fr] lg:gap-20 lg:pt-9">
+          <div>
+            <h3 className="text-lg font-extrabold text-white">Trụ sở</h3>
+            <p className="mt-4 max-w-md text-white/90">{settings.address}</p>
+            <p className="mt-2 text-white/90">MST: {settings.mst}</p>
+            <a href={`tel:${settings.phone.replace(/\D/g, "")}`} className="mt-4 block w-fit font-bold text-white hover:text-white/75">Điện thoại: {settings.phone}</a>
+            <a href={`mailto:${settings.email}`} className="mt-2 block w-fit font-bold text-white hover:text-white/75">Email: {settings.email}</a>
+            <div className="mt-9"><h3 className="text-lg font-extrabold text-white">Hỗ trợ tư vấn</h3><a href={settings.zalo} target="_blank" rel="noopener" className="mt-4 inline-flex h-11 items-center gap-2 border border-white/55 px-4 font-bold hover:bg-white/15"><Icon name="message" className="h-4 w-4" />Nhắn Zalo báo giá</a></div>
+          </div>
+          <div>
+            <h3 className="text-lg font-extrabold text-white">Văn phòng giao dịch</h3>
+            <p className="mt-4 max-w-xl text-white/90">{settings.address}</p>
+            <a href={`tel:${settings.phone.replace(/\D/g, "")}`} className="mt-4 block w-fit font-bold text-white hover:text-white/75">Điện thoại: {settings.phone}</a>
+            <a href={`mailto:${settings.email}`} className="mt-2 block w-fit font-bold text-white hover:text-white/75">Email: {settings.email}</a>
+            <div className="mt-9"><h3 className="text-lg font-extrabold text-white">Mạng xã hội</h3><div className="mt-4 flex gap-3"><a href={settings.facebook} target="_blank" rel="noopener" aria-label="Facebook" className="flex h-10 w-10 items-center justify-center bg-[#1877f2] text-white hover:opacity-80"><Icon name="facebook" className="h-5 w-5" /></a><a href={settings.zalo} target="_blank" rel="noopener" aria-label="Zalo" className="flex h-10 w-10 items-center justify-center bg-white text-brand-900 hover:opacity-80"><Icon name="message" className="h-5 w-5" /></a></div></div>
+          </div>
+        </div>
+        <div className="mt-auto border-t border-white/20 pt-5 text-xs text-white/65 sm:flex sm:items-center sm:justify-between"><span>© {new Date().getFullYear()} Viễn Thông Quang Thắng. All rights reserved.</span><span className="mt-2 block sm:mt-0">Thiết bị chính hãng · Tư vấn kỹ thuật · Giao hàng toàn quốc</span></div>
       </div>
-      <div className="wrap grid gap-x-12 gap-y-10 py-10 sm:py-12 md:grid-cols-2 lg:grid-cols-[1.15fr_1fr_1fr]">
-        <div className="min-w-0"><div className="mb-5 flex h-14 w-[190px] items-center"><img src="/logoqt.png?v=4" alt="Quang Thang Telecom" className="h-auto w-full object-contain" style={{ filter: "brightness(0) invert(1)" }} /></div><p className="max-w-md text-sm leading-7 text-white/75">Tổng kho thiết bị viễn thông, cáp mạng và camera tại TP. Hồ Chí Minh. Sản phẩm chính hãng, tư vấn kỹ thuật, giao hàng toàn quốc.</p><div className="mt-6 space-y-3 text-sm"><div className="flex gap-3"><Icon name="pin" className="mt-0.5 h-4 w-4 shrink-0 text-accent-200" /><span>{settings.address}</span></div><div className="flex gap-3"><Icon name="clock" className="mt-0.5 h-4 w-4 shrink-0 text-accent-200" /><span>{settings.hours}</span></div><div className="flex gap-3"><Icon name="mail" className="mt-0.5 h-4 w-4 shrink-0 text-accent-200" /><a href={`mailto:${settings.email}`} className="hover:text-accent-100">{settings.email}</a></div></div></div>
-        <div className="min-w-0"><h3 className="border-b border-white/15 pb-3 text-sm font-extrabold uppercase tracking-[.14em] text-accent-100">Danh mục sản phẩm</h3><ul className="mt-4 grid gap-2.5 text-sm text-white/75">{categories.slice(0, 8).map((c) => <li key={c.id}><Link href={`/danh-muc/${c.slug}`} className="group flex items-center gap-2 hover:text-white"><Icon name={NAV_ICONS[c.slug] ?? "layers"} className="h-3.5 w-3.5 text-accent-200 group-hover:text-white" />{c.name}</Link></li>)}</ul></div>
-        <div className="min-w-0"><h3 className="border-b border-white/15 pb-3 text-sm font-extrabold uppercase tracking-[.14em] text-accent-100">Hỗ trợ khách hàng</h3><ul className="mt-4 grid gap-2.5 text-sm text-white/75">{[["/huong-dan-mua-hang", "Hướng dẫn mua hàng"], ["/hinh-thuc-thanh-toan", "Hình thức thanh toán"], ["/chinh-sach-bao-hanh", "Chính sách bảo hành"], ["/chinh-sach-doi-tra", "Chính sách đổi trả"], ["/chinh-sach-giao-nhan", "Chính sách giao nhận"], ["/ho-so-nang-luc", "Hồ sơ năng lực"]].map(([href, label]) => <li key={href}><Link href={href} className="hover:text-white">{label}</Link></li>)}</ul><div className="mt-6 flex gap-3"><a href={settings.facebook} target="_blank" rel="noopener" aria-label="Facebook" className="flex h-10 w-10 items-center justify-center border border-white/20 hover:bg-white/10"><Icon name="facebook" className="h-4 w-4" /></a><a href={settings.zalo} target="_blank" rel="noopener" aria-label="Zalo" className="flex h-10 w-10 items-center justify-center border border-white/20 hover:bg-white/10"><Icon name="message" className="h-4 w-4" /></a></div></div>
-      </div>
-      <div className="border-t border-white/15"><div className="wrap flex flex-col justify-between gap-2 py-4 text-xs text-white/55 sm:flex-row"><span>© {new Date().getFullYear()} Viễn Thông Quang Thắng. All rights reserved.</span><span>MST: {settings.mst}</span></div></div>
     </footer>
   );
 }
