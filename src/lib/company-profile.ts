@@ -1,4 +1,4 @@
-export type ProfileFeature = { title: string; description: string };
+export type ProfileFeature = { title: string; description: string; image?: string };
 export type ProfileCertificate = { title: string; description: string; image: string };
 export type ProfileProject = { category: string; title: string; description: string; images: string[] };
 
@@ -38,12 +38,12 @@ export const DEFAULT_COMPANY_PROFILE: CompanyProfile = {
   solutionsTitle: "Giải pháp cho hạ tầng kết nối",
   solutionsDescription: "Danh mục thiết bị và tư vấn được lựa chọn theo quy mô, môi trường lắp đặt và yêu cầu vận hành của từng dự án.",
   solutions: [
-    { title: "Hạ tầng mạng nội bộ", description: "Cáp mạng, switch, Wi-Fi, tủ rack và phụ kiện cho văn phòng, cửa hàng, nhà xưởng." },
-    { title: "Hệ thống camera", description: "Thiết bị camera, đầu ghi, lưu trữ và phụ kiện phục vụ nhu cầu giám sát." },
-    { title: "Hạ tầng cáp quang", description: "Cáp quang, thiết bị quang và phụ kiện kết nối cho hệ thống truyền dẫn." },
-    { title: "Vật tư công trình", description: "Thiết bị và vật tư viễn thông được tư vấn theo danh mục, số lượng và tiến độ dự án." },
-    { title: "Đèn năng lượng mặt trời", description: "Giải pháp chiếu sáng tiết kiệm năng lượng phục vụ nhu cầu sử dụng thực tế." },
-    { title: "Tủ mạng & phụ kiện", description: "Tủ rack, phụ kiện quang và phụ kiện camera phục vụ kết nối, lắp đặt và bảo vệ hệ thống." },
+    { title: "Hạ tầng mạng nội bộ", description: "Cáp mạng, switch, Wi-Fi, tủ rack và phụ kiện cho văn phòng, cửa hàng, nhà xưởng.", image: "/imported/old-site/products/camera-hikvision-ds-2cd1123g0e-il-35669c3f44.jpg" },
+    { title: "Hệ thống camera", description: "Thiết bị camera, đầu ghi, lưu trữ và phụ kiện phục vụ nhu cầu giám sát.", image: "/imported/old-site/products/camera-dahua-dh-ipc-hdw1239t1-led-s5-7fa9ad053a.jpg" },
+    { title: "Hạ tầng cáp quang", description: "Cáp quang, thiết bị quang và phụ kiện kết nối cho hệ thống truyền dẫn.", image: "/imported/old-site/products/camera-hdtvi-hikvision-ds-2ce16h8t-it5f-f7e915925c.jpg" },
+    { title: "Vật tư công trình", description: "Thiết bị và vật tư viễn thông được tư vấn theo danh mục, số lượng và tiến độ dự án.", image: "/imported/old-site/products/dau-ghi-hinh-camera-ip-64-kenh-nvr5864-6fb3da0c04.jpg" },
+    { title: "Đèn năng lượng mặt trời", description: "Giải pháp chiếu sáng tiết kiệm năng lượng phục vụ nhu cầu sử dụng thực tế.", image: "/imported/old-site/products/camera-hikvision-ds-2cd2046g2-iu-sl-a0b5db55cd.jpg" },
+    { title: "Tủ mạng & phụ kiện", description: "Tủ rack, phụ kiện quang và phụ kiện camera phục vụ kết nối, lắp đặt và bảo vệ hệ thống.", image: "/imported/old-site/products/camera-dahua-dh-hac-hfw1500tlp-s2-c0e8bbdfbc.jpg" },
   ],
   projects: [
     { category: "Hạ tầng mạng", title: "Cung cấp giải pháp mạng cho dự án Hồ Tràm", description: "Cung cấp giải pháp mạng, tủ mạng và hệ thống đấu nối thực tế.", images: ["/imported/company-profile/web/giaiphaphotram3.webp", "/imported/company-profile/web/giaphaphotram1.webp", "/imported/company-profile/web/giaiphaphotram2.webp"] },
@@ -85,7 +85,7 @@ export function parseCompanyProfile(raw: string | null | undefined): CompanyProf
       value.solutions = DEFAULT_COMPANY_PROFILE.solutions;
     }
     return { ...DEFAULT_COMPANY_PROFILE, ...value,
-      solutions: Array.isArray(value.solutions) ? value.solutions : DEFAULT_COMPANY_PROFILE.solutions,
+      solutions: Array.isArray(value.solutions) ? value.solutions.map((item, index) => ({ ...item, image: item.image || value.solutionImages?.[index] || DEFAULT_COMPANY_PROFILE.solutions[index]?.image || "" })) : DEFAULT_COMPANY_PROFILE.solutions,
       solutionImages: Array.isArray(value.solutionImages) && value.solutionImages.length ? value.solutionImages : DEFAULT_COMPANY_PROFILE.solutionImages,
       processImages: Array.isArray(value.processImages) && value.processImages.length ? value.processImages : DEFAULT_COMPANY_PROFILE.processImages,
       projects: Array.isArray(value.projects) && value.projects.length ? value.projects : DEFAULT_COMPANY_PROFILE.projects,
