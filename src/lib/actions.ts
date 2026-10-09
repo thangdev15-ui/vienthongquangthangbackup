@@ -831,13 +831,16 @@ export async function saveCompanyProfileAction(profile: CompanyProfile): Promise
   if (!profile.heroTitle.trim() || !profile.introTitle.trim()) return { ok: false, error: "Tiêu đề chính và giới thiệu không được để trống." };
   const cleanList = (items: CompanyProfile["solutions"]) => items.slice(0, 8).map((item) => ({ title: item.title.trim().slice(0, 120), description: item.description.trim().slice(0, 600) })).filter((item) => item.title);
   const certificates = profile.certificates.slice(0, 30).map((item) => ({ title: item.title.trim().slice(0, 120), description: item.description.trim().slice(0, 400), image: item.image.trim().slice(0, 600) })).filter((item) => item.title && item.image);
+  const imageList = (items: string[], max: number) => items.slice(0, max).map((item) => item.trim().slice(0, 600)).filter(Boolean);
+  const projects = profile.projects.slice(0, 20).map((item) => ({ category: item.category.trim().slice(0, 100), title: item.title.trim().slice(0, 160), description: item.description.trim().slice(0, 700), images: imageList(item.images, 8) })).filter((item) => item.title && item.images.length);
   const clean: CompanyProfile = {
     ...profile,
     heroEyebrow: profile.heroEyebrow.trim().slice(0, 140), heroTitle: profile.heroTitle.trim().slice(0, 220),
     heroDescription: profile.heroDescription.trim().slice(0, 1200), heroImage: profile.heroImage.trim().slice(0, 600),
     introTitle: profile.introTitle.trim().slice(0, 180), introDescription: profile.introDescription.trim().slice(0, 1600), introImage: profile.introImage.trim().slice(0, 600),
+    directorImage: profile.directorImage.trim().slice(0, 600), teamImage: profile.teamImage.trim().slice(0, 600), officeImage: profile.officeImage.trim().slice(0, 600), logisticsImage: profile.logisticsImage.trim().slice(0, 600), closingImage: profile.closingImage.trim().slice(0, 600),
     solutionsTitle: profile.solutionsTitle.trim().slice(0, 180), solutionsDescription: profile.solutionsDescription.trim().slice(0, 1000),
-    solutions: cleanList(profile.solutions), certificates, processTitle: profile.processTitle.trim().slice(0, 180), process: cleanList(profile.process),
+    solutions: cleanList(profile.solutions), solutionImages: imageList(profile.solutionImages, 8), projects, certificates, processTitle: profile.processTitle.trim().slice(0, 180), process: cleanList(profile.process), processImages: imageList(profile.processImages, 8),
     closingTitle: profile.closingTitle.trim().slice(0, 180), closingDescription: profile.closingDescription.trim().slice(0, 1000),
   };
   const value = JSON.stringify(clean);
