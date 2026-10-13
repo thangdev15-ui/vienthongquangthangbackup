@@ -1,4 +1,4 @@
-export type ProfileFeature = { title: string; description: string; image?: string };
+export type ProfileFeature = { title: string; description: string; image?: string; href?: string };
 export type ProfileCertificate = { title: string; description: string; image: string };
 export type ProfileProject = { category: string; title: string; description: string; images: string[] };
 
@@ -38,7 +38,7 @@ export const DEFAULT_COMPANY_PROFILE: CompanyProfile = {
   solutionsTitle: "Giải pháp cho hạ tầng kết nối",
   solutionsDescription: "Danh mục thiết bị và tư vấn được lựa chọn theo quy mô, môi trường lắp đặt và yêu cầu vận hành của từng dự án.",
   solutions: [
-    { title: "Hạ tầng mạng nội bộ", description: "Cáp mạng, switch, Wi-Fi, tủ rack và phụ kiện cho văn phòng, cửa hàng, nhà xưởng.", image: "/imported/old-site/products/camera-hikvision-ds-2cd1123g0e-il-35669c3f44.jpg" },
+    { title: "Hạ tầng mạng nội bộ", description: "Cáp mạng, switch, Wi-Fi, tủ rack và phụ kiện cho văn phòng, cửa hàng, nhà xưởng.", image: "/imported/old-site/products/camera-hikvision-ds-2cd1123g0e-il-35669c3f44.jpg", href: "/san-pham" },
     { title: "Hệ thống camera", description: "Thiết bị camera, đầu ghi, lưu trữ và phụ kiện phục vụ nhu cầu giám sát.", image: "/imported/old-site/products/camera-dahua-dh-ipc-hdw1239t1-led-s5-7fa9ad053a.jpg" },
     { title: "Hạ tầng cáp quang", description: "Cáp quang, thiết bị quang và phụ kiện kết nối cho hệ thống truyền dẫn.", image: "/imported/old-site/products/camera-hdtvi-hikvision-ds-2ce16h8t-it5f-f7e915925c.jpg" },
     { title: "Vật tư công trình", description: "Thiết bị và vật tư viễn thông được tư vấn theo danh mục, số lượng và tiến độ dự án.", image: "/imported/old-site/products/dau-ghi-hinh-camera-ip-64-kenh-nvr5864-6fb3da0c04.jpg" },

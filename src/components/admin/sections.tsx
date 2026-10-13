@@ -148,6 +148,9 @@ function RichTextEditor({ value, onChange, minHeight = 220 }: { value: string; o
         <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => command("italic")} className="btn-outline h-8 w-8 px-0 text-sm italic" title="In nghiêng">I</button>
         <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => command("formatBlock", "<h2>")} className="btn-outline h-8 px-2 text-xs font-bold" title="Tiêu đề lớn">H2</button>
         <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => command("formatBlock", "<h3>")} className="btn-outline h-8 px-2 text-xs font-bold" title="Tiêu đề nhỏ">H3</button>
+        <select defaultValue="" onChange={(e) => { if (e.target.value) command("fontSize", e.target.value); e.target.value = ""; }} className="input h-8 w-auto min-w-28 px-2 text-xs" aria-label="Kích thước chữ">
+          <option value="">Cỡ chữ</option><option value="2">Nhỏ</option><option value="3">Bình thường</option><option value="4">Lớn</option><option value="5">Rất lớn</option><option value="6">Tiêu đề</option>
+        </select>
         <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => command("insertUnorderedList")} className="btn-outline h-8 px-2 text-xs" title="Danh sách">Danh sách</button>
         <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => command("formatBlock", "<blockquote>")} className="btn-outline h-8 px-2 text-xs" title="Trích dẫn">Trích dẫn</button>
         <button type="button" onClick={() => { const src = window.prompt("URL hình ảnh"); if (src?.trim()) insertImage(src.trim()); }} className="btn-outline inline-flex h-8 items-center gap-1 px-2 text-xs" title="Chèn ảnh"><Icon name="image" className="h-3.5 w-3.5" />Ảnh</button>

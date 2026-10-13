@@ -829,7 +829,7 @@ export async function saveCompanyProfileAction(profile: CompanyProfile): Promise
   const admin = await getAdminOrThrow();
   if (!admin) return { ok: false, error: "Không có quyền." };
   if (!profile.heroTitle.trim() || !profile.introTitle.trim()) return { ok: false, error: "Tiêu đề chính và giới thiệu không được để trống." };
-  const cleanList = (items: CompanyProfile["solutions"]) => items.slice(0, 8).map((item) => ({ title: item.title.trim().slice(0, 120), description: item.description.trim().slice(0, 600), image: item.image?.trim().slice(0, 600) || "" })).filter((item) => item.title);
+  const cleanList = (items: CompanyProfile["solutions"]) => items.slice(0, 8).map((item) => ({ title: item.title.trim().slice(0, 120), description: item.description.trim().slice(0, 600), image: item.image?.trim().slice(0, 600) || "", href: item.href?.trim().slice(0, 300) || "/san-pham" })).filter((item) => item.title);
   const certificates = profile.certificates.slice(0, 30).map((item) => ({ title: item.title.trim().slice(0, 120), description: item.description.trim().slice(0, 400), image: item.image.trim().slice(0, 600) })).filter((item) => item.title && item.image);
   const imageList = (items: string[], max: number) => items.slice(0, max).map((item) => item.trim().slice(0, 600)).filter(Boolean);
   const projects = profile.projects.slice(0, 20).map((item) => ({ category: item.category.trim().slice(0, 100), title: item.title.trim().slice(0, 160), description: item.description.trim().slice(0, 700), images: imageList(item.images, 8) })).filter((item) => item.title && item.images.length);
