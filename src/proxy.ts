@@ -76,6 +76,20 @@ function redirect(request: NextRequest, path: string, permanent = true) {
 export default function proxy(request: NextRequest) {
   const { pathname, searchParams } = request.nextUrl;
 
+  // Consolidate the retired WordPress staging host if it is ever pointed back
+  // at this deployment. Google discovered thousands of old WooCommerce URLs.
+  if (request.nextUrl.hostname === "test.vienthongquangthang.com") {
+    const url = new URL("https://vienthongquangthang.com");
+    url.pathname = pathname === "/shop-2" || pathname === "/shop-2/" ? "/san-pham" : pathname;
+    return NextResponse.redirect(url, 301);
+  }
+
+  // WordPress generated these query-string variants for AJAX/Elementor calls.
+  // They carry no standalone content and must resolve to the canonical home URL.
+  if (pathname === "/" && (searchParams.has("wc-ajax") || searchParams.has("elementor_page_id"))) {
+    return redirect(request, "/");
+  }
+
   // Old search: /?s=...
   const s = searchParams.get("s");
   if (s) {
@@ -93,7 +107,7 @@ export default function proxy(request: NextRequest) {
   // uploaded images and files whose names are not known ahead of time.
   if (/\.[^/]+$/.test(pathname)) return NextResponse.next();
 
-  if (pathname === "/cua-hang" || pathname === "/cua-hang/") return redirect(request, "/san-pham");
+  if (pathname === "/cua-hang" || pathname === "/cua-hang/" || pathname === "/shop-2" || pathname === "/shop-2/") return redirect(request, "/san-pham");
   if (pathname === "/wishlist" || pathname === "/wishlist/") return redirect(request, "/tai-khoan?tab=wishlist");
   if (pathname === "/tai-khoan/lost-password" || pathname === "/tai-khoan/lost-password/") {
     return redirect(request, "/quen-mat-khau");
