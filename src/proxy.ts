@@ -76,6 +76,13 @@ function redirect(request: NextRequest, path: string, permanent = true) {
 export default function proxy(request: NextRequest) {
   const { pathname, searchParams } = request.nextUrl;
 
+  if (request.nextUrl.hostname === "www.vienthongquangthang.com") {
+    const url = new URL("https://vienthongquangthang.com");
+    url.pathname = pathname;
+    url.search = request.nextUrl.search;
+    return NextResponse.redirect(url, 301);
+  }
+
   // Consolidate the retired WordPress staging host if it is ever pointed back
   // at this deployment. Google discovered thousands of old WooCommerce URLs.
   if (request.nextUrl.hostname === "test.vienthongquangthang.com") {
@@ -113,6 +120,7 @@ export default function proxy(request: NextRequest) {
     return redirect(request, "/quen-mat-khau");
   }
   if (seg[0] === "product" && seg.length >= 2) return redirect(request, `/san-pham/${seg[1]}`);
+  if (seg[0] === "product-tag") return redirect(request, "/san-pham");
   if (seg[0] === "shop" && seg.length >= 2) return redirect(request, `/san-pham/${seg[1]}`);
 
   if (seg.length === 1 && !NEW_ROUTES.has(seg[0])) {
