@@ -74,9 +74,8 @@ export const BUSINESS = {
     "https://www.google.com/maps?q=435%2F26%20Thong%20Nhat%2C%20Thuong%20Tay%20Hoi%2C%20Go%20Vap%2C%20Ho%20Chi%20Minh&output=embed",
 };
 
-export const BASE_URL =
-  (typeof process !== "undefined" && process.env.NEXT_PUBLIC_SITE_URL) ||
-  "https://vienthongquangthang.com";
+// Public SEO identifiers must never inherit localhost or a preview deployment URL.
+export const BASE_URL = "https://vienthongquangthang.com";
 
 export type Price = number | null;
 

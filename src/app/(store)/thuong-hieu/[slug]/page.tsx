@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const b = await getBrandBySlug(slug);
-  if (!b) return { title: "Thương hiệu không tồn tại" };
+  if (!b || !b.active) notFound();
   return {
     title: b.seoTitle || `Thiết bị ${b.name}`,
     description: b.seoDescription ?? b.description ?? `Sản phẩm ${b.name} chính hãng tại Viễn Thông Quang Thắng. Liên hệ 094.710.6161 để nhận báo giá.`,

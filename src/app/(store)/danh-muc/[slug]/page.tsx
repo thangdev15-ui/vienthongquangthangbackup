@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const cat = await getCategoryBySlug(slug);
-  if (!cat) return { title: "Danh mục không tồn tại" };
+  if (!cat || !cat.active) notFound();
   return {
     title: cat.seoTitle || `${cat.name} — Giá tốt cho công trình`,
     description: cat.seoDescription ?? cat.description ?? `Danh mục ${cat.name} tại Viễn Thông Quang Thắng — chính hãng, tư vấn kỹ thuật, giao hàng toàn quốc.`,

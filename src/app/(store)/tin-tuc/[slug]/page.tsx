@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const a = await getArticleBySlug(slug);
-  if (!a) return { title: "Bài viết không tồn tại" };
+  if (!a || a.status !== "published") notFound();
   return {
     title: a.seoTitle || a.title,
     description: a.seoDescription ?? a.excerpt ?? stripHtml(a.content).slice(0, 160),

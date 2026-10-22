@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Legacy trailing-slash URLs should reach their final destination in one hop.
+  skipTrailingSlashRedirect: true,
   images: {
     // Product/banner assets are already stored at their display-ready source URLs.
     // Avoid paying for a new optimizer transformation on every image request.

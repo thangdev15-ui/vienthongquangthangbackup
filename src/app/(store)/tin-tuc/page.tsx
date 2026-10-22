@@ -5,6 +5,7 @@ import { Breadcrumbs, Pagination } from "@/components/ui";
 import { ArticleCard } from "./card";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/tin-tuc" },
   title: "Tin tức công nghệ",
   description: "Kiến thức kỹ thuật về cáp mạng, cáp quang, WiFi, camera, switch PoE và thi công hạ tầng viễn thông từ đội ngũ kỹ thuật Viễn Thông Quang Thắng.",
 };

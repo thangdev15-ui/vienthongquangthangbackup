@@ -6,6 +6,7 @@ import { Breadcrumbs, EmptyState, Icon } from "@/components/ui";
 import { ProductGrid } from "@/components/store/product";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/khuyen-mai" },
   title: "Khuyến mãi",
   description: "Chương trình khuyến mãi, giảm giá thiết bị viễn thông, cáp mạng, camera tại Viễn Thông Quang Thắng. Cập nhật liên tục.",
 };

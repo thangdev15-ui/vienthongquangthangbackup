@@ -84,10 +84,10 @@ export async function generateMetadata({ params }: { params: Promise<Record<stri
   const p = await params;
   const slug = Object.values(p)[0] as string;
   const staticPage = STATIC_PAGES[slug];
-  if (staticPage) return { title: staticPage.seoTitle, description: staticPage.seoDescription };
+  if (staticPage) return { title: staticPage.seoTitle, description: staticPage.seoDescription, alternates: { canonical: `/${slug}` } };
   const page = await getPageBySlug(slug);
-  if (!page) return { title: "Trang không tồn tại" };
-  return { title: page.seoTitle ?? page.title, description: page.seoDescription ?? page.title };
+  if (!page) notFound();
+  return { title: page.seoTitle ?? page.title, description: page.seoDescription ?? page.title, alternates: { canonical: `/${slug}` } };
 }
 
 export default async function CmsPage({ params }: { params: Promise<Record<string, string | undefined>> }) {

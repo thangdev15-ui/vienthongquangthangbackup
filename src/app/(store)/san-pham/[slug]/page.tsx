@@ -13,7 +13,7 @@ export const dynamic = "force-dynamic";
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const data = await getProductBySlug(slug);
-  if (!data || data.product.status !== "published") return { title: "Sản phẩm không tồn tại" };
+  if (!data || data.product.status !== "published") notFound();
   const p = data.product;
   const mainImage = data.images.find((i) => i.isMain)?.url ?? data.images[0]?.url ?? null;
   const desc = p.shortDescription ?? p.seoDescription ?? p.description?.replace(/<[^>]+>/g, " ").slice(0, 160) ?? "";

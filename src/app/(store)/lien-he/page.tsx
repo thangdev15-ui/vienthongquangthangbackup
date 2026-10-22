@@ -4,6 +4,7 @@ import { Breadcrumbs, Icon } from "@/components/ui";
 import { ContactForm } from "@/components/store/contact";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/lien-he" },
   title: "Liên hệ",
   description: "Liên hệ Viễn Thông Quang Thắng — 435/26 Thống Nhất, P. Thông Tây Hội, TP.HCM. Hotline 094.710.6161 (tư vấn), Zalo báo giá nhanh.",
 };

@@ -7,6 +7,7 @@ import { getActiveBrands } from "@/lib/data";
 import { Breadcrumbs, Icon } from "@/components/ui";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/thuong-hieu" },
   title: "Thương hiệu",
   description: "Các thương hiệu thiết bị viễn thông, cáp mạng và camera mà Viễn Thông Quang Thắng phân phối: Vcom, Commscope, Hikvision, TP-Link, Netlink…",
 };

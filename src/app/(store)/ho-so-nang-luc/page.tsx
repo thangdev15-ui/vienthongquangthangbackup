@@ -7,6 +7,7 @@ import { getActiveBrands, getCompanyProfile, getSettings } from "@/lib/data";
 import { ProjectGallery } from "./project-gallery";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/ho-so-nang-luc" },
   title: "Hồ sơ năng lực | Viễn Thông Quang Thắng",
   description: "Hồ sơ năng lực doanh nghiệp Viễn Thông Quang Thắng: thiết bị viễn thông, hạ tầng mạng, cáp quang và camera.",
 };

@@ -5,6 +5,7 @@ import { FilterSidebar, ProductGrid, Toolbar } from "@/components/store/product"
 import Link from "next/link";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/san-pham" },
   title: "Tất cả sản phẩm",
   description: "Kho thiết bị viễn thông chính hãng: cáp mạng, cáp quang, switch, camera, thiết bị quang, tủ rack, phụ kiện mạng. Liên hệ 094.710.6161 để nhận báo giá công trình.",
 };
