@@ -18,6 +18,8 @@ const PAGE_REDIRECTS: Record<string, string> = {
   "huong-dan-mua-hang-online": "/huong-dan-mua-hang",
   "gioi-thieu": "/ho-so-nang-luc",
   "cua-hang": "/san-pham",
+  "cap-mang-aipoo-link": "/san-pham",
+  "tong-hop-cac-loai-cap-mang-chong-nhieu-tot-nhat-hien-nay": "/tin-tuc/cap-mang-chong-nhieu-tot-nhat-hien-nay",
   "shop-2": "/san-pham",
   "shop": "/san-pham",
   "wishlist": "/tai-khoan?tab=wishlist",
