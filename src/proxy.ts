@@ -54,15 +54,39 @@ export default async function proxy(request: NextRequest) {
   // Only map published content, including products/articles absent from the
   // old hardcoded list. Never redirect unrelated missing pages to the homepage.
   const segments = key.split("/");
+  const catalog = key && !NEW_ROUTES.has(segments[0]) && !/\.[^/]+$/.test(pathname)
+    ? await getSeoCatalog()
+    : undefined;
+
+  // WooCommerce product-tag archives have no equivalent standalone route.
+  // Preserve a matching category when one exists; otherwise use the catalog
+  // landing page rather than serving a noindex 404 to Google.
+  if (segments[0] === "product-tag" && segments[1]) {
+    const category = catalog?.find(entry => entry.kind === "category" && entry.slug === segments[1]);
+    return redirect(request, category?.path ?? "/san-pham");
+  }
+
+  // Old category pagination and hierarchical product links were emitted by
+  // WooCommerce. Pagination settings are obsolete; product slugs retain a
+  // specific destination even when a former category appears in the path.
+  if (segments.length === 3 && segments[1] === "page") {
+    const category = catalog?.find(entry => entry.kind === "category" && entry.slug === segments[0]);
+    if (category) return redirect(request, category.path);
+  }
+  if (segments.length === 2 && !LEGACY_PREFIXES[segments[0]]) {
+    const product = catalog?.find(entry => entry.kind === "product" && entry.slug === segments[1]);
+    if (product) return redirect(request, product.path);
+  }
+
   if (key && !NEW_ROUTES.has(segments[0]) && !/\.[^/]+$/.test(pathname)) {
     const kind = LEGACY_PREFIXES[segments[0]];
     if (segments.length === 1 || (segments.length === 2 && kind)) {
       const slug = segments.at(-1)!;
-      const catalog = await getSeoCatalog();
+      const legacyCatalog = catalog ?? await getSeoCatalog();
       const match = kind
-        ? catalog.find(entry => entry.kind === kind && entry.slug === slug)
+        ? legacyCatalog.find(entry => entry.kind === kind && entry.slug === slug)
         : ["page", "category", "article", "product", "brand"]
-          .map(type => catalog.find(entry => entry.kind === type && entry.slug === slug)).find(Boolean);
+          .map(type => legacyCatalog.find(entry => entry.kind === type && entry.slug === slug)).find(Boolean);
       if (match && match.path !== pathname.replace(/\/$/, "")) return redirect(request, match.path);
       if (!match) return missing(request);
     }
