@@ -56,6 +56,10 @@ export default async function proxy(request: NextRequest) {
   if (!key && (searchParams.has("wc-ajax") || searchParams.has("elementor_page_id"))) {
     return redirect(request, "/");
   }
+  // Legacy WordPress pagination and numeric page IDs generated duplicate
+  // homepage URLs. They have stable current destinations in the rebuilt site.
+  if (!key && searchParams.has("product-page")) return redirect(request, "/san-pham");
+  if (!key && searchParams.has("page_id")) return redirect(request, "/");
   const search = searchParams.get("s");
   if (!key && search) return redirect(request, `/tim-kiem?${new URLSearchParams({ q: search })}`, 307);
 
