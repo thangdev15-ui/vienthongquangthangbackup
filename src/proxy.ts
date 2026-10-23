@@ -41,6 +41,13 @@ function missing(request: NextRequest) {
   return NextResponse.rewrite(url, { status: 404 });
 }
 
+function gone() {
+  // WordPress RSS endpoints that no longer have a matching public record are
+  // intentionally retired. A 410 prevents crawlers from repeatedly treating
+  // them as broken product pages.
+  return new NextResponse(null, { status: 410, headers: { "X-Robots-Tag": "noindex, follow" } });
+}
+
 export default async function proxy(request: NextRequest) {
   const { pathname, searchParams, hostname } = request.nextUrl;
   const key = pathname.replace(/^\/+|\/+$/g, "");
@@ -58,6 +65,13 @@ export default async function proxy(request: NextRequest) {
     ? await getSeoCatalog()
     : undefined;
 
+  // Legacy WordPress feeds inherited a product/article slug. Keep the SEO
+  // value when that record still exists; explicitly retire obsolete feeds.
+  if (segments.length === 2 && segments[1] === "feed") {
+    const match = catalog?.find(entry => entry.slug === segments[0] && ["product", "article", "category"].includes(entry.kind));
+    return match ? redirect(request, match.path) : gone();
+  }
+
   // WooCommerce product-tag archives have no equivalent standalone route.
   // Preserve a matching category when one exists; otherwise use the catalog
   // landing page rather than serving a noindex 404 to Google.
@@ -72,6 +86,13 @@ export default async function proxy(request: NextRequest) {
   if (segments.length === 3 && segments[1] === "page") {
     const category = catalog?.find(entry => entry.kind === "category" && entry.slug === segments[0]);
     if (category) return redirect(request, category.path);
+    if (segments[0] === "cua-hang") return redirect(request, "/san-pham");
+  }
+
+  // Two old product URLs had a phone number appended to the product permalink.
+  if (segments.length === 2 && /^\d{8,}$/.test(segments[1])) {
+    const product = catalog?.find(entry => entry.kind === "product" && entry.slug === segments[0]);
+    if (product) return redirect(request, product.path);
   }
   if (segments.length === 2 && !LEGACY_PREFIXES[segments[0]]) {
     const product = catalog?.find(entry => entry.kind === "product" && entry.slug === segments[1]);
