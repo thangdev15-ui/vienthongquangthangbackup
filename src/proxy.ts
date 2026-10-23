@@ -19,6 +19,7 @@ const PAGE_REDIRECTS: Record<string, string> = {
   "gioi-thieu": "/ho-so-nang-luc",
   "cua-hang": "/san-pham",
   "cap-mang-aipoo-link": "/san-pham",
+  "chinh-sach-doi-tra-2": "/chinh-sach-doi-tra",
   "tong-hop-cac-loai-cap-mang-chong-nhieu-tot-nhat-hien-nay": "/tin-tuc/cap-mang-chong-nhieu-tot-nhat-hien-nay",
   "shop-2": "/san-pham",
   "shop": "/san-pham",
