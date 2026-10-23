@@ -11,6 +11,7 @@ const NEW_ROUTES = new Set([
 ]);
 
 const PAGE_REDIRECTS: Record<string, string> = {
+  "index.html": "/",
   "tin-tuc-cong-nghe": "/tin-tuc",
   "tin-khuyen-mai-hot": "/khuyen-mai",
   "san-pham-noi-bat": "/san-pham",
