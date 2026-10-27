@@ -134,11 +134,6 @@ export default async function proxy(request: NextRequest) {
     }
   }
 
-  if (segments.length === 2 && ["san-pham", "danh-muc", "tin-tuc", "thuong-hieu"].includes(segments[0])) {
-    const catalog = await getSeoCatalog();
-    if (!catalog.some(entry => entry.path === `/${key}`)) return missing(request);
-  }
-
   if (hostname === "www.vienthongquangthang.com") {
     return NextResponse.redirect(new URL((pathname.replace(/\/$/, "") || "/") + request.nextUrl.search, BASE_URL), 301);
   }
