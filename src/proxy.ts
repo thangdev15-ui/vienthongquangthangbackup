@@ -21,6 +21,7 @@ const PAGE_REDIRECTS: Record<string, string> = {
   "cap-mang-aipoo-link": "/san-pham",
   "chinh-sach-doi-tra-2": "/chinh-sach-doi-tra",
   "tong-hop-cac-loai-cap-mang-chong-nhieu-tot-nhat-hien-nay": "/tin-tuc/cap-mang-chong-nhieu-tot-nhat-hien-nay",
+  "tu-rack-15u-d800-tu-mang-15u-d800-19p/feed": "/danh-muc/tu-rack-15u",
   "shop-2": "/san-pham",
   "shop": "/san-pham",
   "wishlist": "/tai-khoan?tab=wishlist",
