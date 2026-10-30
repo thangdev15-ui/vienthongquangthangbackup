@@ -59,16 +59,16 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
     sku: p.sku ?? undefined,
     brand: data.brand ? { "@type": "Brand", name: data.brand.name } : undefined,
     image: mainImage ? [mainImage] : undefined,
-    offers:
-      p.priceType === "fixed" && p.price != null
-        ? {
-            "@type": "Offer",
-            priceCurrency: "VND",
-            price: p.salePrice ?? p.price,
-            availability: p.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-            url: `${BASE_URL}/san-pham/${p.slug}`,
-          }
-        : { "@type": "Offer", priceCurrency: "VND", price: "0", priceSpecification: { "@type": "UnitPriceSpecification", price: "Liên hệ", priceCurrency: "VND" }, availability: "https://schema.org/PreOrder", url: `${BASE_URL}/san-pham/${p.slug}` },
+    ...(p.priceType === "fixed" && p.price != null ? {
+      offers:
+        {
+          "@type": "Offer",
+          priceCurrency: "VND",
+          price: p.salePrice ?? p.price,
+          availability: p.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+          url: `${BASE_URL}/san-pham/${p.slug}`,
+        },
+    } : {}),
     ...(p.reviewCount > 0
       ? { aggregateRating: { "@type": "AggregateRating", ratingValue: p.rating, reviewCount: p.reviewCount } }
       : {}),
