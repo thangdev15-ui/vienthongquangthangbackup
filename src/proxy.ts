@@ -33,7 +33,7 @@ const PAGE_REDIRECTS: Record<string, string> = {
   "tu-dung-dau-ghi-hinh-camera-o-khoa": "/danh-muc/tu-dung-dau-ghi",
   "tu-rack-6u-d400-mau-trang": "/san-pham/tu-rack-6u-d400-mau-den",
   "tu-rack-9u-d500-mau-den-treo-tuong": "/san-pham/tu-rack-9u-d500-mau-trang-treo-tuong",
-  "tu-rack-15u-d800-tu-mang-15u-d800-19p/feed": "/danh-muc/tu-rack-15u",
+  "tu-rack-15u-d800-tu-mang-15u-d800-19/feed": "/danh-muc/tu-rack-15u",
   "shop-2": "/san-pham",
   "shop": "/san-pham",
   "wishlist": "/tai-khoan?tab=wishlist",
@@ -94,11 +94,12 @@ export default async function proxy(request: NextRequest) {
   }
 
   // WooCommerce product-tag archives have no equivalent standalone route.
-  // Preserve a matching category when one exists; otherwise use the catalog
-  // landing page rather than serving a noindex 404 to Google.
+  // Preserve a matching category when one exists. Product tags with no
+  // equivalent catalog archive are retired rather than redirected to an
+  // unrelated listing, which Google can classify as a soft 404.
   if (segments[0] === "product-tag" && segments[1]) {
     const category = catalog?.find(entry => entry.kind === "category" && entry.slug === segments[1]);
-    return redirect(request, category?.path ?? "/san-pham");
+    return category ? redirect(request, category.path) : gone();
   }
 
   // Old category pagination and hierarchical product links were emitted by
