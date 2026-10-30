@@ -73,10 +73,10 @@ async function loadActiveCategories(): Promise<Category[]> {
 export async function getActiveCategories() {
   return unstable_cache(loadActiveCategories, ["store-v2-active-categories"], { revalidate: STORE_CACHE_SECONDS, tags: ["store-catalog"] })();
 }
-export async function getCategoryBySlug(slug: string): Promise<Category | null> {
+export const getCategoryBySlug = cache(async (slug: string): Promise<Category | null> => {
   const rows = await db.select().from(categories).where(eq(categories.slug, slug)).limit(1);
   return rows[0] ?? null;
-}
+});
 
 export async function getCategoryById(id: string): Promise<Category | null> {
   const rows = await db.select().from(categories).where(eq(categories.id, id)).limit(1);
@@ -115,10 +115,10 @@ async function loadActiveBrands(): Promise<Brand[]> {
 export async function getActiveBrands() {
   return unstable_cache(loadActiveBrands, ["store-v2-active-brands"], { revalidate: STORE_CACHE_SECONDS, tags: ["store-catalog"] })();
 }
-export async function getBrandBySlug(slug: string): Promise<Brand | null> {
+export const getBrandBySlug = cache(async (slug: string): Promise<Brand | null> => {
   const rows = await db.select().from(brands).where(eq(brands.slug, slug)).limit(1);
   return rows[0] ?? null;
-}
+});
 
 export async function getBrandById(id: string): Promise<Brand | null> {
   const rows = await db.select().from(brands).where(eq(brands.id, id)).limit(1);
@@ -302,23 +302,32 @@ const getCachedProductBySlug = unstable_cache(loadProductBySlug, ["store-v2-prod
 
 export const getProductBySlug = cache(getCachedProductBySlug);
 
-export async function getRelatedProducts(product: { id: string; categoryId: string | null; brandId: string | null }): Promise<ProductRow[]> {
+async function loadRelatedProducts(id: string, categoryId: string | null, brandId: string | null): Promise<ProductRow[]> {
   const rows = await db
     .select({ id: products.id, categoryId: products.categoryId, brandId: products.brandId })
     .from(products)
     .where(eq(products.status, "published"))
     .limit(300);
   const relatedIds = rows
-    .filter((r) => r.id !== product.id && (r.categoryId === product.categoryId || (product.brandId !== null && r.brandId === product.brandId)))
+    .filter((r) => r.id !== id && (r.categoryId === categoryId || (brandId !== null && r.brandId === brandId)))
     .slice(0, 8)
     .map((r) => r.id);
   if (!relatedIds.length) return [];
   return fetchRows(inArray(products.id, relatedIds), [desc(products.createdAt)], 8);
 }
 
+const getCachedRelatedProducts = unstable_cache(loadRelatedProducts, ["store-v2-related-products"], {
+  revalidate: STORE_CACHE_SECONDS,
+  tags: ["store-products", "store-catalog"],
+});
+
+export const getRelatedProducts = cache(async (product: { id: string; categoryId: string | null; brandId: string | null }) =>
+  getCachedRelatedProducts(product.id, product.categoryId, product.brandId),
+);
+
 /* ------------------------------- reviews ---------------------------------- */
 
-export async function getApprovedReviews(productId: string): Promise<Review[]> {
+async function loadApprovedReviews(productId: string): Promise<Review[]> {
   return db
     .select()
     .from(reviews)
@@ -326,6 +335,13 @@ export async function getApprovedReviews(productId: string): Promise<Review[]> {
     .orderBy(desc(reviews.createdAt))
     .limit(30);
 }
+
+const getCachedApprovedReviews = unstable_cache(loadApprovedReviews, ["store-v2-approved-reviews"], {
+  revalidate: STORE_CACHE_SECONDS,
+  tags: ["store-products"],
+});
+
+export const getApprovedReviews = cache(getCachedApprovedReviews);
 
 /* ---------------------------------- orders ---------------------------------- */
 

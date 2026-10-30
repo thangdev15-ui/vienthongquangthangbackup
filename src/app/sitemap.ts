@@ -3,6 +3,9 @@ import { BASE_URL } from "@/lib/types";
 import { getSeoCatalog } from "@/lib/seo-catalog";
 
 export const revalidate = 3600;
+// The sitemap is refreshed at request time. Rendering it during a parallel
+// production build can exhaust the small Supabase session connection pool.
+export const dynamic = "force-dynamic";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPaths = [
