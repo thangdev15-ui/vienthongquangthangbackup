@@ -1,5 +1,6 @@
 import "server-only";
 import { unstable_cache } from "next/cache";
+import { cache } from "react";
 import { and, asc, count, desc, eq, gte, ilike, inArray, isNotNull, isNull, lte, or, sql, type SQL } from "drizzle-orm";
 import { db } from "@/db";
 import {
@@ -268,29 +269,38 @@ export async function getAdminProducts(): Promise<ProductRow[]> {
   return fetchRows(undefined, [asc(brands.name), asc(products.name)], 5000);
 }
 
-export async function getProductBySlug(slug: string) {
+async function loadProductBySlug(slug: string) {
   const rows = await db.select().from(products).where(eq(products.slug, slug)).limit(1);
   const product = rows[0];
   if (!product) return null;
-  const images = await db
+  const imagesPromise = db
     .select()
     .from(productImages)
     .where(eq(productImages.productId, product.id))
     .orderBy(asc(productImages.sortOrder));
-  const orderedImages: ProductImage[] = [...images].sort(
-    (a, b) => Number(b.isMain) - Number(a.isMain) || a.sortOrder - b.sortOrder,
-  );
-  const specs = await db
+  const specsPromise = db
     .select()
     .from(productSpecifications)
     .where(eq(productSpecifications.productId, product.id))
     .orderBy(asc(productSpecifications.sortOrder));
-  const [brand, category] = await Promise.all([
+  const [images, specs, brand, category] = await Promise.all([
+    imagesPromise,
+    specsPromise,
     product.brandId ? getBrandById(product.brandId) : Promise.resolve(null),
     product.categoryId ? getCategoryById(product.categoryId) : Promise.resolve(null),
   ]);
+  const orderedImages: ProductImage[] = [...images].sort(
+    (a, b) => Number(b.isMain) - Number(a.isMain) || a.sortOrder - b.sortOrder,
+  );
   return { product, images: orderedImages, specs, brand, category };
 }
+
+const getCachedProductBySlug = unstable_cache(loadProductBySlug, ["store-v2-product-by-slug"], {
+  revalidate: STORE_CACHE_SECONDS,
+  tags: ["store-products", "store-catalog"],
+});
+
+export const getProductBySlug = cache(getCachedProductBySlug);
 
 export async function getRelatedProducts(product: { id: string; categoryId: string | null; brandId: string | null }): Promise<ProductRow[]> {
   const rows = await db
@@ -427,10 +437,17 @@ export async function getArticles(opts: { status?: string; category?: string; li
   const key = JSON.stringify(opts);
   return unstable_cache(() => getArticlesUncached(opts), ["store-v2-articles-query", key], { revalidate: STORE_CACHE_SECONDS, tags: ["store-articles"] })();
 }
-export async function getArticleBySlug(slug: string): Promise<Article | null> {
+async function loadArticleBySlug(slug: string): Promise<Article | null> {
   const rows = await db.select().from(articles).where(eq(articles.slug, slug)).limit(1);
   return rows[0] ?? null;
 }
+
+const getCachedArticleBySlug = unstable_cache(loadArticleBySlug, ["store-v2-article-by-slug"], {
+  revalidate: STORE_CACHE_SECONDS,
+  tags: ["store-articles"],
+});
+
+export const getArticleBySlug = cache(getCachedArticleBySlug);
 
 /* --------------------------- banners / promos / pages --------------------------- */
 
