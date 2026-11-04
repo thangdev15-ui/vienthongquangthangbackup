@@ -68,8 +68,16 @@ export default async function HomePage() {
         <div className="grid items-center gap-6 lg:grid-cols-[1.18fr_0.82fr]">
           <div className="overflow-hidden rounded-lg border border-line bg-brand-50">
             <div className="relative aspect-[4/3] bg-[repeating-linear-gradient(90deg,#e8f3fb_0,#e8f3fb_52px,#dbeaf5_52px,#dbeaf5_104px)]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/quanngthangnhanvien.jpeg" alt="Đội ngũ nhân viên Quang Thắng" className="h-full w-full object-cover" style={{ objectPosition: "center 18%" }} />
+              <Image
+                src="/quanngthangnhanvien.jpeg"
+                alt="Đội ngũ nhân viên Quang Thắng"
+                fill
+                loading="lazy"
+                quality={70}
+                sizes="(min-width: 1024px) 40vw, 100vw"
+                className="object-cover"
+                style={{ objectPosition: "center 18%" }}
+              />
             </div>
           </div>
           <div>
