@@ -102,10 +102,31 @@ Các hạng mục an toàn đã được triển khai và xác minh trên produc
 - Trang danh mục có fallback metadata theo tên danh mục, mô tả hiển thị, `CollectionPage` và `BreadcrumbList` JSON-LD.
 - Header/menu mobile đã có trang Hồ sơ năng lực.
 - Trình biên tập bài viết đã có nút chèn internal/external link.
-- Logo header và các logo thương hiệu thuộc nguồn nội bộ/CDN được chuyển sang Next Image.
 - `sitemap.xml` đã submit lại; Sitemaps API ghi nhận tải lại ngày 10/11 với 0 warnings/0 errors.
 
 Các thay đổi không thay thế việc viết metadata/nội dung riêng cho 101 danh mục, xác nhận data thương mại và cập nhật 5 URL từng mất traffic. Đây vẫn là các ưu tiên phục hồi tiếp theo.
+
+## Cập nhật khẩn cấp sau kiểm tra production - 10/11/2026
+
+### Lỗi 5xx trang chủ: đã xử lý
+
+- URL Inspection trên giao diện người dùng ghi nhận Googlebot điện thoại nhận lỗi máy chủ `5xx` ở trang chủ lúc 16:37 ngày 10/11.
+- Kiểm tra độc lập xác nhận trang chủ trả `500` với cả trình duyệt và Googlebot sau lần dùng image optimizer cho logo/brand image.
+- Đã rollback riêng phần đó sang ảnh gốc có `width`/`height`, deploy revision `1bc26aef` và kiểm tra lại production: trang chủ trả `200` cho Googlebot và người dùng.
+- Không tiếp tục đổi ảnh qua optimizer cho đến khi tái hiện và sửa được lỗi ở môi trường an toàn.
+
+### Vòng lặp redirect trang sản phẩm: đã xử lý
+
+- Phát hiện URL chuẩn trong sitemap `/san-pham/<slug>` bị middleware coi là URL legacy, tạo redirect `301` về đúng chính URL đó.
+- Điều này có thể khiến Google không crawl/index được các product URL dù sitemap vẫn tải thành công.
+- Đã sửa middleware để chỉ redirect URL legacy, không redirect route canonical, deploy revision `3a413f4e`.
+- Xác minh production sau deploy: các product URL mẫu trả `HTTP 200`, `0 redirect`; ví dụ sản phẩm cáp Việt Hàn có TTFB khoảng `0,49s` trong lần đo này.
+
+### Tối ưu hiệu suất đã deploy
+
+- Lighthouse desktop production sau khi site ổn định: trang chủ `Performance 86`, `SEO 100`, `LCP 0,8s`, `CLS 0,211`; Hồ sơ năng lực `Performance 69`, `SEO 100`, `LCP 1,0s`, `CLS 0,632`.
+- Layout-shift audit chỉ ra footer là phần tử tạo CLS chính. Footer đã được reserve `minHeight` inline từ HTML để tránh nhảy khi stylesheet tải; logo brand có khai báo kích thước; hero Hồ sơ năng lực có `fetchPriority="high"`.
+- Những chỉ số này cần đo lại sau khi CDN nhận revision mới; không được coi score lab là bằng chứng traffic đã hồi.
 
 ## Giới hạn audit
 
