@@ -126,7 +126,9 @@ export default async function proxy(request: NextRequest) {
     const product = catalog?.find(entry => entry.kind === "product" && entry.slug === segments[0]);
     if (product) return redirect(request, product.path);
   }
-  if (segments.length === 2 && !LEGACY_PREFIXES[segments[0]]) {
+  // A canonical route such as /san-pham/<slug> is already the destination.
+  // Only a non-canonical, legacy two-segment path should be redirected.
+  if (segments.length === 2 && !publicRecordKind && !LEGACY_PREFIXES[segments[0]]) {
     const product = catalog?.find(entry => entry.kind === "product" && entry.slug === segments[1]);
     if (product) return redirect(request, product.path);
   }
