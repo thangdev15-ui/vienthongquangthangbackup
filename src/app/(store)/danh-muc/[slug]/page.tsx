@@ -140,6 +140,22 @@ export default async function CategoryPage({
           )}
         </div>
       </div>
+
+      <section className="mt-10 border-t border-line pt-8" aria-labelledby="category-buying-guide">
+        <div className="max-w-4xl">
+          <p className="section-eyebrow">Tư vấn lựa chọn</p>
+          <h2 id="category-buying-guide" className="section-title mt-3">Chọn {cat.name} phù hợp nhu cầu sử dụng</h2>
+          <p className="mt-4 text-sm leading-7 text-ink-600">
+            Trước khi đặt hàng, hãy xác định môi trường lắp đặt, thông số kỹ thuật cần tương thích và số lượng sử dụng thực tế. Điều này giúp lựa chọn đúng {cat.name.toLocaleLowerCase("vi-VN")} và hạn chế phát sinh khi thi công hoặc vận hành.
+          </p>
+          <ul className="mt-5 grid gap-3 text-sm leading-6 text-ink-700 sm:grid-cols-3">
+            <li className="border-l-2 border-accent-500 pl-3"><strong className="text-ink-950">Môi trường:</strong> trong nhà, ngoài trời, tủ kỹ thuật hay vị trí có yêu cầu chống nhiễu.</li>
+            <li className="border-l-2 border-accent-500 pl-3"><strong className="text-ink-950">Tương thích:</strong> đối chiếu chuẩn kết nối, thông số và thiết bị đang sử dụng.</li>
+            <li className="border-l-2 border-accent-500 pl-3"><strong className="text-ink-950">Quy mô:</strong> xác định chiều dài, số lượng và phương án dự phòng cho công trình.</li>
+          </ul>
+          <Link href="/lien-he" className="btn-outline mt-6">Nhận tư vấn kỹ thuật <Icon name="arrow-right" className="h-4 w-4" /></Link>
+        </div>
+      </section>
     </div>
   );
 }
