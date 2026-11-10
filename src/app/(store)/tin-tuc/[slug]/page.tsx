@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { getArticleBySlug, getArticles, getSettings, queryProducts, stripHtml } from "@/lib/data";
+import { getArticleBySlug, getRelatedArticles, getSettings, queryProducts, stripHtml } from "@/lib/data";
 import { Breadcrumbs, Icon } from "@/components/ui";
 import { ArticleTOC } from "@/components/store/article";
 import { ProductGrid } from "@/components/store/product";
@@ -31,10 +31,10 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
   if (!a || a.status !== "published") notFound();
   const settings = await getSettings();
   const [related, relatedProducts] = await Promise.all([
-    getArticles({ limit: 3, excludeId: a.id }),
+    getRelatedArticles(a, 3),
     queryProducts({ q: a.tags?.split(",")[0]?.trim() ?? "", limit: 4, includeTotal: false }),
   ]);
-  const relatedItems = related.items.filter((x) => x.id !== a.id);
+  const relatedItems = related;
 
   const articleJsonLd = {
     "@context": "https://schema.org",
@@ -42,7 +42,6 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
     headline: a.title,
     description: a.excerpt ?? undefined,
     datePublished: a.publishedAt.toISOString(),
-    dateModified: a.publishedAt.toISOString(),
     image: a.coverImage ?? undefined,
     author: { "@type": "Organization", name: settings.site_name },
   };
@@ -89,7 +88,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
 
       {relatedItems.length > 0 && (
         <section className="mx-auto mt-12 max-w-5xl border-t border-line pt-8">
-          <h2 className="mb-5 text-xl font-bold text-ink-950">Tin mới nhất</h2>
+          <h2 className="mb-5 text-xl font-bold text-ink-950">Bài viết liên quan</h2>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {relatedItems.map((r) => (
               <a key={r.id} href={`/tin-tuc/${r.slug}`} className="card overflow-hidden transition-all hover:border-brand-400 hover:shadow-md">

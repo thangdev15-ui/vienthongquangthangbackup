@@ -7,7 +7,8 @@
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "gsc:audit": "tsx scripts/gsc-audit.ts"
+    "gsc:audit": "tsx scripts/gsc-audit.ts",
+    "seo:backfill-categories": "tsx scripts/backfill-category-seo.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1139.0",

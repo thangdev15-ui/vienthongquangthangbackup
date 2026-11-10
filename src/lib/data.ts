@@ -453,6 +453,36 @@ export async function getArticles(opts: { status?: string; category?: string; li
   const key = JSON.stringify(opts);
   return unstable_cache(() => getArticlesUncached(opts), ["store-v2-articles-query", key], { revalidate: STORE_CACHE_SECONDS, tags: ["store-articles"] })();
 }
+
+function normalizedTags(value: string | null) {
+  return new Set((value ?? "").split(",").map((tag) => tag.trim().toLocaleLowerCase("vi-VN")).filter(Boolean));
+}
+
+async function loadRelatedArticles(article: Article, limit: number) {
+  const candidates = await db
+    .select()
+    .from(articles)
+    .where(and(eq(articles.status, "published"), sql`${articles.id} != ${article.id}`))
+    .orderBy(desc(articles.publishedAt))
+    .limit(100);
+  const sourceTags = normalizedTags(article.tags);
+  return candidates
+    .map((candidate) => {
+      const sharedTags = [...normalizedTags(candidate.tags)].filter((tag) => sourceTags.has(tag)).length;
+      const sameCategory = candidate.category && candidate.category === article.category ? 1 : 0;
+      return { candidate, score: sameCategory * 100 + sharedTags * 10 };
+    })
+    .sort((a, b) => b.score - a.score || b.candidate.publishedAt.getTime() - a.candidate.publishedAt.getTime())
+    .slice(0, limit)
+    .map(({ candidate }) => candidate);
+}
+
+export const getRelatedArticles = cache(async (article: Article, limit = 3) =>
+  unstable_cache(() => loadRelatedArticles(article, limit), ["store-v2-related-articles", article.id, String(limit)], {
+    revalidate: STORE_CACHE_SECONDS,
+    tags: ["store-articles"],
+  })(),
+);
 async function loadArticleBySlug(slug: string): Promise<Article | null> {
   const rows = await db.select().from(articles).where(eq(articles.slug, slug)).limit(1);
   return rows[0] ?? null;
