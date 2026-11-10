@@ -35,7 +35,7 @@ export default async function BrandsPage() {
             <span className="relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-md bg-ink-50">
               {b.logo ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={b.logo} alt={b.name} className="h-full w-full object-contain p-2" />
+                <img src={b.logo} alt={b.name} width={160} height={96} className="h-full w-full object-contain p-2" />
               ) : (
                 <span className="text-2xl font-extrabold text-brand-700">{b.name.charAt(0)}</span>
               )}

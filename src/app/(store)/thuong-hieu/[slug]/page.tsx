@@ -44,7 +44,7 @@ export default async function BrandPage({
         <span className="relative flex h-14 w-14 items-center justify-center overflow-hidden rounded-md border border-line bg-ink-50">
           {b.logo ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={b.logo} alt={b.name} className="h-full w-full object-contain p-1.5" />
+            <img src={b.logo} alt={b.name} width={160} height={96} className="h-full w-full object-contain p-1.5" />
           ) : (
             <span className="text-xl font-extrabold text-brand-700">{b.name.charAt(0)}</span>
           )}

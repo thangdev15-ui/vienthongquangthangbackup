@@ -120,7 +120,7 @@ export default async function HomePage() {
                     // Image optimization is not used here until the Vercel image
                     // optimizer issue is separately reproduced and resolved.
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={b.logo} alt={b.name} className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105" />
+                    <img src={b.logo} alt={b.name} width={160} height={64} className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105" />
                   ) : (
                     <span className="text-sm font-extrabold text-brand-700">{b.name.charAt(0)}</span>
                   )}
