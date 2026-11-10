@@ -128,6 +128,12 @@ Các thay đổi không thay thế việc viết metadata/nội dung riêng cho 
 - Layout-shift audit chỉ ra footer là phần tử tạo CLS chính. Footer đã được reserve `minHeight` inline từ HTML để tránh nhảy khi stylesheet tải; logo brand có khai báo kích thước; hero Hồ sơ năng lực có `fetchPriority="high"`.
 - Những chỉ số này cần đo lại sau khi CDN nhận revision mới; không được coi score lab là bằng chứng traffic đã hồi.
 
+### Nội dung và metadata đã triển khai
+
+- Đã backfill database production cho `101/101` danh mục active thiếu `seo_title` và `seo_description`; lượt kiểm tra sau update ghi nhận `0` danh mục thiếu hai trường này.
+- Trang bài viết đã dùng bài liên quan theo chuyên mục/tag thay vì chỉ hiển thị bài mới nhất.
+- `/llms.txt` hiện trả `HTTP 200` với `Content-Type: text/plain`; Article schema không còn gửi `dateModified` bằng ngày xuất bản khi hệ thống không lưu thời gian cập nhật thực.
+
 ## Giới hạn audit
 
 Không có quyền truy cập GA4/raw server logs, nên không thể tách hoàn toàn organic khỏi direct/referral hoặc đo tỷ lệ Googlebot 5xx theo thời gian. Không có dữ liệu manual action/security report qua API đã dùng. Cần kiểm tra trực tiếp các mục này trong Search Console khi có giao diện tài khoản.

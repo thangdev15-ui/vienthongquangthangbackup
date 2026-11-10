@@ -12,7 +12,7 @@
 
 **Tiêu chí xong:** URL giả 404 thật; sitemap 0 error; 15 category có metadata/nội dung; URL đích quan trọng vẫn PASS trong URL Inspection.
 
-**Trạng thái 10/11/2026:** HTTP 404 thật, sitemap 0 errors, xử lý lỗi `5xx` trang chủ và chặn vòng lặp redirect product canonical đã hoàn thành/live. Fallback metadata/nội dung/schema danh mục đã live, nhưng metadata/nội dung riêng theo từng danh mục và data sales vẫn chưa hoàn tất.
+**Trạng thái 10/11/2026:** HTTP 404 thật, sitemap 0 errors, xử lý lỗi `5xx` trang chủ, chặn vòng lặp redirect product canonical và backfill metadata cho `101/101` category đã hoàn thành/live. Nội dung chuyên sâu theo danh mục, cập nhật 5 landing page mất traffic và data sales vẫn chưa hoàn tất.
 
 ## 8-30 ngày: phục hồi demand đã mất (P1)
 
