@@ -116,6 +116,24 @@ function RichTextEditor({ value, onChange, minHeight = 220 }: { value: string; o
     if (editorRef.current) onChange(editorRef.current.innerHTML);
   }
 
+  function insertLink() {
+    const rawHref = window.prompt("Dán link nội bộ (/tin-tuc/...) hoặc https://...")?.trim();
+    if (!rawHref) return;
+    if (!rawHref.startsWith("/") && !/^https?:\/\//i.test(rawHref)) {
+      alert("Link phải bắt đầu bằng / hoặc http://, https://");
+      return;
+    }
+    command("createLink", rawHref);
+    const selection = window.getSelection();
+    const node = selection?.anchorNode;
+    const anchor = (node instanceof HTMLElement ? node : node?.parentElement)?.closest("a");
+    if (anchor && /^https?:\/\//i.test(rawHref)) {
+      anchor.target = "_blank";
+      anchor.rel = "noopener noreferrer";
+    }
+    if (editorRef.current) onChange(editorRef.current.innerHTML);
+  }
+
   async function uploadImage(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     e.target.value = "";
@@ -153,6 +171,7 @@ function RichTextEditor({ value, onChange, minHeight = 220 }: { value: string; o
         </select>
         <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => command("insertUnorderedList")} className="btn-outline h-8 px-2 text-xs" title="Danh sách">Danh sách</button>
         <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => command("formatBlock", "<blockquote>")} className="btn-outline h-8 px-2 text-xs" title="Trích dẫn">Trích dẫn</button>
+        <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={insertLink} className="btn-outline inline-flex h-8 items-center gap-1 px-2 text-xs" title="Chèn liên kết nội bộ hoặc ngoài website"><Icon name="external" className="h-3.5 w-3.5" />Link</button>
         <button type="button" onClick={() => { const src = window.prompt("URL hình ảnh"); if (src?.trim()) insertImage(src.trim()); }} className="btn-outline inline-flex h-8 items-center gap-1 px-2 text-xs" title="Chèn ảnh"><Icon name="image" className="h-3.5 w-3.5" />Ảnh</button>
         <button type="button" onClick={() => uploadRef.current?.click()} className="btn-outline inline-flex h-8 items-center gap-1 px-2 text-xs" title="Tải ảnh lên"><Icon name="upload" className="h-3.5 w-3.5" />Upload</button>
         <input ref={uploadRef} type="file" accept="image/*" onChange={uploadImage} className="hidden" />

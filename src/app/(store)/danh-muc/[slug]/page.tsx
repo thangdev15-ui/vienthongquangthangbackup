@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { getActiveBrands, getActiveCategories, getCategoryBySlug, queryProducts } from "@/lib/data";
 import { Breadcrumbs, EmptyState, Icon, Pagination } from "@/components/ui";
 import { FilterSidebar, ProductGrid, Toolbar } from "@/components/store/product";
+import { BASE_URL } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
@@ -12,8 +13,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const cat = await getCategoryBySlug(slug);
   if (!cat || !cat.active) notFound();
   return {
-    title: cat.seoTitle || `${cat.name} — Giá tốt cho công trình`,
-    description: cat.seoDescription ?? cat.description ?? `Danh mục ${cat.name} tại Viễn Thông Quang Thắng — chính hãng, tư vấn kỹ thuật, giao hàng toàn quốc.`,
+    title: cat.seoTitle || `${cat.name} chính hãng - Báo giá và tư vấn | Quang Thắng Telecom`,
+    description: cat.seoDescription ?? cat.description ?? `Danh mục ${cat.name} chính hãng tại Viễn Thông Quang Thắng. Xem thông số, lựa chọn sản phẩm phù hợp và nhận tư vấn báo giá cho công trình.`,
     alternates: { canonical: `/danh-muc/${cat.slug}` },
   };
 }
@@ -63,6 +64,28 @@ export default async function CategoryPage({
   const grandChildren = allCats.filter((c) => c.parentId && grandchildrenIds.has(c.parentId));
 
   const baseHref = `/danh-muc/${cat.slug}`;
+  const categoryDescription = cat.description?.trim()
+    || `Khám phá ${cat.name} chính hãng tại Viễn Thông Quang Thắng. Lựa chọn sản phẩm theo nhu cầu sử dụng, thông số kỹ thuật và yêu cầu của công trình; đội ngũ kỹ thuật hỗ trợ tư vấn trước khi đặt hàng.`;
+  const categoryJsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "CollectionPage",
+        name: cat.name,
+        description: categoryDescription,
+        url: `${BASE_URL}${baseHref}`,
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: chain.map((item, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          name: item.label,
+          item: `${BASE_URL}${item.href ?? baseHref}`,
+        })),
+      },
+    ],
+  };
   const hrefFor = (p: number) => {
     const params = new URLSearchParams();
     if (sp.brand) params.set("brand", sp.brand);
@@ -76,9 +99,11 @@ export default async function CategoryPage({
 
   return (
     <div className="wrap py-6">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(categoryJsonLd) }} />
       <Breadcrumbs items={chain} />
       <div className="mt-3 mb-5">
         <h1 className="text-2xl font-extrabold text-ink-950">{cat.name}</h1>
+        <p className="mt-2 max-w-4xl text-sm leading-6 text-ink-600">{categoryDescription}</p>
       </div>
 
       {(children.length > 0 || grandChildren.length > 0) && (

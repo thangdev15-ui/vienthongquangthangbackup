@@ -44,6 +44,9 @@ export function AnnouncementBar({ text, settings }: { text: string; settings: Se
           </a>
         </div>
         <div className="hidden shrink-0 items-center gap-5 sm:flex">
+          <Link href="/ho-so-nang-luc" className="hover:text-accent-100">
+            Hồ sơ năng lực
+          </Link>
           <Link href="/tai-khoan?tab=orders" className="hidden hover:text-white lg:inline">
             Theo dõi đơn hàng
           </Link>
@@ -291,6 +294,7 @@ export function MegaNav({ categories }: { categories: NavCategory[] }) {
           { href: "/thuong-hieu", label: "Thương hiệu" },
           { href: "/khuyen-mai", label: "Khuyến mãi" },
           { href: "/tin-tuc", label: "Tin tức" },
+          { href: "/ho-so-nang-luc", label: "Hồ sơ năng lực" },
           { href: "/lien-he", label: "Liên hệ" },
         ].map((l) => (
           <Link
@@ -383,6 +387,7 @@ export function MobileMenu({ open, onClose, categories }: { open: boolean; onClo
             { href: "/thuong-hieu", label: "Thương hiệu" },
             { href: "/khuyen-mai", label: "Khuyến mãi" },
             { href: "/tin-tuc", label: "Tin tức công nghệ" },
+            { href: "/ho-so-nang-luc", label: "Hồ sơ năng lực" },
             { href: "/lien-he", label: "Liên hệ" },
             { href: "/tai-khoan", label: "Tài khoản" },
             { href: "/tai-khoan?tab=wishlist", label: "Yêu thích" },

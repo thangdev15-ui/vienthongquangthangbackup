@@ -82,9 +82,19 @@ export default async function proxy(request: NextRequest) {
   // Only map published content, including products/articles absent from the
   // old hardcoded list. Never redirect unrelated missing pages to the homepage.
   const segments = key.split("/");
-  const catalog = key && !NEW_ROUTES.has(segments[0]) && !/\.[^/]+$/.test(pathname)
+  const publicRecordKind = segments.length === 2
+    ? ({ "san-pham": "product", "danh-muc": "category", "tin-tuc": "article", "thuong-hieu": "brand" } as const)[segments[0] as "san-pham" | "danh-muc" | "tin-tuc" | "thuong-hieu"]
+    : undefined;
+  const catalog = key && (!NEW_ROUTES.has(segments[0]) || publicRecordKind) && !/\.[^/]+$/.test(pathname)
     ? await getSeoCatalog()
     : undefined;
+
+  // Resolve dynamic public records here rather than relying solely on
+  // notFound() inside a streaming page. This preserves a real 404 status for
+  // crawlers instead of a 200 response containing a not-found UI.
+  if (publicRecordKind && !catalog?.some(entry => entry.kind === publicRecordKind && entry.slug === segments[1])) {
+    return missing(request);
+  }
 
   // Legacy WordPress feeds inherited a product/article slug. Keep the SEO
   // value when that record still exists; explicitly retire obsolete feeds.
