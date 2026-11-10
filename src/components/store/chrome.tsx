@@ -223,7 +223,7 @@ export function Header({ settings, onOpenMobile, categories }: { settings: Setti
           <Icon name="menu" className="h-6 w-6" />
         </button>
         <Link href="/" className="flex h-14 w-[138px] shrink-0 items-center px-1 xl:w-[150px] 2xl:w-[178px]" aria-label="Trang chủ Viễn Thông Quang Thắng">
-          <img src="/logoqt.png?v=2" alt="Viễn Thông Quang Thắng" width={300} height={106} className="h-auto w-full object-contain" />
+          <Image src="/logoqt.png?v=2" alt="Viễn Thông Quang Thắng" width={300} height={106} priority className="h-auto w-full object-contain" />
         </Link>
         <div className="hidden min-w-0 flex-[0.75] lg:block lg:max-w-[230px] xl:max-w-[310px] 2xl:max-w-[440px]">
           <SearchBar />
