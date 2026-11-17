@@ -1,12 +1,32 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getActiveBrands, getActiveCategories, getCategoryBySlug, queryProducts } from "@/lib/data";
+import { getActiveBrands, getActiveCategories, getCategoryBySlug, queryProducts, stripHtml } from "@/lib/data";
 import { Breadcrumbs, EmptyState, Icon, Pagination } from "@/components/ui";
 import { FilterSidebar, ProductGrid, Toolbar } from "@/components/store/product";
 import { BASE_URL } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
+
+function fallbackCategoryDescription(name: string) {
+  return `Khám phá ${name} chính hãng tại Viễn Thông Quang Thắng. Lựa chọn sản phẩm theo nhu cầu sử dụng, thông số kỹ thuật và yêu cầu của công trình; đội ngũ kỹ thuật hỗ trợ tư vấn trước khi đặt hàng.`;
+}
+
+function categorySummary(name: string, description: string | null) {
+  const cleaned = stripHtml(description ?? "")
+    .replace(/\[[^\]]*\]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (!cleaned) return fallbackCategoryDescription(name);
+
+  // Imported WordPress descriptions can be full articles. The category header
+  // should remain a short, readable introduction rather than a raw article dump.
+  const sentence = cleaned.match(/^.{1,420}?[.!?](?=\s|$)/)?.[0];
+  if (sentence && sentence.length >= 70) return sentence;
+  if (cleaned.length <= 420) return cleaned;
+  const cutoff = cleaned.lastIndexOf(" ", 420);
+  return `${cleaned.slice(0, cutoff > 0 ? cutoff : 420)}…`;
+}
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
@@ -14,7 +34,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!cat || !cat.active) notFound();
   return {
     title: cat.seoTitle || `${cat.name} chính hãng - Báo giá và tư vấn | Quang Thắng Telecom`,
-    description: cat.seoDescription ?? cat.description ?? `Danh mục ${cat.name} chính hãng tại Viễn Thông Quang Thắng. Xem thông số, lựa chọn sản phẩm phù hợp và nhận tư vấn báo giá cho công trình.`,
+    description: cat.seoDescription ?? categorySummary(cat.name, cat.description),
     alternates: { canonical: `/danh-muc/${cat.slug}` },
   };
 }
@@ -64,8 +84,7 @@ export default async function CategoryPage({
   const grandChildren = allCats.filter((c) => c.parentId && grandchildrenIds.has(c.parentId));
 
   const baseHref = `/danh-muc/${cat.slug}`;
-  const categoryDescription = cat.description?.trim()
-    || `Khám phá ${cat.name} chính hãng tại Viễn Thông Quang Thắng. Lựa chọn sản phẩm theo nhu cầu sử dụng, thông số kỹ thuật và yêu cầu của công trình; đội ngũ kỹ thuật hỗ trợ tư vấn trước khi đặt hàng.`;
+  const categoryDescription = categorySummary(cat.name, cat.description);
   const categoryJsonLd = {
     "@context": "https://schema.org",
     "@graph": [
