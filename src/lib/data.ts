@@ -432,20 +432,39 @@ export async function getCustomers() {
 
 /* --------------------------------- articles --------------------------------- */
 
+export type ArticleListRow = Omit<Article, "content">;
+
+function articleListSelect() {
+  return {
+    id: articles.id,
+    title: articles.title,
+    slug: articles.slug,
+    excerpt: articles.excerpt,
+    coverImage: articles.coverImage,
+    category: articles.category,
+    tags: articles.tags,
+    status: articles.status,
+    seoTitle: articles.seoTitle,
+    seoDescription: articles.seoDescription,
+    publishedAt: articles.publishedAt,
+    createdAt: articles.createdAt,
+  };
+}
+
 async function getArticlesUncached(opts: { status?: string; category?: string; limit?: number; offset?: number; excludeId?: string } = {}) {
   const parts: (SQL | undefined)[] = [eq(articles.status, opts.status ?? "published")];
   if (opts.category) parts.push(eq(articles.category, opts.category));
   if (opts.excludeId) parts.push(sql`${articles.id} != ${opts.excludeId}`);
   const where = and(...parts);
   const items = await db
-    .select()
+    .select(articleListSelect())
     .from(articles)
     .where(where ?? sql`true`)
     .orderBy(desc(articles.publishedAt))
     .limit(opts.limit ?? 50)
     .offset(opts.offset ?? 0);
   const c = await db.select({ n: count() }).from(articles).where(where ?? sql`true`);
-  return { items, total: c[0]?.n ?? 0 };
+  return { items: items as ArticleListRow[], total: c[0]?.n ?? 0 };
 }
 
 
@@ -454,13 +473,29 @@ export async function getArticles(opts: { status?: string; category?: string; li
   return unstable_cache(() => getArticlesUncached(opts), ["store-v2-articles-query", key], { revalidate: STORE_CACHE_SECONDS, tags: ["store-articles"] })();
 }
 
+async function loadArticleCategories() {
+  const rows = await db
+    .selectDistinct({ category: articles.category })
+    .from(articles)
+    .where(and(eq(articles.status, "published"), isNotNull(articles.category)))
+    .orderBy(asc(articles.category));
+  return rows.flatMap((row) => row.category ? [row.category] : []);
+}
+
+export async function getArticleCategories() {
+  return unstable_cache(loadArticleCategories, ["store-v2-article-categories"], {
+    revalidate: STORE_CACHE_SECONDS,
+    tags: ["store-articles"],
+  })();
+}
+
 function normalizedTags(value: string | null) {
   return new Set((value ?? "").split(",").map((tag) => tag.trim().toLocaleLowerCase("vi-VN")).filter(Boolean));
 }
 
 async function loadRelatedArticles(article: Article, limit: number) {
   const candidates = await db
-    .select()
+    .select(articleListSelect())
     .from(articles)
     .where(and(eq(articles.status, "published"), sql`${articles.id} != ${article.id}`))
     .orderBy(desc(articles.publishedAt))
@@ -474,10 +509,10 @@ async function loadRelatedArticles(article: Article, limit: number) {
     })
     .sort((a, b) => b.score - a.score || b.candidate.publishedAt.getTime() - a.candidate.publishedAt.getTime())
     .slice(0, limit)
-    .map(({ candidate }) => candidate);
+    .map(({ candidate }) => candidate as ArticleListRow);
 }
 
-export const getRelatedArticles = cache(async (article: Article, limit = 3) =>
+export const getRelatedArticles = cache(async (article: Article, limit = 3): Promise<ArticleListRow[]> =>
   unstable_cache(() => loadRelatedArticles(article, limit), ["store-v2-related-articles", article.id, String(limit)], {
     revalidate: STORE_CACHE_SECONDS,
     tags: ["store-articles"],

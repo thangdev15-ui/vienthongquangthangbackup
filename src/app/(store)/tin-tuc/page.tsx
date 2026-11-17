@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getArticles, stripHtml } from "@/lib/data";
+import { getArticleCategories, getArticles } from "@/lib/data";
 import { Breadcrumbs, Pagination } from "@/components/ui";
 import { ArticleCard } from "./card";
 
@@ -16,11 +16,10 @@ export default async function TinTucPage({ searchParams }: { searchParams: Promi
   const cat = sp.cat ?? "";
   const page = Math.max(1, parseInt(sp.page ?? "1", 10) || 1);
   const pageSize = 12;
-  const [all, categoryRows] = await Promise.all([
+  const [all, cats] = await Promise.all([
     getArticles({ category: cat || undefined, limit: pageSize, offset: (page - 1) * pageSize }),
-    getArticles({ limit: 500 }),
+    getArticleCategories(),
   ]);
-  const cats = Array.from(new Set(categoryRows.items.map((a) => a.category).filter(Boolean))) as string[];
   const hrefFor = (p: number) => `/tin-tuc?${new URLSearchParams({ ...(cat ? { cat } : {}), ...(p > 1 ? { page: String(p) } : {}) }).toString()}`;
   return (
     <div className="wrap py-6">
@@ -50,7 +49,7 @@ export default async function TinTucPage({ searchParams }: { searchParams: Promi
               key={a.id}
               title={a.title}
               slug={a.slug}
-              excerpt={a.excerpt ?? stripHtml(a.content).slice(0, 140)}
+              excerpt={a.excerpt ?? ""}
               category={a.category ?? "Tổng hợp"}
               cover={a.coverImage}
               date={a.publishedAt}
