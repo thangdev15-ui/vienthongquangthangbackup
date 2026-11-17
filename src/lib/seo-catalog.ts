@@ -7,8 +7,35 @@ export type SeoEntry = {
   modified: Date | null;
 };
 
+export type PublicRecordKind = "product" | "category" | "article" | "brand";
+
 let cached: { entries: SeoEntry[]; expires: number } | undefined;
 let pending: Promise<SeoEntry[]> | undefined;
+const recordCache = new Map<string, { exists: boolean; expires: number }>();
+const CATALOG_CACHE_MS = 10 * 60_000;
+
+const RECORD_LOOKUPS: Record<PublicRecordKind, { table: string; status: string }> = {
+  product: { table: "products", status: "status = 'published'" },
+  category: { table: "categories", status: "active = true" },
+  article: { table: "articles", status: "status = 'published'" },
+  brand: { table: "brands", status: "active = true" },
+};
+
+export async function publicRecordExists(kind: PublicRecordKind, slug: string): Promise<boolean> {
+  const key = `${kind}:${slug}`;
+  const now = Date.now();
+  const hit = recordCache.get(key);
+  if (hit && hit.expires > now) return hit.exists;
+
+  const lookup = RECORD_LOOKUPS[kind];
+  const { rowCount } = await pool.query(
+    `select 1 from ${lookup.table} where slug = $1 and ${lookup.status} limit 1`,
+    [slug],
+  );
+  const exists = rowCount === 1;
+  recordCache.set(key, { exists, expires: now + CATALOG_CACHE_MS });
+  return exists;
+}
 
 // Share a small public URL inventory across legacy lookups in a server instance.
 // Never cache database failures as an empty inventory (that would invent 404s).
@@ -27,7 +54,7 @@ export async function getSeoCatalog(): Promise<SeoEntry[]> {
     union all
     select slug, '/' || slug, 'page', updated_at from pages
   `).then(({ rows }) => {
-    cached = { entries: rows, expires: Date.now() + 60_000 };
+    cached = { entries: rows, expires: Date.now() + CATALOG_CACHE_MS };
     return rows;
   }).finally(() => { pending = undefined; });
   return pending;

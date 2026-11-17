@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { getSeoCatalog } from "@/lib/seo-catalog";
+import { getSeoCatalog, publicRecordExists, type PublicRecordKind } from "@/lib/seo-catalog";
 import { BASE_URL } from "@/lib/types";
 
 const NEW_ROUTES = new Set([
@@ -83,16 +83,19 @@ export default async function proxy(request: NextRequest) {
   // old hardcoded list. Never redirect unrelated missing pages to the homepage.
   const segments = key.split("/");
   const publicRecordKind = segments.length === 2
-    ? ({ "san-pham": "product", "danh-muc": "category", "tin-tuc": "article", "thuong-hieu": "brand" } as const)[segments[0] as "san-pham" | "danh-muc" | "tin-tuc" | "thuong-hieu"]
+    ? ({ "san-pham": "product", "danh-muc": "category", "tin-tuc": "article", "thuong-hieu": "brand" } as const)[segments[0] as "san-pham" | "danh-muc" | "tin-tuc" | "thuong-hieu"] as PublicRecordKind | undefined
     : undefined;
-  const catalog = key && (!NEW_ROUTES.has(segments[0]) || publicRecordKind) && !/\.[^/]+$/.test(pathname)
+  // Canonical URLs only need a small existence lookup. Loading the full SEO
+  // inventory for every product/article view creates needless DB egress when
+  // users and crawlers visit thousands of valid URLs.
+  const catalog = key && !NEW_ROUTES.has(segments[0]) && !/\.[^/]+$/.test(pathname)
     ? await getSeoCatalog()
     : undefined;
 
   // Resolve dynamic public records here rather than relying solely on
   // notFound() inside a streaming page. This preserves a real 404 status for
   // crawlers instead of a 200 response containing a not-found UI.
-  if (publicRecordKind && !catalog?.some(entry => entry.kind === publicRecordKind && entry.slug === segments[1])) {
+  if (publicRecordKind && !await publicRecordExists(publicRecordKind, segments[1])) {
     return missing(request);
   }
 
