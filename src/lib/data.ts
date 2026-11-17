@@ -73,17 +73,24 @@ async function loadActiveCategories(): Promise<Category[]> {
 export async function getActiveCategories() {
   return unstable_cache(loadActiveCategories, ["store-v2-active-categories"], { revalidate: STORE_CACHE_SECONDS, tags: ["store-catalog"] })();
 }
-export const getCategoryBySlug = cache(async (slug: string): Promise<Category | null> => {
+async function loadCategoryBySlug(slug: string): Promise<Category | null> {
   const rows = await db.select().from(categories).where(eq(categories.slug, slug)).limit(1);
   return rows[0] ?? null;
+}
+
+const getCachedCategoryBySlug = unstable_cache(loadCategoryBySlug, ["store-v2-category-by-slug"], {
+  revalidate: STORE_CACHE_SECONDS,
+  tags: ["store-catalog"],
 });
+
+export const getCategoryBySlug = cache(getCachedCategoryBySlug);
 
 export async function getCategoryById(id: string): Promise<Category | null> {
   const rows = await db.select().from(categories).where(eq(categories.id, id)).limit(1);
   return rows[0] ?? null;
 }
 
-export async function getDescendantIds(categoryId: string): Promise<string[]> {
+async function loadDescendantIds(categoryId: string): Promise<string[]> {
   const all = await db.select({ id: categories.id, parentId: categories.parentId }).from(categories);
   const byParent = new Map<string, string[]>();
   for (const c of all) {
@@ -105,6 +112,13 @@ export async function getDescendantIds(categoryId: string): Promise<string[]> {
   return out;
 }
 
+const getCachedDescendantIds = unstable_cache(loadDescendantIds, ["store-v2-category-descendants"], {
+  revalidate: STORE_CACHE_SECONDS,
+  tags: ["store-catalog"],
+});
+
+export const getDescendantIds = cache(getCachedDescendantIds);
+
 /* --------------------------------- brands --------------------------------- */
 
 async function loadActiveBrands(): Promise<Brand[]> {
@@ -115,10 +129,32 @@ async function loadActiveBrands(): Promise<Brand[]> {
 export async function getActiveBrands() {
   return unstable_cache(loadActiveBrands, ["store-v2-active-brands"], { revalidate: STORE_CACHE_SECONDS, tags: ["store-catalog"] })();
 }
-export const getBrandBySlug = cache(async (slug: string): Promise<Brand | null> => {
+async function loadBrandBySlug(slug: string): Promise<Brand | null> {
   const rows = await db.select().from(brands).where(eq(brands.slug, slug)).limit(1);
   return rows[0] ?? null;
+}
+
+const getCachedBrandBySlug = unstable_cache(loadBrandBySlug, ["store-v2-brand-by-slug"], {
+  revalidate: STORE_CACHE_SECONDS,
+  tags: ["store-catalog"],
 });
+
+export const getBrandBySlug = cache(getCachedBrandBySlug);
+
+async function loadPublishedProductCountsByBrand() {
+  return db
+    .select({ brandId: products.brandId, n: sql<number>`count(*)` })
+    .from(products)
+    .where(eq(products.status, "published"))
+    .groupBy(products.brandId);
+}
+
+export async function getPublishedProductCountsByBrand() {
+  return unstable_cache(loadPublishedProductCountsByBrand, ["store-v2-brand-product-counts"], {
+    revalidate: STORE_CACHE_SECONDS,
+    tags: ["store-products", "store-catalog"],
+  })();
+}
 
 export async function getBrandById(id: string): Promise<Brand | null> {
   const rows = await db.select().from(brands).where(eq(brands.id, id)).limit(1);
@@ -602,7 +638,7 @@ async function loadSettings(): Promise<Record<string, string>> {
 
 
 export async function getSettings() {
-  return unstable_cache(loadSettings, ["store-v2-settings"], { revalidate: STORE_CACHE_SECONDS, tags: ["store-v2-settings"] })();
+  return unstable_cache(loadSettings, ["store-v2-settings"], { revalidate: STORE_CACHE_SECONDS, tags: ["store-settings"] })();
 }
 
 async function loadCompanyProfile() {
@@ -629,7 +665,7 @@ async function searchAllUncached(q: string) {
   const [productsRes, catRows, articleRows] = await Promise.all([
     fetchRows(and(eq(products.status, "published"), or(ilike(products.name, like), ilike(products.sku, like), ilike(products.shortDescription, like))), [desc(products.createdAt)], 24),
     db.select().from(categories).where(and(ilike(categories.name, like), eq(categories.active, true))).limit(8),
-    db.select().from(articles).where(and(ilike(articles.title, like), eq(articles.status, "published"))).orderBy(desc(articles.publishedAt)).limit(5),
+    db.select(articleListSelect()).from(articles).where(and(ilike(articles.title, like), eq(articles.status, "published"))).orderBy(desc(articles.publishedAt)).limit(5),
   ]);
   return { products: productsRes, categories: catRows, articles: articleRows };
 }

@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { sql, eq } from "drizzle-orm";
-import { db } from "@/db";
-import { products } from "@/db/schema";
-import { getActiveBrands } from "@/lib/data";
+import { getActiveBrands, getPublishedProductCountsByBrand } from "@/lib/data";
 import { Breadcrumbs, Icon } from "@/components/ui";
 
 export const metadata: Metadata = {
@@ -11,15 +8,10 @@ export const metadata: Metadata = {
   title: "Thương hiệu",
   description: "Các thương hiệu thiết bị viễn thông, cáp mạng và camera mà Viễn Thông Quang Thắng phân phối: Vcom, Commscope, Hikvision, TP-Link, Netlink…",
 };
-export const dynamic = "force-dynamic";
+export const revalidate = 600;
 
 export default async function BrandsPage() {
-  const brands = await getActiveBrands();
-  const counts = await db
-    .select({ brandId: products.brandId, n: sql<number>`count(*)` })
-    .from(products)
-    .where(eq(products.status, "published"))
-    .groupBy(products.brandId);
+  const [brands, counts] = await Promise.all([getActiveBrands(), getPublishedProductCountsByBrand()]);
   const countMap = new Map(counts.map((c) => [c.brandId, c.n]));
 
   return (

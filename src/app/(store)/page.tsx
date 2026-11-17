@@ -6,7 +6,7 @@ import { Icon, SectionHeader, type IconName } from "@/components/ui";
 import { NewsletterForm } from "@/components/store/chrome";
 import { HeroCarousel } from "@/components/store/hero-carousel";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 600;
 export const metadata = { alternates: { canonical: "/" } };
 
 export default async function HomePage() {

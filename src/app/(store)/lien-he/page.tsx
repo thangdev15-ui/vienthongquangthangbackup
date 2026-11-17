@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: "Liên hệ",
   description: "Liên hệ Viễn Thông Quang Thắng — 435/26 Thống Nhất, P. Thông Tây Hội, TP.HCM. Hotline 094.710.6161 (tư vấn), Zalo báo giá nhanh.",
 };
-export const dynamic = "force-dynamic";
+export const revalidate = 600;
 
 export default async function LienHePage() {
   const settings = await getSettings();

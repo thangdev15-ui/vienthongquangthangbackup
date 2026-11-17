@@ -2,8 +2,9 @@ import { getActiveCategories, getSettings } from "@/lib/data";
 import { buildCategoryTree } from "@/lib/types";
 import { StoreShell } from "@/components/store/store-shell";
 
-// The store chrome reads live settings/categories — keep the whole storefront dynamic.
-export const dynamic = "force-dynamic";
+// Public catalog/settings data is tag-invalidated after admin changes. Allow ISR
+// to serve repeated crawls without opening a database connection for every visit.
+export const revalidate = 600;
 
 const NAV_ROOT_SLUGS = new Set([
   "camera-quan-sat",
