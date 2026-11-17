@@ -3,6 +3,7 @@ import { BASE_URL } from "@/lib/types";
 import { getSeoCatalog } from "@/lib/seo-catalog";
 
 export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPaths = [

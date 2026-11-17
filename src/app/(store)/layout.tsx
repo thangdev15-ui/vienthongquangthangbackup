@@ -2,9 +2,9 @@ import { getActiveCategories, getSettings } from "@/lib/data";
 import { buildCategoryTree } from "@/lib/types";
 import { StoreShell } from "@/components/store/store-shell";
 
-// Public catalog/settings data is tag-invalidated after admin changes. Allow ISR
-// to serve repeated crawls without opening a database connection for every visit.
-export const revalidate = 600;
+// The first deployment must not query the database during static generation.
+// Public data functions still use their own persistent cache at request time.
+export const dynamic = "force-dynamic";
 
 const NAV_ROOT_SLUGS = new Set([
   "camera-quan-sat",

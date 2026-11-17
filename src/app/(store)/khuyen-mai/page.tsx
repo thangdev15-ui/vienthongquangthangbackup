@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   title: "Khuyến mãi",
   description: "Chương trình khuyến mãi, giảm giá thiết bị viễn thông, cáp mạng, camera tại Viễn Thông Quang Thắng. Cập nhật liên tục.",
 };
-export const revalidate = 600;
+export const dynamic = "force-dynamic";
 
 export default async function KhuyenMaiPage() {
   const [promotions, sale] = await Promise.all([getActivePromotions(), queryProducts({ only: "sale", limit: 12, sort: "newest", includeTotal: false })]);

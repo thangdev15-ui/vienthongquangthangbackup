@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   title: "Hồ sơ năng lực | Viễn Thông Quang Thắng",
   description: "Hồ sơ năng lực doanh nghiệp Viễn Thông Quang Thắng: thiết bị viễn thông, hạ tầng mạng, cáp quang và camera.",
 };
-export const revalidate = 600;
+export const dynamic = "force-dynamic";
 
 const values = [
   { number: "01", title: "Chất lượng & nguồn gốc", body: "Cung cấp sản phẩm có nguồn gốc rõ ràng, đáp ứng tiêu chuẩn kỹ thuật và yêu cầu thực tế của từng công trình." },

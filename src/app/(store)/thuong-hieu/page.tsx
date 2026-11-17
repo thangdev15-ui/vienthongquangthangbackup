@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: "Thương hiệu",
   description: "Các thương hiệu thiết bị viễn thông, cáp mạng và camera mà Viễn Thông Quang Thắng phân phối: Vcom, Commscope, Hikvision, TP-Link, Netlink…",
 };
-export const revalidate = 600;
+export const dynamic = "force-dynamic";
 
 export default async function BrandsPage() {
   const [brands, counts] = await Promise.all([getActiveBrands(), getPublishedProductCountsByBrand()]);
