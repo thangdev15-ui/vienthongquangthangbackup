@@ -1,6 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { getSeoCatalog, publicRecordExists, type PublicRecordKind } from "@/lib/seo-catalog";
-import { BASE_URL } from "@/lib/types";
 
 const NEW_ROUTES = new Set([
   "san-pham", "danh-muc", "thuong-hieu", "tin-tuc", "khuyen-mai", "ho-so-nang-luc",
@@ -44,9 +43,7 @@ const PAGE_REDIRECTS: Record<string, string> = {
 const LEGACY_PREFIXES: Record<string, string> = { product: "product", shop: "product", "product-category": "category" };
 
 function redirect(request: NextRequest, path: string, status = 301) {
-  const origin = ["www.vienthongquangthang.com", "test.vienthongquangthang.com"].includes(request.nextUrl.hostname)
-    ? BASE_URL : request.nextUrl.origin;
-  return NextResponse.redirect(new URL(path, origin), status);
+  return NextResponse.redirect(new URL(path, request.nextUrl.origin), status);
 }
 
 function missing(request: NextRequest) {
@@ -150,9 +147,6 @@ export default async function proxy(request: NextRequest) {
     }
   }
 
-  if (hostname === "www.vienthongquangthang.com") {
-    return NextResponse.redirect(new URL((pathname.replace(/\/$/, "") || "/") + request.nextUrl.search, BASE_URL), 301);
-  }
   if (pathname !== "/" && pathname.endsWith("/")) return redirect(request, pathname.slice(0, -1) + request.nextUrl.search);
   // These staging headers apply only if its DNS points to this deployment.
   if (hostname === "test.vienthongquangthang.com") {
