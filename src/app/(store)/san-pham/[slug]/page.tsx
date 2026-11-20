@@ -48,8 +48,9 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   const p = data.product;
   const description = withoutEmbeddedImages(p.description);
   const mainImage = data.images.find((i) => i.isMain)?.url ?? data.images[0]?.url ?? null;
+  const { description: _rawDescription, ...productFields } = p;
   const row = {
-    ...p,
+    ...productFields,
     brandName: data.brand?.name ?? "",
     categoryName: data.category?.name ?? "",
     image: mainImage,
