@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { ShopProvider } from "@/components/store/shops";
 import { GoogleAnalytics } from "@/components/analytics/ga4";
+import { LeadEvents } from "@/components/analytics/lead-events";
 import { BASE_URL } from "@/lib/types";
 
 export const metadata: Metadata = {
@@ -34,6 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <ShopProvider>{children}</ShopProvider>
         <GoogleAnalytics />
+        <LeadEvents />
       </body>
     </html>
   );
