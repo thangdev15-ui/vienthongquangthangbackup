@@ -10,13 +10,25 @@ import { BASE_URL } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
+function withoutEmbeddedImages(html: string | null) {
+  if (!html) return null;
+
+  // Legacy product descriptions occasionally contain full PNG/JPEG files as
+  // data URLs. They are serialized into the RSC payload repeatedly and can
+  // turn a small product page into a multi-hundred-kilobyte document.
+  return html
+    .replace(/<img\b[^>]*\bsrc\s*=\s*(?:"data:image\/[^"]*"|'data:image\/[^']*'|data:image\/[^\s>]+)[^>]*>/gi, "")
+    .replace(/data:image\/[a-z0-9.+-]+;base64,[a-z0-9+/=\s]+/gi, "");
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const data = await getProductBySlug(slug);
   if (!data || data.product.status !== "published") notFound();
   const p = data.product;
   const mainImage = data.images.find((i) => i.isMain)?.url ?? data.images[0]?.url ?? null;
-  const desc = p.shortDescription ?? p.seoDescription ?? p.description?.replace(/<[^>]+>/g, " ").slice(0, 160) ?? "";
+  const description = withoutEmbeddedImages(p.description);
+  const desc = p.shortDescription ?? p.seoDescription ?? description?.replace(/<[^>]+>/g, " ").slice(0, 160) ?? "";
   return {
     title: p.seoTitle || p.name,
     description: desc,
@@ -34,6 +46,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   const data = await getProductBySlug(slug);
   if (!data || data.product.status !== "published") notFound();
   const p = data.product;
+  const description = withoutEmbeddedImages(p.description);
   const mainImage = data.images.find((i) => i.isMain)?.url ?? data.images[0]?.url ?? null;
   const row = {
     ...p,
@@ -84,7 +97,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
         <BuyBox p={row} phone={settings.phone} />
       </div>
 
-      <ProductDetailTabs product={p} specs={data.specs} reviews={reviews} related={related} phone={settings.phone} zalo={settings.zalo} />
+      <ProductDetailTabs product={{ ...p, description }} specs={data.specs} reviews={reviews} related={related} phone={settings.phone} zalo={settings.zalo} />
 
       <div className="mt-6 grid gap-4 sm:grid-cols-3">
         <div className="card flex gap-3 p-4 text-[13px] text-ink-600">
