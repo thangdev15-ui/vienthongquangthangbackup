@@ -4,6 +4,9 @@ const nextConfig: NextConfig = {
   // Legacy trailing-slash URLs should reach their final destination in one hop.
   skipTrailingSlashRedirect: true,
   images: {
+    // Serve original CDN assets instead of creating Vercel Image Optimization
+    // variants for every product image requested by visitors and crawlers.
+    unoptimized: true,
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: 31_536_000,
     remotePatterns: [
