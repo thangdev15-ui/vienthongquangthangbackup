@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const p = data.product;
   const mainImage = data.images.find((i) => i.isMain)?.url ?? data.images[0]?.url ?? null;
   const description = withoutEmbeddedImages(p.description);
-  const desc = p.shortDescription ?? p.seoDescription ?? description?.replace(/<[^>]+>/g, " ").slice(0, 160) ?? "";
+  const desc = p.seoDescription ?? p.shortDescription ?? description?.replace(/<[^>]+>/g, " ").slice(0, 160) ?? "";
   return {
     title: p.seoTitle || p.name,
     description: desc,
