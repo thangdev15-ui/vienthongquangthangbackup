@@ -78,7 +78,7 @@ async function loadCategoryBySlug(slug: string): Promise<Category | null> {
   return rows[0] ?? null;
 }
 
-const getCachedCategoryBySlug = unstable_cache(loadCategoryBySlug, ["store-v2-category-by-slug"], {
+const getCachedCategoryBySlug = unstable_cache(loadCategoryBySlug, ["store-v3-category-by-slug"], {
   revalidate: STORE_CACHE_SECONDS,
   tags: ["store-catalog"],
 });
