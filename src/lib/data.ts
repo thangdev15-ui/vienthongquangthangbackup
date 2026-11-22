@@ -298,7 +298,7 @@ async function queryProductsUncached(f: ProductFilters): Promise<{ items: Produc
 
 export async function queryProducts(f: ProductFilters): Promise<{ items: ProductRow[]; total: number; pages: number }> {
   const key = JSON.stringify(f);
-  return unstable_cache(() => queryProductsUncached(f), ["store-v2-products-query", key], { revalidate: STORE_CACHE_SECONDS, tags: ["store-products"] })();
+  return unstable_cache(() => queryProductsUncached(f), ["store-v3-products-query", key], { revalidate: STORE_CACHE_SECONDS, tags: ["store-products"] })();
 }
 export async function getAdminProducts(): Promise<ProductRow[]> {
   // Admin needs the complete catalog so search can find products shown on the storefront.
@@ -331,7 +331,7 @@ async function loadProductBySlug(slug: string) {
   return { product, images: orderedImages, specs, brand, category };
 }
 
-const getCachedProductBySlug = unstable_cache(loadProductBySlug, ["store-v2-product-by-slug"], {
+const getCachedProductBySlug = unstable_cache(loadProductBySlug, ["store-v3-product-by-slug"], {
   revalidate: STORE_CACHE_SECONDS,
   tags: ["store-products", "store-catalog"],
 });
@@ -506,7 +506,7 @@ async function getArticlesUncached(opts: { status?: string; category?: string; l
 
 export async function getArticles(opts: { status?: string; category?: string; limit?: number; offset?: number; excludeId?: string } = {}) {
   const key = JSON.stringify(opts);
-  return unstable_cache(() => getArticlesUncached(opts), ["store-v2-articles-query", key], { revalidate: STORE_CACHE_SECONDS, tags: ["store-articles"] })();
+  return unstable_cache(() => getArticlesUncached(opts), ["store-v3-articles-query", key], { revalidate: STORE_CACHE_SECONDS, tags: ["store-articles"] })();
 }
 
 async function loadArticleCategories() {
@@ -559,7 +559,7 @@ async function loadArticleBySlug(slug: string): Promise<Article | null> {
   return rows[0] ?? null;
 }
 
-const getCachedArticleBySlug = unstable_cache(loadArticleBySlug, ["store-v2-article-by-slug"], {
+const getCachedArticleBySlug = unstable_cache(loadArticleBySlug, ["store-v3-article-by-slug"], {
   revalidate: STORE_CACHE_SECONDS,
   tags: ["store-articles"],
 });
