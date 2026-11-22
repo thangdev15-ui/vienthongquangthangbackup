@@ -28,6 +28,39 @@ function categorySummary(name: string, description: string | null) {
   return `${cleaned.slice(0, cutoff > 0 ? cutoff : 420)}…`;
 }
 
+function CategoryBuyingGuide({ slug }: { slug: string }) {
+  if (slug !== "day-cap-quang") return null;
+
+  return (
+    <section className="mt-10 border-t border-line pt-8">
+      <h2 className="text-xl font-extrabold text-ink-950">Chọn dây cáp quang cho công trình và hệ thống mạng</h2>
+      <div className="mt-4 grid gap-5 text-sm leading-6 text-ink-600 lg:grid-cols-2">
+        <div>
+          <h3 className="font-bold text-ink-900">Singlemode hay Multimode?</h3>
+          <p className="mt-1.5">
+            Cáp singlemode phù hợp tuyến truyền xa, liên kết giữa các toà nhà và hạ tầng viễn thông. Cáp multimode thường phù hợp kết nối khoảng cách ngắn trong mạng nội bộ, phòng máy và data center. Loại đầu nối, module quang và thiết bị ở hai đầu cần tương thích với nhau.
+          </p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <Link href="/danh-muc/cap-quang-singlemode" className="chip">Cáp quang Singlemode</Link>
+            <Link href="/danh-muc/cap-quang-multimode" className="chip">Cáp quang Multimode</Link>
+          </div>
+        </div>
+        <div>
+          <h3 className="font-bold text-ink-900">Thông tin cần có trước khi báo giá</h3>
+          <ul className="mt-1.5 list-disc space-y-1 pl-5">
+            <li>Số lõi cần dùng hiện tại và phần lõi dự phòng.</li>
+            <li>Môi trường đi cáp: trong nhà, ngoài trời, luồn ống, treo hay chôn trực tiếp.</li>
+            <li>Khoảng cách tuyến, loại đầu nối và thiết bị quang đang sử dụng.</li>
+          </ul>
+          <p className="mt-3">
+            Cần đối chiếu cấu hình trước khi đặt? <Link href="/lien-he" className="font-bold text-brand-700 hover:underline">Gửi yêu cầu tư vấn và báo giá</Link> để đội kỹ thuật hỗ trợ chọn đúng loại cáp.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const cat = await getCategoryBySlug(slug);
@@ -103,6 +136,18 @@ export default async function CategoryPage({
           item: `${BASE_URL}${item.href ?? baseHref}`,
         })),
       },
+      {
+        "@type": "ItemList",
+        itemListElement: res.items.map((product, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          item: {
+            "@type": "Product",
+            name: product.name,
+            url: `${BASE_URL}/san-pham/${product.slug}`,
+          },
+        })),
+      },
     ],
   };
   const hrefFor = (p: number) => {
@@ -157,6 +202,7 @@ export default async function CategoryPage({
               <Pagination page={page} pages={res.pages} hrefFor={hrefFor} />
             </>
           )}
+          <CategoryBuyingGuide slug={cat.slug} />
         </div>
       </div>
 
